@@ -1,0 +1,10 @@
+
+( echo -n "{ 'media': { 'movies': [ "
+find /share -type f \( -iname "*mpeg" -o -iname "*mpg" -o -iname "*avi" -o -iname "*mov" -o -iname "*wmv" -o -iname "*mp4" -o -iname "*3gp" -o -iname "*ogm" -o -iname "*mkv" \) | while read line; do 
+echo "'$line',"
+done
+echo " ] } }" )  > /tmp/movie.json
+#| /lounge/bin/janosh load
+
+
+

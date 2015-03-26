@@ -1,0 +1,11 @@
+#!/bin/bash
+
+input=$1
+
+. /lounge/triggers/functions.sh
+DATA="`youtube-dl  --encoding utf-8 -g -e "$input"`"
+URL="`echo "$DATA" | tail -n1`"
+TITLE="`echo "$DATA" | head -n1`"
+echo "$(echo "$URL" | sed 's/^https/http/')"
+echo $TITLE
+

@@ -1,0 +1,56 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          xserver
+# Required-Start:    nginx dbus
+# Required-Stop:     nginx dbus
+# Should-Start:
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts the xserver without display manager
+# Description:
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON="/usr/bin/xinit"
+XINITRC="/lounge/xsession.sh"
+XOPTS="-fp /usr/share/fonts/X11/misc -config /etc/X11/xorg.conf -modulepath /usr/lib/xorg/modules/,/usr/local/lib/xorg/modules"
+# -nocursor"
+DESC="xserver"
+NAME=xserver
+echo "#### STARTING XSERVER ####"
+PIDFILE=/tmp/Xorg.0.pid
+
+test -x $DAEMON || exit 1
+
+set -e
+
+case "$1" in
+	start)
+		echo -n "Starting $DESC: "
+		$DAEMON $XINITRC -- /usr/bin/Xorg $XOPTS &> /dev/null
+		echo "$NAME."
+		;;
+
+	stop)
+		echo -n "Stopping $DESC: "
+#		/lounge/bin/player stop
+		killall -0 Xorg && killall Xorg
+		echo "$NAME."
+		;;
+
+	restart)
+		$0 stop
+		sleep 1
+		$0 start
+		;;
+
+	*)
+		N=/etc/init.d/$NAME
+		echo "Usage: $N {start|stop|force-stop|restart|force-reload}" >&2
+		exit 1
+		;;
+esac
+
+exit 0

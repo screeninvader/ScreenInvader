@@ -1,0 +1,41 @@
+#!/bin/bash
+#
+# ScreenInvader - A shared media experience. Instant and seamless.
+#  Copyright (C) 2012 Amir Hassan <amir@viel-zu.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+
+. ./initcgi "text/plain"
+ITEM="`echo $QUERY_STRING | sed 's/=/ /g;s/&/ /g'`"
+janosh=/lounge/bin/janosh
+size="$($janosh -r size /playlist/items/.)"
+
+if [ $size -gt 0 ]; then
+  $janosh remove "/playlist/items/#$ITEM/."
+  idx="$($janosh -r get /playlist/index)"
+  
+  if [ $size -eq 1 ]; then
+    /lounge/bin/player stop
+  else 
+    if [ $ITEM -lt $idx ]; then 
+      $janosh set /playlist/index $[ $idx  - 1 ]
+    elif [ $ITEM -eq $idx ]; then
+      /lounge/bin/player jump $idx
+    fi
+  fi
+fi
+
+touch /var/run/player/playlist_cache 

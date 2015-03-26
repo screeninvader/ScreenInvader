@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cat <<EOFPIN
+Package: *
+Pin: release n=wheezy
+Pin-Priority: 989
+
+Package: *
+Pin: release n=sid,l=Debian
+Pin-Priority: 984
+EOFPIN

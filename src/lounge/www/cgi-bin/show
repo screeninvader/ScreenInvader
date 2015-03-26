@@ -1,0 +1,129 @@
+#!/bin/bash
+#
+# ScreenInvader - A shared media experience. Instant and seamless.
+#  Copyright (C) 2012 Amir Hassan <amir@viel-zu.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+. ./initcgi "text/html"
+
+(
+set -x
+declare -A VIDEO_HOSTS="( \
+[grooveshark.com/]='youtube' \
+[youtube.com/]='youtube' \
+[youtu.be/]='youtube' \
+[vine.co/]='youtube' \
+[tvthek.orf.at/]='orf' \
+[videos.arte.tv/]='arte7' \
+[vimeo.com/]='vimeo' \
+[soundcloud.com/]='soundcloud' \
+[ted.com/]='ted' \
+[jamendo.com/]='jamendo' \
+[bandcamp.com/]='bandcamp' \
+[tindeck.com/]='tindeck' \
+[put.io/]='putio' \
+)"
+
+declare -A CATEGORY_MAP="( \
+[video]='player' \
+[multipart]='browser' \
+[audio]='player' \
+[image]='browser' \
+[animation]='browser' \
+[radio]='radio' \
+[text]='browser' \
+[pdf]='pdf' \
+[youtube]='player' \
+[orf]='player' \
+[arte7]='player' \
+[vimeo]='player' \
+[soundcloud]='player' \
+[ted]='player' \
+[jamendo]='player' \
+[bandcamp]='player' \
+[tindeck]='player' \
+[joker]='player' \
+[putio]='player' \
+)"
+
+declare -A CATEGORY_FIX="( \
+[application/octet-stream]='video' \
+[application/x-matroska]='video' \
+[audio/x-mpegurl]='radio' \
+[application/pls]='radio' \
+[application/pdf]='pdf' \
+[audio/x-scpls]='radio' \
+[image/gif]='animation' \
+[application/ogg]='video' \
+[application/x-bittorrent]='joker' \
+)"
+
+function getCategory() {
+  url="$1"
+  for host in "${!VIDEO_HOSTS[@]}"
+  do
+    if [[ $url =~ http[s]*://.*$host ]]; then
+      echo "${VIDEO_HOSTS[$host]}"
+      return
+    fi
+  done
+
+  mime_type="unknown/"
+
+  if [[ $url =~ http[s]*:// ]]; then
+    head=
+    location="$url"
+    while [ -n "$location" ]; do
+      head="$( curl --head "$location" | dos2unix )"
+      location="$( echo "$head" | grep -iPo 'Location: \K(.*)?(?=)' )"
+    done
+    if [ "$( echo "$head" | head -n 1 | cut -d ' ' -f 2)" -ne 200 ]; then
+      mime_type="video/fixed"
+    else
+      mime_type="$( echo "$head" | grep -iPo 'Content-Type: \K(.*)?(?=)' )"
+    fi
+  elif  [[ $( readlink -e "$url" ) == /tmp/* ]]; then
+    file="$url"
+    mime_type=$( file -i "$file" | sed 's/.*: \([a-zA-Z]*\/[a-zA-Z]*\).*/\1/p' | sed '1d' )
+  fi
+
+  if [ -z "$mime_type" ]; then
+    mime_type="video/fixed"
+  fi
+
+  category="${CATEGORY_FIX[$mime_type]}"
+  if [ -z "$category" ]; then
+    category="$( echo "$mime_type" | cut -d"/" -f1 )"
+  fi
+  echo "$category"
+}
+url="$QUERY_STRING"
+category="$(getCategory "$url")"
+handler="${CATEGORY_MAP[$category]}"
+
+#if [ "$handler" == "browser" ]; then
+#  video="`youtube-dl -g "$url"`"
+#  if [ $? -eq 0 ]; then
+#   url="$video"
+#    category="video"
+#   handler="player"
+#  fi
+#fi
+
+[ -n "$handler" ] && /lounge/bin/janosh -t set "/$handler/url" "$url" "/$handler/category" "$category"
+) &>/tmp/show &
+cat /lounge/www/close.html
+

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+. /lounge/www/cgi-bin/initcgi "text/plain"
+/lounge/bin/janosh -e browserClose

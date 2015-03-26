@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# ScreenInvader - A shared media experience. Instant and seamless.
+#  Copyright (C) 2012 Amir Hassan <amir@viel-zu.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+
+
+. ./initcgi "text/html"
+(
+set -x
+  read
+  read line
+  filename="$(echo $line | grep -iPo 'filename="\K(.*)?(?=")')"
+  read line
+  contentType="$(echo $line | grep -iPo 'Content-Type: \K(.*)?(?=)')"
+  read 
+  if echo "$contentType" | grep -E "(video|matroska|audio|octet-stream)"; then
+    dd if=/dev/stdin | player loadStdin "$filename"
+  elif echo "$contentType" | fgrep "image"; then
+    mkdir -p /lounge/www/tmp
+    tmp="/lounge/www$(mktemp).jpg"    
+
+    dd if=/dev/stdin > "$tmp"
+    export QUERY_STRING="http://localhost/tmp/$(basename $tmp)"
+
+    cd /lounge/www/cgi-bin/
+    ./show
+  fi
+) &> /tmp/upload
