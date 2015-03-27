@@ -29,6 +29,7 @@ chown root:root /etc/sudoers
 mkdir -p /var/log/nginx
 chmod a+rw /var/log/nginx
 chmod 0440 /etc/sudoers
+chown -R lounge:lounge /lounge/
 
 update-rc.d janosh defaults
 /etc/init.d/janosh start
@@ -164,12 +165,6 @@ function finish() {
 
  mkdir -p /share
  mkdir -p /var/cache/debconf/
- mkdir -p /var/run/mpd/
- mkdir -p /var/lib/mpd
- chown -R mpd:audio  /var/lib/mpd
- chown -R mpd:audio /var/run/mpd/
- chmod a+rwx /var/run/mpd/
- chown -R lounge:lounge /lounge/
 
  usermod -s /bin/bash root
 
