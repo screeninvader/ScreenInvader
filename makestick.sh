@@ -31,9 +31,14 @@ Usage: $0 [-z][-s <sizeInM>] <device-file>
 Options:
   -s <sizeInM>     overwrite the default (= 500MB) file system size.
   -z               write zeroes to the device before creating the partition
-
+  -x               install extlinux
 EOUSAGE
   exit 1
+}
+
+function makeSyslinuxConf() {
+  uuid="`blkid $DEVICE*2 | cut -d '"' -f2`"
+  templates/syslinux_cfg "$uuid" > "$1/boot/syslinux/syslinux.cfg" 
 }
 
 function doCheckPreCond() {
@@ -45,6 +50,11 @@ function doCheckPreCond() {
     "which mkfs.ext4"
   check "'kpartx' installed" \
     "which kpartx"
+  check "'blkid' installed" \
+    "which blkid"
+  check "'extlinux' installed" \
+    "which extlinux"
+
 }
 
 export BOOTSTRAP_LOG="makestick.log"
@@ -53,11 +63,12 @@ source "$MAKEPARTITION_DIR/.functions.sh"
 WRITE_ZEROES=
 SIZE=2000
 
-while getopts 'zs:' c
+while getopts 'zxs:' c
 do
   case $c in
     z) WRITE_ZEROES="YES";;
     s) SIZE="$OPTARG";;
+    x) MAKE_SYSLINUX="YES";;
     \?) printUsage;;
   esac
 done
@@ -104,6 +115,18 @@ check "Make temporary mount dir" \
 
 check "Mount file system" \
   "mount $DEVICE*2 $tmpdir"
+
+if [ -n "$MAKE_SYSLINUX" ]; then
+  check "Prune syslinux dir" \
+    "mkdir -p $tmpdir/boot/syslinux/"
+
+  check "Install extlinux" \
+    "extlinux --install  $tmpdir/boot/syslinux"
+
+  makeSyslinuxConf "$tmpdir"
+  check "Make syslinux.cfg" \
+    "[ $? -eq 0 ]"
+fi
 
 check "Umount file system" \
 	"umount $DEVICE*2"

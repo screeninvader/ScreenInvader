@@ -144,8 +144,13 @@ function doPackageConf() {
   check "Install white packages" \
     "$CHRT $APTNI -t wheezy install $PKG_WHITE"
 
- check "Install sid packages" \
-  "$CHRT $APTNI -t sid install $PKG_SID"
+  check "Install sid packages" \
+   "$CHRT $APTNI -t sid install $PKG_SID"
+
+  if [ $ARCH == "amd64" ]; then
+    check "Install amd64 kernel" \
+      "$CHRT $APTNI -t wheezy install linux-image-amd64"
+  fi
 
 #  check "Upgrade packages" \
 #    "$CHRT $APTNI upgrade"

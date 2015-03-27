@@ -47,6 +47,7 @@ Usage: $0 [-z][-c <chrootdir>][-s <sizeInM>] <target>
 Options:
   -z               write zeroes to the device before creating the partition
   -s <sizeInM>	   overwrite the default (= 500MB) disk image size.
+  -x               Install extlinux
 EOUSAGE
   exit 1
 }
@@ -56,11 +57,12 @@ IMAGE_SIZE=2000
 IMAGE_FILE=
 CHROOT_DIR=
 
-while getopts 'zs:' c
+while getopts 'zxs:' c
 do
   case $c in
     z) WRITE_ZEROES="YES";;
     s) IMAGE_SIZE="$OPTARG";;
+    x) MAKE_SYSLINUX="YES";;
     \?) printUsage;;
   esac
 done
@@ -73,6 +75,7 @@ IMAGE_FILE="`absPath $1`"
 LOOPBACK_DEVICE=`losetup -f`
 MAKESTICK_OPTS="-s $IMAGE_SIZE"
 [ -n "$WRITE_ZEROES" ] && MAKESTICK_OPTS="$MAKESTICK_OPTS -z"
+[ -n "$MAKE_SYSLINUX" ] && MAKESTICK_OPTS="$MAKESTICK_OPTS -x"
 
 [ -n "$CHROOT_DIR" ] && check "Mountpoint $CHROOT_DIR is unused" \
   "! mountpoint -q $CHROOT_DIR"

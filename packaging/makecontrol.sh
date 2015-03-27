@@ -8,7 +8,7 @@ fi
 cat <<EOCONTROL
 Package: screeninvader-$1
 Version: $2
-Architecture: armhf
+Architecture: all
 Maintainer: Amir Hassan <amir@viel-zu.org>
 Installed-Size: 1099
 Section: misc
