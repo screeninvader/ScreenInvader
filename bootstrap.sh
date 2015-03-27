@@ -39,7 +39,7 @@ DEBIAN_MIRROR="http://ftp.at.debian.org/debian/"
 dir="`dirname $0`"
 BOOTSTRAP_DIR="`cd $dir; pwd`"
 BOOTSTRAP_LOG="$BOOTSTRAP_DIR/bootstrap.log"
-ARCH=armhf
+ARCH=amd64
 APTCACHER_PORT=
 NOINSTALL=
 NODEBOOT=
@@ -99,8 +99,10 @@ function doDebootstrap() {
   check "Bootstrap debian" \
     "debootstrap  --foreign --variant=minbase --exclude="`echo $PKG_BLACK | sed 's/ /,/g'`" --arch $ARCH wheezy "$CHROOT_DIR" $BOOTSTRAP_MIRROR"
 
-  check "Copy qemu-static" \
-    "[ ! -f \"$CHROOT_DIR/usr/bin/qemu-arm-static\" ] && cp /usr/bin/qemu-arm-static \"$CHROOT_DIR/usr/bin\""
+  if [ $ARCH == "armhf" ]; then
+    check "Copy qemu-static" \
+      "[ ! -f \"$CHROOT_DIR/usr/bin/qemu-arm-static\" ] && cp /usr/bin/qemu-arm-static \"$CHROOT_DIR/usr/bin\""
+  fi
 
   check "Boostrap second stage" \
     "DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true LC_ALL=C LANGUAGE=C LANG=C chroot \"$CHROOT_DIR\" /debootstrap/debootstrap --second-stage"
@@ -159,59 +161,60 @@ function doBuild() {
   check "Install build dependencies" \
     "$CHRT $APTNI -t sid install $PKG_BUILD"
 
-  check "Clone dri2" \
-    "cd $BOOTSTRAP_DIR/third/; ./clone_dri2.sh"
+  if [ $ARCH == "armhf" ]; then
+	  check "Clone dri2" \
+  	  "cd $BOOTSTRAP_DIR/third/; ./clone_dri2.sh"
 
-#  check "Clone janosh" \
-#    "cd $BOOTSTRAP_DIR/third/; ./clone_janosh.sh"
+    check "Clone libvdpau" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_libvdpau-sunxi.sh"
 
-#  check "Clone luajitrocks" \
-#    "cd $BOOTSTRAP_DIR/third/; ./clone_luajitrocks.sh"
+    check "Clone SimpleOSD" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_simpleosd.sh"
 
-  check "Clone libvdpau" \
-    "cd $BOOTSTRAP_DIR/third/; ./clone_libvdpau-sunxi.sh"
-
-  check "Clone SimpleOSD" \
-    "cd $BOOTSTRAP_DIR/third/; ./clone_simpleosd.sh"
-
-  check "Clone sunxi-mali" \
-    "cd $BOOTSTRAP_DIR/third/; ./clone_sunxi-mali.sh"
+    check "Clone sunxi-mali" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_sunxi-mali.sh"
 
 #  check "Clone sunxi-tools" \
 #   "cd $BOOTSTRAP_DIR/third/; ./clone_sunxi-tools.sh"
 
-  check "Clone libump" \
-    "cd $BOOTSTRAP_DIR/third/; ./clone_ump.sh"
+    check "Clone libump" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_ump.sh"
 
-  check "Clone fbturbo" \
-    "cd $BOOTSTRAP_DIR/third/; ./clone_xf86-video-fbturbo.sh"
+    check "Clone fbturbo" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_xf86-video-fbturbo.sh"
+  else
+    check "Clone janosh" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_janosh.sh"
+  fi
 
   check "Copy third party" \
     "cp -r $BOOTSTRAP_DIR/third/ \"$CHROOT_DIR\""
 
-  check "build dri2" \
-    "$CHRT /third/build_dri2.sh"
+  if [ $ARCH == "armhf" ]; then
+    check "build dri2" \
+      "$CHRT /third/build_dri2.sh"
 
-  check "build sunxi-mali" \
-    "$CHRT /third//build_sunxi-mali.sh"
+    check "build sunxi-mali" \
+      "$CHRT /third//build_sunxi-mali.sh"
 
 #  check "build sunxi-tools" \
 #    "$CHRT /third/build_sunxi-tools.sh"
 
-  check "build xf86-video-fbturbo" \
-    "$CHRT /third/build_xf86-video-fbturbo.sh"
+    check "build xf86-video-fbturbo" \
+      "$CHRT /third/build_xf86-video-fbturbo.sh"
 
-  check "build libvdpau-sunxi" \
-    "$CHRT /third/build_libvdpau-sunxi.sh"
+    check "build libvdpau-sunxi" \
+      "$CHRT /third/build_libvdpau-sunxi.sh"
+  else
+    check "build janosh" \
+      "$CHRT /third/build_janosh.sh"
+  fi
 
-#  check "build janosh" \
-#    "$CHRT /third/build_janosh.sh"
+    check "build SimpleOSD" \
+      "$CHRT /third/build_simpleosd.sh"
 
-  check "build SimpleOSD" \
-    "$CHRT /third/build_simpleosd.sh"
-
-  check "remove build dependencies" \
-    "$CHRT $APTNI remove $PKG_BUILD"
+    check "remove build dependencies" \
+      "$CHRT $APTNI remove $PKG_BUILD"
 }
 
 function doCopy() {

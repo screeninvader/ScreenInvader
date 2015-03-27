@@ -1,7 +1,6 @@
 cd /third/
 cd Janosh
 ./build_dependencies.sh
-make clean
-make screeninvader
-make install
+make -j4
+make DESTDIR=/ PREFIX=/lounge/ install
 

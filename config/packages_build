@@ -20,4 +20,10 @@ cmake
 libboost1.49-dev
 libgtk2.0-dev
 libxosd-dev
-
+libkyotocabinet-dev
+libboost-thread1.49-dev
+libboost-system1.49-dev
+libboost-filesystem1.49-dev
+libboost-serialization1.49-dev
+libboost-program-options1.49-dev
+libluajit-5.1-dev
