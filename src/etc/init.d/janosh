@@ -27,7 +27,7 @@ case "$1" in
 	start)
 		echo -n "Starting $DESC: "
 		sudo -i -u lounge bash -c "$DAEMON $OPTS &> $LOG_LOUNGE" &
-                bash -c "export HOME=/root/; $DAEMON $OPTS &> $LOG_ROOT &"
+                bash -c "export HOME=/root/; export USER=root; $DAEMON $OPTS &> $LOG_ROOT &"
 		echo "$NAME."
 		;;
 

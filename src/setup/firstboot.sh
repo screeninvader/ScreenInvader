@@ -26,26 +26,33 @@ cd `dirname $0`
 chvt 2
 
 chown root:root /etc/sudoers
+mkdir -p /var/log/nginx
+chmod a+rw /var/log/nginx
 chmod 0440 /etc/sudoers
 
 update-rc.d janosh defaults
 /etc/init.d/janosh start
+
+sleep 3
+
 
 janosh="/lounge/bin/janosh"
 
 export HOME=/lounge
 export USER=lounge
 
-rm /lounge/janosh.db
 $janosh truncate
 $janosh load /lounge/lounge.json
+$janosh dump 
 
 export HOME=/root
 export USER=root
 
-rm /root/janosh.db
 $janosh truncate
 $janosh load /root/root.json
+$janosh dump 
+
+cp /var/log/janosh-*.log /setup
 
 if [ -f ./answer.sh ]; then
   source ./answer.sh
@@ -170,6 +177,8 @@ function finish() {
  
  # FIXME: dirty hack to avoid error: set /foo foo
 # $janosh -e makeDefaultInittab set /foo foo
+ /etc/init.d/janosh stop
+
  /sbin/shutdown -r now
 }
 
