@@ -47,22 +47,20 @@ Usage: $0 [-z][-c <chrootdir>][-s <sizeInM>] <target>
 Options:
   -z               write zeroes to the device before creating the partition
   -s <sizeInM>	   overwrite the default (= 500MB) disk image size.
-  -c <chrootdir>   after creating the disk image mount it in the specified directory
 EOUSAGE
   exit 1
 }
 
 WRITE_ZEROES=
-IMAGE_SIZE=500
+IMAGE_SIZE=2000
 IMAGE_FILE=
 CHROOT_DIR=
 
-while getopts 'zs:c:' c
+while getopts 'zs:' c
 do
   case $c in
     z) WRITE_ZEROES="YES";;
     s) IMAGE_SIZE="$OPTARG";;
-    c) CHROOT_DIR="$OPTARG";;
     \?) printUsage;;
   esac
 done
@@ -85,24 +83,27 @@ check "Creating disk image file $IMAGE_FILE of size $IMAGE_SIZE MB" \
 check "Setting up disk image file on loopback device $LOOPBACK_DEVICE" \
   "losetup $LOOPBACK_DEVICE $IMAGE_FILE"
 
+check "Setting up partition devices" \
+  "kpartx -a $LOOPBACK_DEVICE"
 
-./makestick.sh $MAKESTICK_OPTS "$LOOPBACK_DEVICE"
-check "Run makestick.sh $MAKESTICK_OPTS $LOOPBACK_DEVICE" \
+check "Symlinking $LOOPBACK_DEVICE into /dev/mapper" \
+  "ln -s $LOOPBACK_DEVICE /dev/mapper/`basename $LOOPBACK_DEVICE`"
+
+./makestick.sh $MAKESTICK_OPTS "/dev/mapper/`basename $LOOPBACK_DEVICE`"
+check "Run makestick.sh $MAKESTICK_OPTS /dev/mapper/`basename $LOOPBACK_DEVICE`" \
           "[ $? -eq 0 ]"
 
-OFFSET=`parted -s -m $LOOPBACK_DEVICE unit B print | grep "^1:" | cut -f 2 -d ":" | tr B ' '`
-
-check "Read partition offset" \
-  "[ $? -eq 0 ]"
-  
 check "Sync" \
   "sync"
 
+check "Remove symlink" \
+  "rm /dev/mapper/`basename $LOOPBACK_DEVICE`"
+
+check "Detaching partitions" \
+  "kpartx -d $LOOPBACK_DEVICE"
+
 check "Detaching disk image file" \
   "losetup -d $LOOPBACK_DEVICE"
-
-[ -n "$CHROOT_DIR" ] && check "Mounting screen invader partition on $CHROOT_DIR" \
-  "mount $IMAGE_FILE $CHROOT_DIR -o loop,offset=$OFFSET"
 
 exit 0
 

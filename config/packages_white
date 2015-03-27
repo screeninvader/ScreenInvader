@@ -1,4 +1,5 @@
 keyboard-configuration
+wget
 sudo
 dialog
 alsa-utils
@@ -44,4 +45,7 @@ fcgiwrap
 nginx
 dpkg-sig
 ca-certificates
-
+net-tools
+ifupdown
+isc-dhcp-client
+libluajit-5.1-2

@@ -59,7 +59,8 @@ Options:
   -p <port> Enables using apt-cacher-ng on the specified port
   -i        Don't configure and install packages
   -d        Don't debootstrap
-  -u        Combined -d and -i
+  -b        Don't rebuild third party
+  -u        Combined -d, -i and -b
   -c <file> Specify the config file for non-interactive configuration at first boot
   -x        Install extra packages for debugging
 EOUSAGE
@@ -86,7 +87,7 @@ function skip() {
 
 function doDebootstrap() {
   check "Create target dir" \
-    "mkdir -p \"$CHROOT_DIR\""
+    "rm -rf \"$CHROOT_DIR\"; mkdir \"$CHROOT_DIR\""
 
   BOOTSTRAP_MIRROR=$DEBIAN_MIRROR
 
@@ -152,6 +153,9 @@ function doPackageConf() {
 }
 
 function doBuild() {
+  check "Update Repositories" \
+    "$CHRT $APTNI update"
+
   check "Install build dependencies" \
     "$CHRT $APTNI -t sid install $PKG_BUILD"
 
@@ -213,6 +217,9 @@ function doBuild() {
 function doCopy() {
   check "Make install directory" \
     "mkdir -p $CHROOT_DIR/install/"
+
+  check "Rebuild debian packages" \
+    "cd $BOOTSTRAP_DIR/packaging/; ./makeall.sh 2.0"
 
   check "Copy debian packages" \
     "cp $BOOTSTRAP_DIR/packaging/*.deb $CHROOT_DIR/install/"
@@ -385,7 +392,7 @@ do
     i) NOINSTALL="YES";;
     d) NODEBOOT="YES";;
     z) NOCLEANUP="YES";;
-    u) NOINSTALL="YES"; NODEBOOT="YES"; NOCLEANUP="YES";;
+    u) NOINSTALL="YES"; NODEBOOT="YES"; NOCLEANUP="YES"; DONT_REBUILD="YES";;
     x) INSTALL_EXTRA="YES";;
     b) DONT_REBUILD="YES";;
     \?) printUsage;;
