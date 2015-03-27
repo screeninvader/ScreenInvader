@@ -77,11 +77,13 @@ function mplayer_start {
   mkfifo "$CMD_FIFO";
   touch "$PLAYLIST_CACHE"
   export http_proxy="http://localhost:1234/"
+  export HOME=/lounge
+  export USER=lounge
 
   while [ 0 ]; do
     sleep 1;
     set -m
-    bash -c "/usr/bin/mplayer -include /lounge/mplayer.conf -fs -vc ffh264vdpau,ffmpeg12vdpau, -idle -input file="$CMD_FIFO" 2>&1 | tee /tmp/mplayer | /lounge/bin/player callback"&
+    bash -c "/usr/bin/mplayer -idle -input file="$CMD_FIFO" 2>&1 | tee /tmp/mplayer | /lounge/bin/player callback"&
     janosh -e setVolume
     fg
  done
