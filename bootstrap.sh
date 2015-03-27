@@ -268,9 +268,6 @@ function doCopy() {
   check "install misc package" \
     "$CHRT dpkg -i --force-all /install/screeninvader-misc-all.deb"
 
-  check "install binaries package" \
-    "$CHRT dpkg -i /install/screeninvader-binaries-all.deb"
-
   check "Remove install directory" \
     "rm -r $CHROOT_DIR/install/"
 
