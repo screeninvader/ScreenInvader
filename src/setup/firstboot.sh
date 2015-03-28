@@ -158,17 +158,11 @@ function rebootConf(){
 }
 
 function finish() {
- update-rc.d thttpd defaults
- update-rc.d mpd defaults
  update-rc.d xserver defaults
+ update-rc.d screeninvader defaults
 
  mkdir -p /share
  mkdir -p /var/cache/debconf/
- mkdir -p /var/run/mpd/
- mkdir -p /var/lib/mpd
- chown -R mpd:audio  /var/lib/mpd
- chown -R mpd:audio /var/run/mpd/
- chmod a+rwx /var/run/mpd/
  chown -R lounge:lounge /lounge/
 
  usermod -s /bin/bash root
