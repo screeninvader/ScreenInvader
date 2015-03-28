@@ -23,23 +23,30 @@ test -x $DAEMON || exit 1
 
 set -e
 
+. /lib/lsb/init-functions
+
 case "$1" in
 	start)
-		echo -n "Starting $DESC: "
-		sudo -i -u lounge bash -c "$DAEMON $OPTS &> $LOG_LOUNGE" &
-                bash -c "export HOME=/root/; export USER=root; $DAEMON $OPTS &> $LOG_ROOT &"
-		echo "$NAME."
+			log_daemon_msg "Starting $DAEMON lounge"
+			start-stop-daemon --start --background --pidfile /var/run/janosh-lounge.pid --make-pidfile --user lounge --chuid lounge --startas $DAEMON -- $OPTS
+			log_end_msg $?
+      log_daemon_msg "Starting $DAEMON root"
+			start-stop-daemon --start --background --pidfile /var/run/janosh-root.pid --make-pidfile --user root --chuid root --startas $DAEMON -- $OPTS
+			log_end_msg $?
 		;;
 
 	stop)
-		echo -n "Stopping $DESC: "
-		killall -0 janosh && killall janosh
-		echo "$NAME."
+    log_daemon_msg "Stopping $DAEMON lounge"
+    start-stop-daemon --stop --pidfile /var/run/janosh-lounge.pid --retry 10
+    log_end_msg $?
+
+    log_daemon_msg "Stopping $DAEMON root"
+    start-stop-daemon --stop --pidfile /var/run/janosh-root.pid --retry 10
+    log_end_msg $?
 		;;
 
 	restart)
 		$0 stop
-		sleep 1
 		$0 start
 		;;
 
