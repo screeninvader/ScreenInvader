@@ -4,6 +4,7 @@ if [ $# -ne 1 ]; then
   echo "Usage: makekernel.sh <version>"
 fi
 
+mkdir -p screeninvader-kernel/DEBIAN
 ./makecontrol.sh kernel $1 > screeninvader-kernel/DEBIAN/control
 rm -fr screeninvader-kernel/boot screeninvader-kernel/lib 
 cp -a ../src/boot ../src/lib screeninvader-kernel/

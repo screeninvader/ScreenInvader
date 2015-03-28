@@ -4,6 +4,7 @@ if [ $# -ne 1 ]; then
   echo "Usage: makemisc.sh <version>"
 fi
 
+mkdir -p screeninvader-misc/DEBIAN
 ./makecontrol.sh misc $1 > screeninvader-misc/DEBIAN/control
 rm -rf screeninvader-misc/usr
 cp -a ../src/usr screeninvader-misc/

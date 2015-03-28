@@ -4,6 +4,7 @@ if [ $# -ne 1 ]; then
   echo "Usage: makecore.sh <version>"
 fi
 
+mkdir -p screeninvader-core/DEBIAN
 ./makecontrol.sh core $1 > screeninvader-core/DEBIAN/control
 rm -fr screeninvader-core/root screeninvader-core/lounge screeninvader-core/setup
 cp -a ../src/setup ../src/lounge ../src/root screeninvader-core/

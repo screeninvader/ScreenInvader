@@ -4,6 +4,7 @@ if [ $# -ne 1 ]; then
   echo "Usage: makeconfig.sh <version>"
 fi
 
+mkdir -p screeninvader-config/DEBIAN
 ./makecontrol.sh config $1 > screeninvader-config/DEBIAN/control
 rm -rf screeninvader-config/etc
 cp -a ../src/etc screeninvader-config/
