@@ -28,6 +28,7 @@ function MplayerClass.jump(self, idx)
     self:cmd("pause")
     Janosh:trigger("/player/active", "true")
     self:cmd("loadfile " .. file)
+    Janosh:set("/playlist/index", idx)
 end
 
 function MplayerClass.previous(self) 
@@ -148,8 +149,8 @@ function MplayerClass.eotrack(self)
   obj = Janosh:get("/playlist/.")
   idx = tonumber(obj.index)
   len = #obj.items
-  if idx < len then
-    self:jump(idx + 1)
+  if idx < len - 1 then
+    self:jump(tostring(idx))
   else
     self:stop()
   end
