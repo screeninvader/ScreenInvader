@@ -12,11 +12,6 @@ Janosh:setenv("http_proxy","http://localhost:1234/")
 local PID, STDIN, STDOUT, STDERR = Janosh:popen("/usr/bin/mplayer","-idle", "-input", "file=\"/dev/stdin\"")
 Janosh:setenv("http_proxy","")
 
-function basename(str)
-  local name = string.gsub(str, "(.*/)(.*)", "%2")
-  return name
-end
-
 local MplayerClass = {} -- the table representing the class, which will double as the metatable for the instances
 MplayerClass.__index = MplayerClass -- failed table lookups on the instances should fallback to the class table, to get methods
 
