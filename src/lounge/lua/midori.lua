@@ -48,4 +48,12 @@ function MidoriClass.zoomOut(self)
   self:cmd("ZoomOut")
 end
 
+function MidoriClass.run(self) 
+  Janosh:sleep(1000)
+  Janosh:system("xdotool key Super_L+n")
+  while true do
+    Janosh:sleep(10000)
+  end
+end
+
 return MidoriClass:new()

@@ -7,6 +7,7 @@ Janosh:exec({
   "rm -rf " .. CMD_FIFO,
   "mkfifo " .. CMD_FIFO
 })
+Janosh:set("/player/active", "false")
 Janosh:setenv("DISPLAY",":0")
 Janosh:setenv("http_proxy","http://localhost:1234/")
 local PID, STDIN, STDOUT, STDERR = Janosh:popen("/usr/bin/mplayer","-idle", "-input", "file=\"/dev/stdin\"")
@@ -149,8 +150,10 @@ function MplayerClass.eotrack(self)
   obj = Janosh:get("/playlist/.")
   idx = tonumber(obj.index)
   len = #obj.items
+print("idx: ", idx)
+print("len: ", len)
   if idx < len - 1 then
-    self:jump(tostring(idx))
+    self:jump(tostring(idx + 1))
   else
     self:stop()
   end

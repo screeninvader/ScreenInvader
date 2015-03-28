@@ -1,10 +1,8 @@
 #!/lounge/bin/janosh -f
 
 function setVolume(key, op, value)
-  if op == "W" then
-    device = Janosh:get("/sound/device").sound.device
-    Janosh:system("amixer -D".. device .." sset PCM " .. value .. "%")
-  end
+  device = Janosh:get("/sound/device").sound.device
+  Janosh:system("amixer -D".. device .." sset PCM " .. value .. "%")
 end
 
 function setMute(key,op,value)

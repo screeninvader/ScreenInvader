@@ -30,6 +30,4 @@ Janosh:subscribe("browserScrollDown", function(key,op,value) midori:scrollDown()
 Janosh:subscribe("browserZoomIn", function(key,op,value) midori:zoomIn() end)
 Janosh:subscribe("browserZoomOut", function(key,op,value) midori:zoomOut() end)
 
-while true do
-  Janosh:sleep(100000)
-end
+midori:run()
