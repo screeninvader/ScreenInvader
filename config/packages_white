@@ -20,7 +20,6 @@ debconf
 apache2-utils
 mplayer
 feh
-xdotool
 xbindkeys
 bash
 libxosd2
@@ -49,5 +48,4 @@ ca-certificates
 net-tools
 ifupdown
 isc-dhcp-client
-kdocker
 

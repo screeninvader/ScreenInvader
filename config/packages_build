@@ -27,3 +27,5 @@ libboost-filesystem1.49-dev
 libboost-serialization1.49-dev
 libboost-program-options1.49-dev
 libluajit-5.1-dev
+unzip
+
