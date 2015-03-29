@@ -7,6 +7,7 @@ function open(key, op, value)
   category = obj.category
   active="browser"
 
+  print("category:", category)
   if category == "image" or category == "animation" then
     url="http://localhost/cgi-bin/makeImageView?" .. url
     active=category

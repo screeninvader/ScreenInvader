@@ -89,6 +89,7 @@ end
 
 function MplayerClass.cmd(self, cmdstring) 
  Janosh:lock("MplayerClass.cmd")
+ print("cmd:", cmdstring)
  Janosh:pwrite(STDIN, cmdstring .. "\n")
  Janosh:unlock("MplayerClass.cmd")
 end

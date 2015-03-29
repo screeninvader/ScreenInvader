@@ -1,7 +1,8 @@
 #!/lounge/bin/janosh -f
 
 Janosh:setenv("DISPLAY",":0")
-local PID, STDIN, STDOUT, STDERR = Janosh:popen("/usr/bin/midori")
+
+local PID, STDIN, STDOUT, STDERR = Janosh:popen("/usr/bin/midori http://localhost/blank.html")
 
 local MidoriClass = {} -- the table representing the class, which will double as the metatable for the instances
 MidoriClass.__index = MidoriClass -- failed table lookups on the instances should fallback to the class table, to get methods
@@ -17,11 +18,12 @@ end
 function MidoriClass.openUrl(self, url)
   Janosh:system("midori " .. url .. "&")
   self:cmd("TabCloseOther")
+  Janosh:system("xdotool windowraise $(xdotool getactivewindow)")
 end
 
 function MidoriClass.close(self)
-  self:openUrl("http://localhost/")
-  Janosh:system("xdotool key Super_L+n")
+  self:openUrl("http://localhost/blank.html")
+  Janosh:system("xdotool windowminimize $(xdotool getactivewindow)")
 end
 
 function MidoriClass.pageDown(self) 
@@ -49,8 +51,7 @@ function MidoriClass.zoomOut(self)
 end
 
 function MidoriClass.run(self) 
-  Janosh:sleep(1000)
-  Janosh:system("xdotool key Super_L+n")
+  Janosh:system("xdotool windowminimize $(xdotool getactivewindow)")
   while true do
     Janosh:sleep(10000)
   end

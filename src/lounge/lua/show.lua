@@ -112,7 +112,7 @@ print(1,cat)
   end
 end
 
-Janosh:subscribe("/show/url", open)
+Janosh:subscribe("showUrl", open)
 
 while true do
   Janosh:sleep(100000)
