@@ -26,16 +26,16 @@ set -e
 . /lib/lsb/init-functions
 
 case "$1" in
-	start)
-			log_daemon_msg "Starting $DAEMON lounge"
-			start-stop-daemon --start --background --pidfile /var/run/janosh-lounge.pid --make-pidfile --user lounge --chuid lounge --startas $DAEMON -- $OPTS
-			log_end_msg $?
+  start)
+      log_daemon_msg "Starting $DAEMON lounge"
+      start-stop-daemon --start --background --pidfile /var/run/janosh-lounge.pid --make-pidfile --user lounge --chuid lounge --startas /bin/bash -- -c "export HOME=/lounge/; export USER=lounge; exec $DAEMON $OPTS &> /var/log/janosh-lounge.log"
+      log_end_msg $?
       log_daemon_msg "Starting $DAEMON root"
-			start-stop-daemon --start --background --pidfile /var/run/janosh-root.pid --make-pidfile --user root --chuid root --startas $DAEMON -- $OPTS
-			log_end_msg $?
-		;;
+      start-stop-daemon --start --background --pidfile /var/run/janosh-root.pid --make-pidfile --user root --chuid root --startas /bin/bash -- -c "export HOME=/root/; export USER=root; exec $DAEMON $OPTS &> /var/log/janosh-root.log"
+      log_end_msg $?
+    ;;
 
-	stop)
+  stop)
     log_daemon_msg "Stopping $DAEMON lounge"
     start-stop-daemon --stop --pidfile /var/run/janosh-lounge.pid --retry 10
     log_end_msg $?
@@ -43,18 +43,18 @@ case "$1" in
     log_daemon_msg "Stopping $DAEMON root"
     start-stop-daemon --stop --pidfile /var/run/janosh-root.pid --retry 10
     log_end_msg $?
-		;;
+    ;;
 
-	restart)
-		$0 stop
-		$0 start
-		;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
 
-	*)
-		N=/etc/init.d/$NAME
-		echo "Usage: $N {start|stop|restart}" >&2
-		exit 1
-		;;
+  *)
+    N=/etc/init.d/$NAME
+    echo "Usage: $N {start|stop|restart}" >&2
+    exit 1
+    ;;
 esac
 
 exit 0
