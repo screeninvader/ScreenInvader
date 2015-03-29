@@ -1,12 +1,5 @@
 #!/lounge/bin/janosh -f
 
-local RUN_DIR="/var/run/mplayer"
-local CMD_FIFO=RUN_DIR .. "/cmdfifo"
-Janosh:exec({
-  "mkdir -p " .. RUN_DIR,
-  "rm -rf " .. CMD_FIFO,
-  "mkfifo " .. CMD_FIFO
-})
 Janosh:set("/player/active", "false")
 Janosh:setenv("DISPLAY",":0")
 Janosh:setenv("http_proxy","http://localhost:1234/")
@@ -30,7 +23,7 @@ function MplayerClass.jump(self, idx)
   self:cmd("pause")
   Janosh:trigger("/player/active", "true")
   self:cmd("loadfile " .. file)
-  Janosh:set("/playlist/index", idx)
+  Janosh:set("/playlist/index", tostring(idx))
 end
 
 function MplayerClass.previous(self) 
@@ -43,7 +36,7 @@ end
 
 
 function MplayerClass.enqueue(self, videoUrl, title, srcUrl) 
-  print("enqueu:", title)
+  print("enqueue:", title)
   if title == "" then
     title = "(no title)"
   end
@@ -52,6 +45,7 @@ function MplayerClass.enqueue(self, videoUrl, title, srcUrl)
   Janosh:set("/playlist/items/#" .. size .. "/url", videoUrl)
   Janosh:set("/playlist/items/#" .. size .. "/title", title)
   Janosh:set("/playlist/items/#" .. size .. "/source", srcUrl)
+  print("enqueuend")
 end
 
 function MplayerClass.add(self, videoUrl, title, srcUrl)
@@ -74,6 +68,7 @@ function MplayerClass.run(self)
     logf = io.open("/var/log/mplayer.log", "w")
     while true do
       line = Janosh:preadLine(STDOUT)
+print(line)
       if line == nil then break end 
       logf:write(line .. "\n")
       logf:flush()
