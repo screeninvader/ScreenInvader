@@ -17,34 +17,36 @@ COMPONENTS="player browser sound show websocket history"
 set -e
 
 . /lib/lsb/init-functions
-case "$1" in
-	start)
-	for comp in $COMPONENTS; do	
-			log_daemon_msg "Starting $comp"
-			start-stop-daemon --start --background --pidfile /var/run/$comp.lua.pid --make-pidfile --user lounge --chuid lounge -d /lounge/lua/ --startas /bin/bash -- -c "export HOME=/lounge/; export USER=lounge; exec /lounge/bin/janosh -vf /lounge/lua/$comp.lua &> /var/log/$comp.log"
-			log_end_msg $?
-  done
-		;;
+export DISPLAY=:0
 
-	stop)
+case "$1" in
+  start)
+  for comp in $COMPONENTS; do 
+      log_daemon_msg "Starting $comp"
+      start-stop-daemon --start --background --pidfile /var/run/$comp.lua.pid --make-pidfile --user lounge --chuid lounge -d /lounge/lua/ --startas /bin/bash -- -c "export HOME=/lounge/; export USER=lounge; cd /lounge/lua; exec /lounge/bin/janosh -vf /lounge/lua/$comp.lua &> /var/log/$comp.log"
+      log_end_msg $?
+  done
+    ;;
+
+  stop)
 
   for comp in $COMPONENTS; do
     log_daemon_msg "Stopping $comp"
     start-stop-daemon --stop --pidfile /var/run/$comp.lua.pid --retry 10
     log_end_msg $?
-	done
-		;;
+  done
+    ;;
 
-	restart)
-		$0 stop
-		$0 start
-		;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
 
-	*)
-		N=/etc/init.d/$NAME
-		echo "Usage: $N {start|stop|restart}" >&2
-		exit 1
-		;;
+  *)
+    N=/etc/init.d/$NAME
+    echo "Usage: $N {start|stop|restart}" >&2
+    exit 1
+    ;;
 esac
 
 exit 0

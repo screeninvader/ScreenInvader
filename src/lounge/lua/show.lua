@@ -61,12 +61,16 @@ function ends(String,End)
 end
 
 function getCategory(url)
+  print("getCategory:", url)
   hUrl=string.match(url, "http[s]*://([0-9a-zA-z.-_]*/)")
-  for host,category in pairs(VIDEO_HOSTS) do
-    if ends(hUrl,host) then
-      return category
-    end    
-  end  
+  if hUrl ~= nil then
+    for host,category in pairs(VIDEO_HOSTS) do
+      print(hUrl,host);
+      if ends(hUrl,host) then
+        return category
+      end    
+    end  
+  end
 
   mimeType="unknown/"
 
