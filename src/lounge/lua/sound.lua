@@ -1,11 +1,13 @@
 #!/lounge/bin/janosh -f
 
 function setVolume(key, op, value)
+  print("setVolume", value)
   device = Janosh:get("/sound/device").sound.device
   Janosh:system("amixer -D".. device .." sset PCM " .. value .. "%")
 end
 
 function setMute(key,op,value)
+  print("setMute",value)
   -- not implemented
 end
 

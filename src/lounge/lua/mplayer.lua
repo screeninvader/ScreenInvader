@@ -21,15 +21,16 @@ function MplayerClass.new()
 end
 
 function MplayerClass.jump(self, idx) 
-    obj = Janosh:get("/playlist/items/.")
-    if tonumber(idx) > #obj then
-      idx = #obj - 1
-    end
-    file = obj[tonumber(idx)].url
-    self:cmd("pause")
-    Janosh:trigger("/player/active", "true")
-    self:cmd("loadfile " .. file)
-    Janosh:set("/playlist/index", idx)
+  print("jump:", idx)
+  obj = Janosh:get("/playlist/items/.")
+  if tonumber(idx) > #obj then
+    idx = #obj - 1
+  end
+  file = obj[tonumber(idx)].url
+  self:cmd("pause")
+  Janosh:trigger("/player/active", "true")
+  self:cmd("loadfile " .. file)
+  Janosh:set("/playlist/index", idx)
 end
 
 function MplayerClass.previous(self) 
@@ -42,6 +43,7 @@ end
 
 
 function MplayerClass.enqueue(self, videoUrl, title, srcUrl) 
+  print("enqueu:", title)
   if title == "" then
     title = "(no title)"
   end
@@ -148,6 +150,7 @@ function MplayerClass.cache_empty(self)
 end
 
 function MplayerClass.eotrack(self) 
+  print("eotrack")
   obj = Janosh:get("/playlist/.")
   idx = tonumber(obj.index)
   len = #obj.items

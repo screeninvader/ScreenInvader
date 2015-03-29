@@ -2,6 +2,7 @@
 local mplayer = require("mplayer")
 
 function open()
+  print("open")
   obj=Janosh:get("/player/.")
   url=obj.url
   category=obj.category

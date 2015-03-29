@@ -50,6 +50,7 @@ local CATEGORY_FIX={
 ["application/x-bittorrent"]='joker'
 }
 function open(key, op, value)
+print("open:",value)
 
 function trim(s)
   return (s:gsub("^%s*(.-)%s*$", "%1"))

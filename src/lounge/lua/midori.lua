@@ -12,16 +12,19 @@ function MidoriClass.new()
 end
 
 function MidoriClass.cmd(self, cmdstring) 
+  print("cmd:", cmdstring)
   Janosh:system("midori -e " .. cmdstring)
 end
 
 function MidoriClass.openUrl(self, url)
+  print("openUrl:", url)
   Janosh:system("midori " .. url .. "&")
   self:cmd("TabCloseOther")
   Janosh:system("xdotool windowraise $(xdotool getactivewindow)")
 end
 
 function MidoriClass.close(self)
+  print("close")
   self:openUrl("http://localhost/blank.html")
   Janosh:system("xdotool windowminimize $(xdotool getactivewindow)")
 end
