@@ -39,7 +39,10 @@
 "url":"" } 
 ,
 "sound": { 
-"mixer":"Master",
+"device":"softvol",
 "mute":"false",
 "volume":"95" } 
+,
+"show": {
+"url":""}
 }

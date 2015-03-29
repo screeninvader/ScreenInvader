@@ -159,12 +159,12 @@ function rebootConf(){
 }
 
 function finish() {
- update-rc.d thttpd defaults
- update-rc.d mpd defaults
  update-rc.d xserver defaults
+ update-rc.d screeninvader defaults
 
  mkdir -p /share
  mkdir -p /var/cache/debconf/
+ chown -R lounge:lounge /lounge/
 
  usermod -s /bin/bash root
 

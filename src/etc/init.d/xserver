@@ -2,8 +2,8 @@
 
 ### BEGIN INIT INFO
 # Provides:          xserver
-# Required-Start:    nginx dbus
-# Required-Stop:     nginx dbus
+# Required-Start:    nginx dbus janosh
+# Required-Stop:     nginx dbus janosh
 # Should-Start:
 # Should-Stop:
 # Default-Start:     2 3 4 5

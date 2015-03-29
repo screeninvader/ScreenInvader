@@ -49,4 +49,5 @@ ca-certificates
 net-tools
 ifupdown
 isc-dhcp-client
+kdocker
 
