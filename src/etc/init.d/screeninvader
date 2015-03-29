@@ -1,8 +1,8 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides: screeninvader
-# Required-Start: janosh
-# Required-Stop: janosh
+# Required-Start: xserver
+# Required-Stop: xserver
 # Should-Start:
 # Should-Stop:
 # Default-Start:     2 3 4 5
