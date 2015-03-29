@@ -167,8 +167,8 @@ function doBuild() {
     "$CHRT $APTNI -t sid install $PKG_BUILD"
 
   if [ $ARCH == "armhf" ]; then
-	  check "Clone dri2" \
-  	  "cd $BOOTSTRAP_DIR/third/; ./clone_dri2.sh"
+    check "Clone dri2" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_dri2.sh"
 
     check "Clone libvdpau" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_libvdpau-sunxi.sh"
@@ -190,6 +190,12 @@ function doBuild() {
   else
     check "Clone janosh" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_janosh.sh"
+
+    check "Clone SimpleOSD" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_simpleosd.sh"
+
+    check "Clone lanes" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_lanes.sh" 
   fi
 
   check "Copy third party" \
@@ -213,6 +219,9 @@ function doBuild() {
   else
     check "build janosh" \
       "$CHRT /third/build_janosh.sh"
+
+    check "build lanes" \
+      "$CHRT /third/build_lanes.sh"
   fi
 
     check "build SimpleOSD" \
@@ -232,33 +241,6 @@ function doCopy() {
   check "Copy debian packages" \
     "cp $BOOTSTRAP_DIR/packaging/*.deb $CHROOT_DIR/install/"
   
-#  check "Install mplayer" \
-#    "cd $BOOTSTRAP_DIR/third/MPlayer-1.1.1/; make DESTDIR=$CHROOT_DIR/ install"
-
-  #check "Install sunxi-mali" \
-    #"cd $BOOTSTRAP_DIR/third/sunxi-mali/; make DESTDIR=$CHROOT_DIR/ install"
-
-  #check "Install sunxi-tools" \
-  #  "cd $BOOTSTRAP_DIR/third/sunxi-tools/; make DESTDIR=$CHROOT_DIR/ install"
-
-#  check "Install libdri2" \
-#    "cd $BOOTSTRAP_DIR/third/libdri2/; make DESTDIR=$CHROOT_DIR/ install"
-
-#  check "Install xf86-video-fbturbo" \
-#    "cd $BOOTSTRAP_DIR/third/xf86-video-fbturbo/; make DESTDIR=$CHROOT_DIR/ install"
-
-#  check "Install libump" \
-#    "cd $BOOTSTRAP_DIR/third/libump/; make DESTDIR=$CHROOT_DIR/ install"
-  
-#  check "Install libvdpau-sunxi" \
-#    "cd $BOOTSTRAP_DIR/third/libvdpau-sunxi/; make DESTDIR=$CHROOT_DIR/ install"
- 
-#  check "Install janosh" \
-#    "cd $BOOTSTRAP_DIR/third/Janosh/; make PREFIX=/lounge/bin DESTDIR=$CHROOT_DIR/ install"
- 
- # check "install kernel package" \
-#    "$CHRT dpkg -i /install/screeninvader-kernel-all.deb"
-
   check "install core package" \
     "$CHRT dpkg -i /install/screeninvader-core-all.deb"
 

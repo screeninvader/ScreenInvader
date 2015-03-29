@@ -29,6 +29,7 @@ chown root:root /etc/sudoers
 mkdir -p /var/log/nginx
 chmod a+rw /var/log/nginx
 chmod 0440 /etc/sudoers
+chown -R lounge:lounge /lounge/
 
 update-rc.d janosh defaults
 /etc/init.d/janosh start
