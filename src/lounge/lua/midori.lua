@@ -2,8 +2,6 @@
 
 Janosh:setenv("DISPLAY",":0")
 
-local PID, STDIN, STDOUT, STDERR = Janosh:popen("/usr/bin/midori http://localhost/blank.html")
-
 local MidoriClass = {} -- the table representing the class, which will double as the metatable for the instances
 MidoriClass.__index = MidoriClass -- failed table lookups on the instances should fallback to the class table, to get methods
 
