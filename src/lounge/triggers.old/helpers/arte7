@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# ScreenInvader - A shared media experience. Instant and seamless.
+#  Copyright (C) 2012 Amir Hassan <amir@viel-zu.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+
+set -x 
+wgeto="wget -O - -q"
+
+
+DATA="`$wgeto "$1" | grep -Po '^<param name="movie" value="\K.*?(?=\?)|^vars_player.videorefFileUrl = "\K.*?(?=")'`"
+set $DATA
+PLAYER_URL="$1"
+XML_URL="$2"
+XML_DE_URL="`$wgeto "$XML_URL" | grep -Po '<video lang="de" ref="\K.*?(?=")'`"
+RTMP_URL="`$wgeto "$XML_DE_URL" | sed -n -e 's/.*<url quality="hd">\(.*\)<\/url>.*/\1/p'`"
+
+#FIXME parse title
+echo "\"$RTMP_URL swfUrl=$PLAYER_URL swfVfy=1 swfAge=0 buffer=60000\""
+echo "arte+7"
