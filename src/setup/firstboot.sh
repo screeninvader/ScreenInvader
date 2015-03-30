@@ -24,7 +24,7 @@ set -x
 [ -z "$LC_ALL" ] && export LC_ALL=C
 cd `dirname $0`
 chvt 2
-
+ln -s /usr/lib/x86_64-linux-gnu/libzmq.so.3 /usr/lib/x86_64-linux-gnu/libzmq.so
 chown root:root /etc/sudoers
 mkdir -p /var/log/nginx
 chmod a+rw /var/log/nginx

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]; then
-  echo "Usage: makekernel.sh <version>"
+if [ $# -ne 2 ]; then
+  echo "Usage: makekernel.sh <version> <arch>"
 fi
 
 mkdir -p screeninvader-kernel/DEBIAN

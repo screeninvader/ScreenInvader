@@ -39,7 +39,7 @@ DEBIAN_MIRROR="http://ftp.at.debian.org/debian/"
 dir="`dirname $0`"
 BOOTSTRAP_DIR="`cd $dir; pwd`"
 BOOTSTRAP_LOG="$BOOTSTRAP_DIR/bootstrap.log"
-ARCH=amd64
+ARCH=armhf
 APTCACHER_PORT=
 NOINSTALL=
 NODEBOOT=
@@ -227,8 +227,14 @@ function doBuild() {
     check "build SimpleOSD" \
       "$CHRT /third/build_simpleosd.sh"
 
+  if  [ $ARCH == "armhf" ]; then
     check "remove build dependencies" \
       "$CHRT $APTNI remove $PKG_BUILD"
+ 
+    check "remove third " \
+      "rm -r  \"$CHROOT_DIR/third\""
+  fi
+      
 }
 
 function doCopy() {
@@ -236,7 +242,7 @@ function doCopy() {
     "mkdir -p $CHROOT_DIR/install/"
 
   check "Rebuild debian packages" \
-    "cd $BOOTSTRAP_DIR/packaging/; ./makeall.sh 2.0"
+    "cd $BOOTSTRAP_DIR/packaging/; ./makeall.sh 2.0 $ARCH"
 
   check "Copy debian packages" \
     "cp $BOOTSTRAP_DIR/packaging/*.deb $CHROOT_DIR/install/"
@@ -249,6 +255,9 @@ function doCopy() {
 
   check "install misc package" \
     "$CHRT dpkg -i --force-all /install/screeninvader-misc-all.deb"
+
+  check "install arch package" \
+    "$CHRT dpkg -i --force-all /install/screeninvader-arch-all.deb"
 
   check "Remove install directory" \
     "rm -r $CHROOT_DIR/install/"
