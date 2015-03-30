@@ -3,3 +3,5 @@
 # for examples
 HOME="/lounge"
 PATH="$HOME/bin:$PATH"
+DISPLAY=:0
+

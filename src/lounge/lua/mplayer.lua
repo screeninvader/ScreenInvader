@@ -3,21 +3,26 @@
 Janosh:set("/player/active", "false")
 Janosh:setenv("DISPLAY",":0")
 Janosh:setenv("http_proxy","http://localhost:1234/")
-local PID, STDIN, STDOUT, STDERR = Janosh:popen("bash", "-c", "/usr/bin/mplayer -idle -input file=/dev/stdin 2>&1")
+local PID, STDIN, STDOUT, STDERR = Janosh:popen("bash", "-c", "exec /usr/bin/mplayer -idle -input file=/dev/stdin 2>&1")
 Janosh:pclose(STDERR)
 
--- terminate mplayer and close loffile on exit
-Janosh:exitHandler(function(sig)
-  print("caught signal:", sig)
-  Janosh:term(PID)
-  os.exit(1)
-end)
+--terminate mplayer and close loffile on exit
+--Janosh:exitHandler(function(sig)
+--  print("caught signal:", sig)
+--  Janosh:kill(PID)
+--  os.exit(1)
+--end)
 
 -- unset causes wierd errors
 Janosh:setenv("http_proxy","")
 
 local MplayerClass = {} -- the table representing the class, which will double as the metatable for the instances
 MplayerClass.__index = MplayerClass -- failed table lookups on the instances should fallback to the class table, to get methods
+
+local function notify(msg)
+print("----------------- NOTIFY -------------")
+  Janosh:publish("notifySend","W",msg)
+end
 
 function MplayerClass.new()
   return setmetatable({}, MplayerClass)
@@ -30,23 +35,27 @@ function MplayerClass.jump(self, idx)
     idx = #obj - 1
   end
   file = obj[tonumber(idx)].url
+  title = obj[tonumber(idx)].title
   self:cmd("pause")
   Janosh:trigger("/player/active", "true")
+  notify("Loading: " .. title)
   self:cmd("loadfile " .. file)
   Janosh:set("/playlist/index", tostring(idx))
 end
 
 function MplayerClass.previous(self) 
+  notify("previous")
   self:jump(tonumber(Janosh:get("/playlist/index").playlist.index) - 1)
 end
 
 function MplayerClass.next(self)
+  notify("next")
   self:jump(tonumber(Janosh:get("/playlist/index").playlist.index) + 1)
 end
 
 
 function MplayerClass.enqueue(self, videoUrl, title, srcUrl) 
-  print("enqueue:", title)
+  notify("Queued: " .. title)
   if title == "" then
     title = "(no title)"
   end
@@ -61,7 +70,6 @@ end
 function MplayerClass.add(self, videoUrl, title, srcUrl)
   self:enqueue(videoUrl, title, srcUrl)
 
-  Janosh:trigger("/notify/message", "Playing " .. title)
   if Janosh:get("/player/active").player.active == "false" then
     self:jump(10000000) -- jump to the ned of the playlist
   end
@@ -77,7 +85,6 @@ print("run")
   while true do
     line=""
     while true do
-      print("readline")
       line = Janosh:preadLine(STDOUT)
       if line == nil then break end 
       print(line)
@@ -100,39 +107,33 @@ function MplayerClass.cmd(self, cmdstring)
  Janosh:unlock("MplayerClass.cmd")
 end
 
-function MplayerClass.setVolume(self, vol) 
-  self:cmd("volume " .. vol .. " 1")
-end
-
-function MplayerClass.setMute(self, mute) 
-  if mute == true then
-    self:cmd("mute 1")
-  else
-    self:cmd("mute 0")
-  end
-end
-
 function MplayerClass.forward(self) 
+  notify("Forward")
   self:cmd("seek +10")
 end
 
 function MplayerClass.forwardMore(self)
+  notify("Forward more")
   self:cmd("seek +300")
 end
 
 function MplayerClass.rewind(self)
+  notify("Rewind")
   self:cmd("seek -10")
 end
 
 function MplayerClass.rewindMore(self)
+  notify("Rewind more")
   self:cmd("seek -300")
 end
 
 function MplayerClass.pause(self)
+  notify("Pause")
   self:cmd("pause")
 end
 
 function MplayerClass.stop(self)
+  notify("Stop")
   self:cmd("pause")
   self:cmd("stop")
   Janosh:trigger("/player/active","false")

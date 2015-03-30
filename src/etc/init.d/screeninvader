@@ -12,7 +12,7 @@
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-COMPONENTS="player browser sound show websocket history notify"
+COMPONENTS="notify player browser sound show websocket history"
 
 set -e
 
@@ -23,7 +23,7 @@ case "$1" in
   start)
   for comp in $COMPONENTS; do 
       log_daemon_msg "Starting $comp"
-      start-stop-daemon --start --background --pidfile /var/run/$comp.lua.pid --make-pidfile --user lounge --chuid lounge -d /lounge/lua/ --startas /bin/bash -- -c "export HOME=/lounge/; export USER=lounge; cd /lounge/lua; exec /lounge/bin/janosh -vf /lounge/lua/$comp.lua &> /var/log/$comp.log"
+      start-stop-daemon --start --background --pidfile /var/run/$comp.lua.pid --make-pidfile --user lounge --chuid lounge -d /lounge/lua/ --startas /bin/bash -- -l -c "export HOME=/lounge; export USER=lounge;cd /lounge/lua; exec /lounge/bin/janosh -vf /lounge/lua/$comp.lua &> /var/log/$comp.log"
       log_end_msg $?
   done
     ;;
@@ -32,7 +32,7 @@ case "$1" in
 
   for comp in $COMPONENTS; do
     log_daemon_msg "Stopping $comp"
-    start-stop-daemon --stop --pidfile /var/run/$comp.lua.pid --retry 10
+    start-stop-daemon -s TERM --stop --oknodo --pidfile /var/run/$comp.lua.pid --retry 10
     log_end_msg $?
   done
     ;;
