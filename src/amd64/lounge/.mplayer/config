@@ -1,7 +1,7 @@
 vo=xv,x11,
 framedrop=yes
 volstep=5
-
+zoom=yes
 cache=16184
 cache-min=5
 cache-seek-min=0
