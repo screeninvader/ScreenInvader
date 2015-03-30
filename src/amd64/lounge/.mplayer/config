@@ -1,0 +1,24 @@
+vo=xv,x11,
+framedrop=yes
+volstep=5
+
+cache=16184
+cache-min=5
+cache-seek-min=0
+
+font="Topaz a500a1000a2000:style=Regular"
+rootwin=yes
+#slave=yes
+ass=yes
+embeddedfonts=yes
+noautosub=yes
+noar=yes
+noconsolecontrols=yes
+nomouseinput=yes
+nolirc=yes
+nojoystick=yes
+fixed-vo=yes
+msgmodule=yes
+msglevel=global=9:demuxer=9:statusline=0:cplayer=0:decvideo=0:decaudio=0:network=9:cache=9
+#msglevel=all=9:statusline=0
+
