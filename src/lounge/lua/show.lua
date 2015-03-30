@@ -108,11 +108,10 @@ end
 
   url=value
   cat=getCategory(url)
-print(1,cat)
   handler=CATEGORY_MAP[cat]
-  print(2,handler)
+  print("triggering:", handler, "/", cat)
   if handler ~= nil then
-    Janosh:set("/" .. handler .. "/category",category)
+    Janosh:set("/" .. handler .. "/category",cat)
     Janosh:trigger("/" .. handler .. "/url", url) 
   end
 end

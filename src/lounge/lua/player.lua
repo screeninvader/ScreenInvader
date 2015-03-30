@@ -1,7 +1,7 @@
 #!/lounge/bin/janosh -f
 local mplayer = require("mplayer")
 
-function open()
+function openPlayer(key, op, value)
   print("open")
   obj=Janosh:get("/player/.")
   url=obj.url
@@ -21,7 +21,7 @@ function open()
   mplayer:add(videoUrl, title, url)
 end
 
-Janosh:subscribe("/player/url", open)
+Janosh:subscribe("/player/url", openPlayer)
 Janosh:subscribe("playerPause", function(key,op,value) mplayer:pause() end)
 Janosh:subscribe("playerStop", function(key,op,value) mplayer:stop() end)
 Janosh:subscribe("playerNext", function(key,op,value) mplayer:next() end)
@@ -32,4 +32,5 @@ Janosh:subscribe("playerForwardMore", function(key,op,value) mplayer:forwardMore
 Janosh:subscribe("playerRewindMore", function(key,op,value) mplayer:rewindMore() end)
 Janosh:subscribe("playerJump",  function(key,op,value) mplayer:jump(value) end)
 
+print("subscribeend")
 mplayer:run()
