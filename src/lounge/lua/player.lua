@@ -32,5 +32,4 @@ Janosh:subscribe("playerForwardMore", function(key,op,value) mplayer:forwardMore
 Janosh:subscribe("playerRewindMore", function(key,op,value) mplayer:rewindMore() end)
 Janosh:subscribe("playerJump",  function(key,op,value) mplayer:jump(value) end)
 
-print("subscribeend")
 mplayer:run()

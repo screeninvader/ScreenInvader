@@ -4,7 +4,6 @@ Janosh:set("/player/active", "false")
 Janosh:setenv("DISPLAY",":0")
 Janosh:setenv("http_proxy","http://localhost:1234/")
 local PID, STDIN, STDOUT, STDERR = Janosh:popen("bash", "-c", "/usr/bin/mplayer -idle -input file=/dev/stdin 2>&1")
-local LOGFILE = Janosh:fopenw("/var/log/mplayer.log")
 Janosh:pclose(STDERR)
 
 -- terminate mplayer and close loffile on exit
@@ -69,6 +68,7 @@ function MplayerClass.add(self, videoUrl, title, srcUrl)
 end
 
 function MplayerClass.run(self) 
+print("run")
   SOTRACK="DEMUXER: ==> Found"
   EOTRACK="GLOBAL: EOF code: 1"
   PATH_CHANGED="GLOBAL: ANS_path="
@@ -77,10 +77,10 @@ function MplayerClass.run(self)
   while true do
     line=""
     while true do
+      print("readline")
       line = Janosh:preadLine(STDOUT)
       if line == nil then break end 
       print(line)
-      Janosh:fwrite(LOGFILE, line .. "\n")
       if string.find(line, EOTRACK) then
         self:eotrack()
       elseif string.find(line, SOTRACK) then
