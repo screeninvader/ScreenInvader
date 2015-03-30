@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]; then
-  echo "Usage: makecore.sh <version>"
+if [ $# -ne 2 ]; then
+  echo "Usage: makecore.sh <version> <arch>"
 fi
 
 mkdir -p screeninvader-core/DEBIAN
