@@ -39,7 +39,7 @@ DEBIAN_MIRROR="http://ftp.at.debian.org/debian/"
 dir="`dirname $0`"
 BOOTSTRAP_DIR="`cd $dir; pwd`"
 BOOTSTRAP_LOG="$BOOTSTRAP_DIR/bootstrap.log"
-ARCH=amd64
+ARCH=armhf
 APTCACHER_PORT=
 NOINSTALL=
 NODEBOOT=
@@ -227,8 +227,14 @@ function doBuild() {
     check "build SimpleOSD" \
       "$CHRT /third/build_simpleosd.sh"
 
+  if  [ $ARCH == "armhf" ]; then
     check "remove build dependencies" \
       "$CHRT $APTNI remove $PKG_BUILD"
+ 
+    check "remove third " \
+      "rm -r  \"$CHROOT_DIR/third\""
+  fi
+      
 }
 
 function doCopy() {
