@@ -242,7 +242,7 @@ function doCopy() {
     "mkdir -p $CHROOT_DIR/install/"
 
   check "Rebuild debian packages" \
-    "cd $BOOTSTRAP_DIR/packaging/; ./makeall.sh 2.0"
+    "cd $BOOTSTRAP_DIR/packaging/; ./makeall.sh 2.0 $ARCH"
 
   check "Copy debian packages" \
     "cp $BOOTSTRAP_DIR/packaging/*.deb $CHROOT_DIR/install/"
@@ -255,6 +255,9 @@ function doCopy() {
 
   check "install misc package" \
     "$CHRT dpkg -i --force-all /install/screeninvader-misc-all.deb"
+
+  check "install arch package" \
+    "$CHRT dpkg -i --force-all /install/screeninvader-arch-all.deb"
 
   check "Remove install directory" \
     "rm -r $CHROOT_DIR/install/"

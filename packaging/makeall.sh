@@ -3,6 +3,7 @@ set -x
 if [ $# -ne 2 ]; then
   echo "Usage: makeall.sh <version> <arch>"
 fi
+echo "$1" "$2"
 rm -r screeninvader-*
 ./makekernel.sh $1 $2
 ./makeconfig.sh $1 $2
