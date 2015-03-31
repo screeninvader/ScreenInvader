@@ -1,0 +1,25 @@
+[settings]
+default-encoding=ISO-8859-1
+default-font-family=DejaVu Sans
+monospace-font-family=DejaVu Sans Mono
+minimum-font-size=10
+enable-site-specific-quirks=true
+last-window-width=681
+last-window-height=748
+toolbar-style=MIDORI_TOOLBAR_SMALL_ICONS
+toolbar-items=Location,
+load-on-startup=MIDORI_STARTUP_HOMEPAGE
+homepage=file:///lounge/logo.png
+location-entry-search=https://duckduckgo.com/?q=%s
+open-new-pages-in=MIDORI_NEW_PAGE_CURRENT
+middle-click-opens-selection=false
+enable-spell-checking=false
+enable-html5-database=true
+zoom-text-and-images=true
+maximum-cookie-age=1
+maximum-history-age=0
+user-agent=Mozilla/5.0 (Macintosh; U; Intel Mac OS X; c) AppleWebKit/535+ (KHTML, like Gecko) Version/5.0 Safari/535.22+ Midori/0.4
+
+[extensions]
+libtoolbar-editor.so=true
+libadblock.so=true
