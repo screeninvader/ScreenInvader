@@ -19,6 +19,8 @@ xset -dpms
 xset s off
 
 xbindkeys & 
+# somehow the first message doesnt make it
+janosh publish something
 awesome 
 ) &> /tmp/xsession
 
