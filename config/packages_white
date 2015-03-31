@@ -50,4 +50,5 @@ ifupdown
 isc-dhcp-client
 libnotify-bin
 dunst
+avahi-daemon
 
