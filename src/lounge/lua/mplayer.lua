@@ -31,7 +31,7 @@ function MplayerClass.jump(self, idx)
   print("jump:", idx)
   obj = Janosh:get("/playlist/items/.")
   if tonumber(idx) > #obj then
-    idx = #obj - 1
+    idx = #obj
   end
   file = obj[tonumber(idx)].url
   title = obj[tonumber(idx)].title

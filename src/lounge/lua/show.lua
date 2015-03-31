@@ -49,7 +49,14 @@ local CATEGORY_FIX={
 ["application/ogg"]='video',
 ["application/x-bittorrent"]='joker'
 }
+
+local function notify(msg)
+  Janosh:publish("notifySend","W",msg)
+end
+
+
 function open(key, op, value)
+notify("Resolving url: " .. value)
 print("open:",value)
 
 function trim(s)
