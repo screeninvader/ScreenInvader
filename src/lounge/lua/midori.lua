@@ -23,15 +23,14 @@ function MidoriClass.openUrl(self, url, omitNotify)
 
   print("openUrl:", url)
   Janosh:system("midori " .. url .. "&")
-  self:cmd("TabCloseOther")
   Janosh:system("xdotool windowraise $(xdotool getactivewindow)")
 end
 
 function MidoriClass.close(self)
   notify("Close Browser")
   print("close")
-  self:openUrl("http://localhost/blank.html",true)
   Janosh:system("xdotool windowminimize $(xdotool getactivewindow)")
+  Janosh:system("killall -0 midori && midori " .. url .. "&")
 end
 
 function MidoriClass.pageDown(self) 
@@ -59,7 +58,6 @@ function MidoriClass.zoomOut(self)
 end
 
 function MidoriClass.run(self) 
-  Janosh:system("xdotool windowminimize $(xdotool getactivewindow)")
   while true do
     Janosh:sleep(10000)
   end
