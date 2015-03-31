@@ -20,7 +20,6 @@ local MplayerClass = {} -- the table representing the class, which will double a
 MplayerClass.__index = MplayerClass -- failed table lookups on the instances should fallback to the class table, to get methods
 
 local function notify(msg)
-print("----------------- NOTIFY -------------")
   Janosh:publish("notifySend","W",msg)
 end
 

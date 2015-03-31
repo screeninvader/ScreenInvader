@@ -80,18 +80,18 @@ function getCategory(url)
     lastloc=url
     while location ~= "" do
       lastloc=location
-      location=Janosh:capture("curl --head \"" .. location .. "\" | dos2unix | grep -iPo 'Location: \\K(.*)?(?=)'",true)
+      location=Janosh:capture("curl --head \"" .. location .. "\" | dos2unix | grep -iPo 'Location: \\K(.*)?(?=)'")
     end
 
-    code=tonumber(Janosh:capture("curl --head \"" .. lastloc .. "\" | head -n 1 | cut -d ' ' -f 2",true))
+    code=tonumber(Janosh:capture("curl --head \"" .. lastloc .. "\" | head -n 1 | cut -d ' ' -f 2"))
     if code ~= 200 then
       mimeType="video/fixed"
     else
-      mimeType=Janosh:capture("curl --head \"" .. lastloc .. "\" | grep -iPo 'Content-Type: \\K(.*)?(?=)'", true)
+      mimeType=Janosh:capture("curl --head \"" .. lastloc .. "\" | grep -iPo 'Content-Type: \\K(.*)?(?=)'")
     end  
   else
     file=url
-    mimeType=Janosh:capture("file -i \"" .. file .. "\" | sed 's/.*: \\([a-zA-Z]*\\/[a-zA-Z]*\\).*/\\1/p' | sed '1d'",true)
+    mimeType=Janosh:capture("file -i \"" .. file .. "\" | sed 's/.*: \\([a-zA-Z]*\\/[a-zA-Z]*\\).*/\\1/p' | sed '1d'")
   end
 
   if mimeType == "" then
@@ -101,7 +101,7 @@ function getCategory(url)
   category=CATEGORY_FIX[mimeType]
 
   if category == nil then
-    category=Janosh:capture("echo \"" .. mimeType .. "\" | cut -d'/' -f1",true)
+    category=Janosh:capture("echo \"" .. mimeType .. "\" | cut -d'/' -f1")
   end
   return trim(category);
 end

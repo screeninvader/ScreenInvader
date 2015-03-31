@@ -1,6 +1,15 @@
 #!/lounge/bin/janosh -f
 local mplayer = require("mplayer")
 
+local function split(str, delim)
+    local res = {}
+    local pattern = string.format("([^%s]+)%s", delim, delim)
+    for line in str:gmatch(pattern) do
+        table.insert(res, line)
+    end
+    return res
+end
+
 function openPlayer(key, op, value)
   print("open")
   obj=Janosh:get("/player/.")
@@ -10,9 +19,14 @@ function openPlayer(key, op, value)
   title=""
 
   if category ~= "video" then
-    ypid, ystdin, ystdout, ystderr = Janosh:popen("/usr/bin/youtube-dl","--encoding", "utf-8", "-g", "-e", url)
-    title = Janosh:preadLine(ystdout)
-    videoUrl = Janosh:preadLine(ystdout)
+    output = Janosh:capture("/usr/bin/youtube-dl --encoding utf-8 -g -e \"" .. url .. "\"")
+    print("split")
+    lines = split(output, "\n")
+    print(#lines)
+    assert(#lines == 2)
+    print("assign")
+    title = lines[1]
+    videoUrl = lines[2]
     videoUrl = string.gsub(videoUrl, "https://", "http://")
   else
     videoUrl = url

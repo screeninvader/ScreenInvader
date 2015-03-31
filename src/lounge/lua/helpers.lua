@@ -9,12 +9,12 @@ function split_once(str, sep)
 end
 
 function http_get(url)
-   return Janosh:capture("/usr/bin/curl -s -L '" .. url .. "'", true)
+   return Janosh:capture("/usr/bin/curl -s -L '" .. url .. "'")
 end
 
 function youtube_dl(url)
    local result = Janosh:capture(
-      "/usr/bin/youtube-dl --prefer-insecure -g -e '" .. url .. "'", true)
+      "/usr/bin/youtube-dl --prefer-insecure -g -e '" .. url .. "'")
    return split_once(result, '\n')
 end
 

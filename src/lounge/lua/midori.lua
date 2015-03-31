@@ -5,16 +5,22 @@ Janosh:setenv("DISPLAY",":0")
 local MidoriClass = {} -- the table representing the class, which will double as the metatable for the instances
 MidoriClass.__index = MidoriClass -- failed table lookups on the instances should fallback to the class table, to get methods
 
+local function notify(msg)
+  Janosh:publish("notifySend","W",msg)
+end
+
 function MidoriClass.new()
   return setmetatable({}, MidoriClass)
 end
 
 function MidoriClass.cmd(self, cmdstring) 
   print("cmd:", cmdstring)
-  Janosh:system("midori -e " .. cmdstring)
+  Janosh:system("killall -0 midori && midori -e " .. cmdstring)
 end
 
-function MidoriClass.openUrl(self, url)
+function MidoriClass.openUrl(self, url, omitNotify)
+  if not omitNotify then notify("Open Browser: " .. url) end
+
   print("openUrl:", url)
   Janosh:system("midori " .. url .. "&")
   self:cmd("TabCloseOther")
@@ -22,8 +28,9 @@ function MidoriClass.openUrl(self, url)
 end
 
 function MidoriClass.close(self)
+  notify("Close Browser")
   print("close")
-  self:openUrl("http://localhost/blank.html")
+  self:openUrl("http://localhost/blank.html",true)
   Janosh:system("xdotool windowminimize $(xdotool getactivewindow)")
 end
 
