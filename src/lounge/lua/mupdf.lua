@@ -12,7 +12,6 @@ function MupdfClass.new()
 end
 
 function MupdfClass.openFile(self, file)
-  Janosh:trigger("/pdf/active","true")
   util:notify("Open PDF: " .. file)
 
   print("openFile:", file)
@@ -20,10 +19,8 @@ function MupdfClass.openFile(self, file)
 end
 
 function MupdfClass.close(self)
-  util:notify("Close PDF")
   print("close")
   Janosh:system("killall mupdf")
-  Janosh:trigger("/browser/active","false")
 end
 
 function MupdfClass.pageDown(self) 
@@ -38,24 +35,24 @@ function MupdfClass.scrollDown(self)
   Janosh:system("xdotool key j")
 end
 
-function MupdfClass.scollUp(self)
+function MupdfClass.scrollUp(self)
   Janosh:system("xdotool key k")
 end
 
-function MupdfClass.scollLeft(self)
+function MupdfClass.scrollLeft(self)
   Janosh:system("xdotool key h")
 end
 
-function MupdfClass.scollRight(self)
+function MupdfClass.scrollRight(self)
   Janosh:system("xdotool key l")
 end
 
 function MupdfClass.zoomIn(self)
-  Janosh:system("xdotool key +")
+  Janosh:system("xdotool key plus")
 end
 
 function MupdfClass.zoomOut(self)
-  Janosh:system("xdotool key -")
+  Janosh:system("xdotool key minus")
 end
 
 function MupdfClass.run(self) 

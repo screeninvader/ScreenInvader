@@ -42,7 +42,6 @@ function MidoriClass.openUrl(self, url)
 end
 
 function MidoriClass.close(self)
-  util:notify("Close Browser")
   print("close")
   self:cmd("Homepage")
   self:cmd("TabCloseOther")
