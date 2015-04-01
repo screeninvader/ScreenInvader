@@ -8,7 +8,6 @@ locales
 man-db
 whiptail
 iptables
-wmctrl
 traceroute
 netcat-traditional
 iputils-ping
