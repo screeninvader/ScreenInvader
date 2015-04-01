@@ -164,7 +164,7 @@ function finish() {
  update-rc.d avahi-daemon defaults
  mkdir -p /share
  mkdir -p /var/cache/debconf/
- chown -R lounge:lounge /lounge/
+ chown -R lounge:users /lounge/
 
  usermod -s /bin/bash root
 
