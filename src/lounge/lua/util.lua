@@ -19,7 +19,10 @@ function UtilClass.getWindowID(self,name)
   pid,sin,sout,serr = Janosh:popen("wmctrl", "-lx")
 print(pid, sin, sout, serr)
   line = Janosh:preadLine(serr)
-  if line ~= nil then return -1 end
+  if line ~= nil then
+    print("Error:", line)
+    return -1
+  end
   id=-1
   while true do 
     line = Janosh:preadLine(sout)

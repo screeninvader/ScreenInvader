@@ -18,6 +18,7 @@ function MidoriClass.minimize(self)
 print("mini")
   xid = util:getWindowID("midori.Midori")
   if xid ~= -1 then
+  print("minimize:", xid)
   print("xdotool windowminimize " .. xid) 
    Janosh:system("xdotool windowminimize " .. xid)
   end
@@ -27,6 +28,7 @@ function MidoriClass.raise(self)
 print("raise")
   xid = util:getWindowID("midori.Midori")
   if xid ~= -1 then
+    print("raise:", xid)
     Janosh:system("xdotool windowraise " .. xid) 
   end
 end

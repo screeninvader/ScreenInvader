@@ -3,6 +3,7 @@ local util = require("util")
 local mupdf = require("mupdf")
 
 function open(key, op, value)
+  Janosh:publish("browserClose","W", "")
   print("open:", value)
   obj = Janosh:get("/pdf/.")
   url = obj.url

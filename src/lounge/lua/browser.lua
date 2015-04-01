@@ -3,6 +3,7 @@ local midori = require("midori")
 
 function open(key, op, value)
   print("open:", value)
+  Janosh:publish("pdfClose","W","")
   obj = Janosh:get("/browser/.")
   url = obj.url
   category = obj.category

@@ -9,7 +9,7 @@ last-window-height=748
 toolbar-style=MIDORI_TOOLBAR_SMALL_ICONS
 toolbar-items=Location,
 load-on-startup=MIDORI_STARTUP_HOMEPAGE
-homepage=file:///lounge/logo.png
+homepage=file:///lounge/www/blank.html
 location-entry-search=https://duckduckgo.com/?q=%s
 open-new-pages-in=MIDORI_NEW_PAGE_CURRENT
 middle-click-opens-selection=false
