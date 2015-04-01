@@ -167,6 +167,7 @@ function finish() {
  chown -R lounge:users /lounge/
 
  usermod -s /bin/bash root
+ usermod -G audio lounge
 
  sudo -u lounge "/lounge/triggers/sound reload"
  
