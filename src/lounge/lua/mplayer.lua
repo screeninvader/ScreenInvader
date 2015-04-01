@@ -1,5 +1,7 @@
 #!/lounge/bin/janosh -f
 
+local util = require("util")
+
 Janosh:set("/player/active", "false")
 Janosh:setenv("DISPLAY",":0")
 Janosh:setenv("http_proxy","http://localhost:1234/")
@@ -19,10 +21,6 @@ Janosh:setenv("http_proxy","")
 local MplayerClass = {} -- the table representing the class, which will double as the metatable for the instances
 MplayerClass.__index = MplayerClass -- failed table lookups on the instances should fallback to the class table, to get methods
 
-local function notify(msg)
-  Janosh:publish("notifySend","W",msg)
-end
-
 function MplayerClass.new()
   return setmetatable({}, MplayerClass)
 end
@@ -37,24 +35,24 @@ function MplayerClass.jump(self, idx)
   title = obj[tonumber(idx)].title
   self:cmd("pause")
   Janosh:trigger("/player/active", "true")
-  notify("Loading: " .. title)
+  util:notify("Loading: " .. title)
   self:cmd("loadfile " .. file)
   Janosh:set("/playlist/index", tostring(idx))
 end
 
 function MplayerClass.previous(self) 
-  notify("previous")
+  util:notify("previous")
   self:jump(tonumber(Janosh:get("/playlist/index").playlist.index) - 1)
 end
 
 function MplayerClass.next(self)
-  notify("next")
+  util:notify("next")
   self:jump(tonumber(Janosh:get("/playlist/index").playlist.index) + 1)
 end
 
 
 function MplayerClass.enqueue(self, videoUrl, title, srcUrl) 
-  notify("Queued: " .. title)
+  util:notify("Queued: " .. title)
   if title == "" then
     title = "(no title)"
   end
@@ -107,32 +105,32 @@ function MplayerClass.cmd(self, cmdstring)
 end
 
 function MplayerClass.forward(self) 
-  notify("Forward")
+  util:notify("Forward")
   self:cmd("seek +10")
 end
 
 function MplayerClass.forwardMore(self)
-  notify("Forward more")
+  util:notify("Forward more")
   self:cmd("seek +300")
 end
 
 function MplayerClass.rewind(self)
-  notify("Rewind")
+  util:notify("Rewind")
   self:cmd("seek -10")
 end
 
 function MplayerClass.rewindMore(self)
-  notify("Rewind more")
+  util:notify("Rewind more")
   self:cmd("seek -300")
 end
 
 function MplayerClass.pause(self)
-  notify("Pause")
+  util:notify("Pause")
   self:cmd("pause")
 end
 
 function MplayerClass.stop(self)
-  notify("Stop")
+  util:notify("Stop")
   self:cmd("pause")
   self:cmd("stop")
   Janosh:trigger("/player/active","false")
