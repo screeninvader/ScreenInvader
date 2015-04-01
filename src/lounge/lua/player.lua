@@ -10,6 +10,11 @@ local function split(str, delim)
     return res
 end
 
+local function basename(str)
+  local name = string.gsub(str, "(.*/)(.*)", "%2")
+  return name
+end
+
 function openPlayer(key, op, value)
   print("open")
   obj=Janosh:get("/player/.")

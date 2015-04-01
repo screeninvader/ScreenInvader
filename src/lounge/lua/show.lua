@@ -78,12 +78,32 @@ function getCategory(url)
     head=""
     location=url
     lastloc=url
-    while location ~= "" do
+    while location ~= nil do
       lastloc=location
-      location=Janosh:capture("curl --head \"" .. location .. "\" | dos2unix | grep -iPo 'Location: \\K(.*)?(?=)'")
+      p, i, o, e = Janosh:popen("curl", "--head", location)
+      line=""
+      head=""
+      while true do
+        line=Janosh:preadLine(o)
+        if line == nil then break end
+        head= head .. string.gsub(line, "\r", "\n")
+      end
+      Janosh:pclose(i)
+      Janosh:pclose(e)
+      Janosh:pclose(o)
+      p, i, o, e = Janosh:popen("grep", "-iPo", "Location: \\K(.*)?(?=)")
+      Janosh:pwrite(i, head)
+      Janosh:pclose(i)
+      location=Janosh:preadLine(o)
+      Janosh:pclose(i)
+      Janosh:pclose(e)
+      Janosh:pclose(o)
     end
 
-    code=tonumber(Janosh:capture("curl --head \"" .. lastloc .. "\" | head -n 1 | cut -d ' ' -f 2"))
+    line=util:split(head,"\n")[1]
+    token=util:split(line," ")[2]
+    code=tonumber(token)
+    print("code:", code)
     if code ~= 200 then
       mimeType="video/fixed"
     else
@@ -120,6 +140,7 @@ end
 
 Janosh:subscribe("showUrl", open)
 
+open("showUrl","W", "http://reflex.at")
 while true do
   Janosh:sleep(100000)
 end
