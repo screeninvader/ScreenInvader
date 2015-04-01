@@ -27,10 +27,10 @@ test -x $DAEMON || exit 0
 FCGI_CHILDREN="1"
 FCGI_SOCKET="/var/run/$NAME.socket"
 FCGI_USER="lounge"
-FCGI_GROUP="lounge"
+FCGI_GROUP="users"
 # Socket owner/group (will default to FCGI_USER/FCGI_GROUP if not defined)
 FCGI_SOCKET_OWNER="lounge"
-FCGI_SOCKET_GROUP="lounge"
+FCGI_SOCKET_GROUP="users"
 
 . /lib/lsb/init-functions
 
