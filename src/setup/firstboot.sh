@@ -161,7 +161,7 @@ function rebootConf(){
 function finish() {
  update-rc.d xserver defaults
  update-rc.d screeninvader defaults
-
+ update-rc.d avahi-daemon defaults
  mkdir -p /share
  mkdir -p /var/cache/debconf/
  chown -R lounge:lounge /lounge/
