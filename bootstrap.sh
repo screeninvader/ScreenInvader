@@ -22,6 +22,10 @@ function getConf() {
   cat "$1" | tr "\n" " "
 }
 
+function makepassword() {
+  mkpasswd -m sha-512 -s <<< "$1"
+}
+
 #KEYRINGS="`getConf config/keyrings`"
 PKG_WHITE="`getConf config/packages_white`"
 PKG_EXTRA="`getConf config/packages_extra`"
@@ -120,11 +124,12 @@ function doPackageConf() {
   check "Prepare package manager" \
     "$CHRT dpkg --configure -a"
 
+  pass=$(makepassword "lounge")
   check "Add user lounge" \
-    "$CHRT bash -c \"grep ^lounge: /etc/passwd || useradd -s /bin/bash -b / -m -g users lounge\""
+    "$CHRT bash -c \"grep ^lounge: /etc/passwd || useradd -p '$pass' -s /bin/bash -b / -m -g users lounge\""
 
   check "Set root shell to firstboot" \
-    "$CHRT usermod -s /setup/firstboot.sh root"
+    "$CHRT usermod -p '$pass' -s /setup/firstboot.sh root"
 
   check "Fix dependencies" \
     "$CHRT $APTNI install -f"
