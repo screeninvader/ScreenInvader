@@ -120,6 +120,12 @@ function doPackageConf() {
   check "Prepare package manager" \
     "$CHRT dpkg --configure -a"
 
+  check "Add user lounge" \
+    "$CHRT bash -c \"grep ^lounge: /etc/passwd || useradd -s /bin/bash -b / -m -g users lounge\""
+
+  check "Set root shell to firstboot" \
+    "$CHRT usermod -s /setup/firstboot.sh root"
+
   check "Fix dependencies" \
     "$CHRT $APTNI install -f"
 
