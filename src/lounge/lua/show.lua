@@ -1,5 +1,6 @@
 #!/lounge/bin/janosh -f
 
+local util = require("util")
 local VIDEO_HOSTS={
 ["grooveshark.com/"]='youtube',
 ["youtube.com/"]='youtube',
@@ -50,18 +51,10 @@ local CATEGORY_FIX={
 ["application/x-bittorrent"]='joker'
 }
 
-local function notify(msg)
-  Janosh:publish("notifySend","W",msg)
-end
-
 
 function open(key, op, value)
-notify("Resolving url: " .. value)
+util:notify("Resolving url: " .. value)
 print("open:",value)
-
-function trim(s)
-  return (s:gsub("^%s*(.-)%s*$", "%1"))
-end
 
 function ends(String,End)
    return End=='' or string.sub(String,-string.len(End))==End
@@ -100,17 +93,19 @@ function getCategory(url)
     file=url
     mimeType=Janosh:capture("file -i \"" .. file .. "\" | sed 's/.*: \\([a-zA-Z]*\\/[a-zA-Z]*\\).*/\\1/p' | sed '1d'")
   end
-
-  if mimeType == "" then
+  mimeType=util:trim(mimeType)
+  
+  if mimeType == nil or mimeType == "" then
     mimeType="video/fixed"
   end
 
+  print("mimeType:" ..  mimeType .. "|")
   category=CATEGORY_FIX[mimeType]
-
+  print("category:" , category)
   if category == nil then
     category=Janosh:capture("echo \"" .. mimeType .. "\" | cut -d'/' -f1")
   end
-  return trim(category);
+  return util:trim(category);
 end
 
   url=value

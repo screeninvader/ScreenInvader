@@ -28,6 +28,8 @@ Janosh:subscribe("browserPageUp", function(key,op,value) midori:pageUp() end)
 Janosh:subscribe("browserPageDown", function(key,op,value) midori:pageDown() end)
 Janosh:subscribe("browserScrollUp", function(key,op,value) midori:scrollUp() end)
 Janosh:subscribe("browserScrollDown", function(key,op,value) midori:scrollDown() end)
+Janosh:subscribe("browserScrollLeft", function(key,op,value) midori:scrollLeft() end)
+Janosh:subscribe("browserScrollRight", function(key,op,value) midori:scrollRight() end)
 Janosh:subscribe("browserZoomIn", function(key,op,value) midori:zoomIn() end)
 Janosh:subscribe("browserZoomOut", function(key,op,value) midori:zoomOut() end)
 

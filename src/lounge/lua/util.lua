@@ -7,6 +7,10 @@ function UtilClass.new()
   return setmetatable({}, UtilClass)
 end
 
+function UtilClass.trim(self, s)
+  return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
+
 function UtilClass.notify(self,msg)
   Janosh:publish("notifySend","W",msg)
 end

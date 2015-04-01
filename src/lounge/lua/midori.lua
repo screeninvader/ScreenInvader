@@ -2,8 +2,6 @@
 
 local util = require("util")
 
-Janosh:set("/browser/active", "false")
-
 local MidoriClass = {} -- the table representing the class, which will double as the metatable for the instances
 MidoriClass.__index = MidoriClass -- failed table lookups on the instances should fallback to the class table, to get methods
 
@@ -34,7 +32,6 @@ print("raise")
 end
 
 function MidoriClass.openUrl(self, url)
-  Janosh:trigger("/browser/active","true")
   util:notify("Open Browser: " .. url)
 
   print("openUrl:", url)
@@ -48,7 +45,6 @@ function MidoriClass.close(self)
   self:cmd("Homepage")
   self:cmd("TabCloseOther")
   self:minimize()
-  Janosh:trigger("/browser/active","false")
 end
 
 function MidoriClass.pageDown(self) 
@@ -65,6 +61,14 @@ end
 
 function MidoriClass.scollUp(self)
   self:cmd("ScrollUp")
+end
+
+function MidoriClass.scollLeft(self)
+  self:cmd("ScrollLeft")
+end
+
+function MidoriClass.scollRight(self)
+  self:cmd("ScrollRight")
 end
 
 function MidoriClass.zoomIn(self)
