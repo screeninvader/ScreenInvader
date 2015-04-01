@@ -2,7 +2,7 @@
 
 local util = require("util")
 
-Janosh:setenv("DISPLAY",":0")
+Janosh:set("/browser/active", "false")
 
 local MidoriClass = {} -- the table representing the class, which will double as the metatable for the instances
 MidoriClass.__index = MidoriClass -- failed table lookups on the instances should fallback to the class table, to get methods
@@ -16,19 +16,39 @@ function MidoriClass.cmd(self, cmdstring)
   Janosh:system("killall -0 midori && midori -e " .. cmdstring)
 end
 
-function MidoriClass.openUrl(self, url, omitNotify)
-  if not omitNotify then util:notify("Open Browser: " .. url) end
+function MidoriClass.minimize(self)
+print("mini")
+  xid = util:getWindowID("midori.Midori")
+  if xid ~= -1 then
+  print("xdotool windowminimize " .. xid) 
+   Janosh:system("xdotool windowminimize " .. xid)
+  end
+end
+
+function MidoriClass.raise(self)
+print("raise")
+  xid = util:getWindowID("midori.Midori")
+  if xid ~= -1 then
+    Janosh:system("xdotool windowraise " .. xid) 
+  end
+end
+
+function MidoriClass.openUrl(self, url)
+  Janosh:trigger("/browser/active","true")
+  util:notify("Open Browser: " .. url)
 
   print("openUrl:", url)
   Janosh:system("midori " .. url .. "&")
-  Janosh:system("xdotool windowraise $(xdotool getactivewindow)")
+  self:raise()
 end
 
 function MidoriClass.close(self)
   util:notify("Close Browser")
   print("close")
-  Janosh:system("xdotool windowminimize $(xdotool getactivewindow)")
-  Janosh:system("killall -0 midori && midori " .. url .. "&")
+  self:cmd("Homepage")
+  self:cmd("TabCloseOther")
+  self:minimize()
+  Janosh:trigger("/browser/active","false")
 end
 
 function MidoriClass.pageDown(self) 

@@ -3,7 +3,6 @@
 local util = require("util")
 
 Janosh:set("/player/active", "false")
-Janosh:setenv("DISPLAY",":0")
 Janosh:setenv("http_proxy","http://localhost:1234/")
 local PID, STDIN, STDOUT, STDERR = Janosh:popen("bash", "-c", "exec /usr/bin/mplayer -idle -input file=/dev/stdin 2>&1")
 Janosh:pclose(STDERR)
