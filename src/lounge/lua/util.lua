@@ -15,6 +15,10 @@ function UtilClass.notify(self,msg)
   Janosh:publish("notifySend","W",msg)
 end
 
+function UtilClass.exception(self,msg)
+  Janosh:publish("notifyException", "W", msg)
+end
+
 function UtilClass.getWindowID(self,name)
   pid,sin,sout,serr = Janosh:popen("wmctrl", "-lx")
 print(pid, sin, sout, serr)

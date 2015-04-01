@@ -96,12 +96,10 @@ function getCategory(url)
   mimeType=util:trim(mimeType)
   
   if mimeType == nil or mimeType == "" then
-    mimeType="video/fixed"
+    return nil
   end
 
-  print("mimeType:" ..  mimeType .. "|")
   category=CATEGORY_FIX[mimeType]
-  print("category:" , category)
   if category == nil then
     category=Janosh:capture("echo \"" .. mimeType .. "\" | cut -d'/' -f1")
   end
@@ -115,6 +113,8 @@ end
   if handler ~= nil then
     Janosh:set("/" .. handler .. "/category",cat)
     Janosh:trigger("/" .. handler .. "/url", url) 
+  else
+    util:exception("Unable to handle url: " .. url)
   end
 end
 
