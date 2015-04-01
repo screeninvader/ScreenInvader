@@ -14,7 +14,7 @@ mingetty
 locate
 kbd
 wireless-tools
-xpdf
+mupdf
 wpasupplicant
 debconf
 apache2-utils
@@ -51,4 +51,5 @@ isc-dhcp-client
 libnotify-bin
 dunst
 avahi-daemon
+wmctrl
 
