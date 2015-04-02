@@ -103,7 +103,7 @@ function doDebootstrap() {
   check "Bootstrap debian" \
     "debootstrap  --foreign --variant=minbase --exclude="`echo $PKG_BLACK | sed 's/ /,/g'`" --arch $ARCH wheezy "$CHROOT_DIR" $BOOTSTRAP_MIRROR"
 
-  if [ $ARCH == "armhf" ]; then
+  if [ $ARCH == "armhf" -a "$(uname -m)" != "armv7l" ]; then
     check "Copy qemu-static" \
       "[ ! -f \"$CHROOT_DIR/usr/bin/qemu-arm-static\" ] && cp /usr/bin/qemu-arm-static \"$CHROOT_DIR/usr/bin\""
   fi
@@ -184,9 +184,6 @@ function doBuild() {
     check "Clone libvdpau" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_libvdpau-sunxi.sh"
 
-    check "Clone SimpleOSD" \
-      "cd $BOOTSTRAP_DIR/third/; ./clone_simpleosd.sh"
-
     check "Clone sunxi-mali" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_sunxi-mali.sh"
 
@@ -198,16 +195,18 @@ function doBuild() {
 
     check "Clone fbturbo" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_xf86-video-fbturbo.sh"
-  else
-    check "Clone janosh" \
-      "cd $BOOTSTRAP_DIR/third/; ./clone_janosh.sh"
 
-    check "Clone SimpleOSD" \
-      "cd $BOOTSTRAP_DIR/third/; ./clone_simpleosd.sh"
+  fi  
 
-    check "Clone lanes" \
-      "cd $BOOTSTRAP_DIR/third/; ./clone_lanes.sh" 
-  fi
+  check "Clone janosh" \
+    "cd $BOOTSTRAP_DIR/third/; ./clone_janosh.sh"
+
+  check "Clone SimpleOSD" \
+    "cd $BOOTSTRAP_DIR/third/; ./clone_simpleosd.sh"
+
+  check "Clone lanes" \
+    "cd $BOOTSTRAP_DIR/third/; ./clone_lanes.sh" 
+  
 
   check "Copy third party" \
     "cp -r $BOOTSTRAP_DIR/third/ \"$CHROOT_DIR\""
@@ -227,7 +226,7 @@ function doBuild() {
 
     check "build libvdpau-sunxi" \
       "$CHRT /third/build_libvdpau-sunxi.sh"
-  else
+
     check "build janosh" \
       "$CHRT /third/build_janosh.sh"
 
@@ -235,8 +234,14 @@ function doBuild() {
       "$CHRT /third/build_lanes.sh"
   fi
 
-    check "build SimpleOSD" \
-      "$CHRT /third/build_simpleosd.sh"
+  check "build janosh" \
+    "$CHRT /third/build_janosh.sh"
+
+  check "build lanes" \
+    "$CHRT /third/build_lanes.sh"
+
+  check "build SimpleOSD" \
+    "$CHRT /third/build_simpleosd.sh"
 
   if  [ $ARCH == "armhf" ]; then
     check "remove build dependencies" \
@@ -292,11 +297,19 @@ function doCleanupPackages() {
   check "Autoremove packages" \
     "$CHRT $APTNI autoremove"
 
+  check "remove build dependencies" \
+    "$CHRT $APTNI remove $PKG_BUILD"
+
   check "Clean apt cache" \
     "$CHRT $APTNI clean"
 }
 
 function doCleanupFiles() {
+  if  [ $ARCH == "armhf" ]; then
+    check "remove third " \
+      "rm -r  \"$CHROOT_DIR/third\""
+  fi
+
   check "Remove black listed files" \
     "$CHRT bash -c \"rm -fr $FILES_BLACK\""
 }
@@ -438,16 +451,16 @@ else
     skip "package configuration"
   fi
 
-  if [ -z "$NOCLEANUP" ]; then
-    doCleanupPackages
-  else
-    skip "cleanup packages"
-  fi
-
   if [ -z "$DONT_REBUILD" ]; then 
     doBuild
   else
     skip "build"
+  fi
+
+  if [ -z "$NOCLEANUP" ]; then
+    doCleanupPackages
+  else
+    skip "cleanup packages"
   fi
 
   doCleanupFiles
