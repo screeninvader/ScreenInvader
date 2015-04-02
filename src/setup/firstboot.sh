@@ -25,6 +25,7 @@ set -x
 cd `dirname $0`
 chvt 2
 ln -s /usr/lib/x86_64-linux-gnu/libzmq.so.3 /usr/lib/x86_64-linux-gnu/libzmq.so
+ln -s /usr/lib/arm-linux-gnueabihf/libzmq.so.3 /usr/lib/arm-linux-gnueabihf/libzmq.so
 chown root:root /etc/sudoers
 mkdir -p /var/log/nginx
 chmod a+rw /var/log/nginx
