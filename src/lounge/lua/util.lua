@@ -7,6 +7,11 @@ function UtilClass.new()
   return setmetatable({}, UtilClass)
 end
 
+function UtilClass.getIPAddress(self) 
+  return self:trim(Janosh:capture("/sbin/ifconfig eth0 | grep -Po 'inet addr:\\K.*?(?= )' | tail -n1"
+))
+end
+
 function UtilClass.trim(self, s)
   return (s:gsub("^%s*(.-)%s*$", "%1"))
 end

@@ -4,7 +4,8 @@ local util = require("util")
 
 Janosh:set("/player/active", "false")
 Janosh:setenv("http_proxy","http://localhost:1234/")
-local PID, STDIN, STDOUT, STDERR = Janosh:popen("bash", "-c", "exec /usr/bin/mplayer -idle -input file=/dev/stdin 2>&1")
+Janosh:system("killall mplayer")
+local PID, STDIN, STDOUT, STDERR = Janosh:popen("bash", "-c", "exec mplayer -idle -input file=/dev/stdin 2>&1")
 Janosh:pclose(STDERR)
 
 --terminate mplayer and close loffile on exit
@@ -36,7 +37,7 @@ function MplayerClass.jump(self, idx)
   Janosh:trigger("/player/active", "true")
   util:notify("Loading: " .. title)
   self:cmd("loadfile " .. file)
-  Janosh:set("/playlist/index", tostring(idx))
+  Janosh:trigger("/playlist/index", tostring(idx))
 end
 
 function MplayerClass.previous(self) 
