@@ -36,10 +36,6 @@ dpkg
 libc6
 libstdc++6
 multiarch-support
-xserver-xorg
-xserver-xorg-input-kbd
-xserver-xorg-input-mouse
-x11-xserver-utils
 midori
 fcgiwrap
 nginx

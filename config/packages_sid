@@ -1,3 +1,7 @@
+xserver-xorg
+xserver-xorg-input-kbd
+xserver-xorg-input-mouse
+x11-xserver-utils
 libkyotocabinet16
 youtube-dl
 libzmq3
