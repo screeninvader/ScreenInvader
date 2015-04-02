@@ -27,7 +27,11 @@ end
 Janosh:subscribe("/pdf/url", open)
 Janosh:subscribe("pdfClose", function(key,op,value)
   mupdf:close()
-  Janosh:trigger("/pdf/active", "false")
+  Janosh:transaction(function()
+    if Janosh:get("/pdf/active").active == "true" then
+      Janosh:trigger("/pdf/active", "false")
+    end
+  end)
 end)
 
 Janosh:subscribe("pdfPageUp", function(key,op,value) mupdf:pageUp() end)
