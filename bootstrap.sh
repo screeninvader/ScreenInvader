@@ -248,15 +248,6 @@ function doBuild() {
 
   check "build SimpleOSD" \
     "$CHRT /third/build_simpleosd.sh"
-
-  if  [ $ARCH == "armhf" ]; then
-    check "remove build dependencies" \
-      "$CHRT $APTNI remove $PKG_BUILD"
- 
-    check "remove third " \
-      "rm -r  \"$CHROOT_DIR/third\""
-  fi
-      
 }
 
 function doCopy() {
@@ -302,9 +293,10 @@ function doCopy() {
 function doCleanupPackages() {
   check "Autoremove packages" \
     "$CHRT $APTNI autoremove"
-
-  check "remove build dependencies" \
-    "$CHRT $APTNI remove $PKG_BUILD"
+  if  [ $ARCH == "armhf" ]; then
+    check "remove build dependencies" \
+      "$CHRT $APTNI remove $PKG_BUILD"
+  fi
 
   check "Clean apt cache" \
     "$CHRT $APTNI clean"
@@ -313,7 +305,7 @@ function doCleanupPackages() {
 function doCleanupFiles() {
   if  [ $ARCH == "armhf" ]; then
     check "remove third " \
-      "rm -r  \"$CHROOT_DIR/third\""
+      "rm -rf  \"$CHROOT_DIR/third\""
   fi
 
   check "Remove black listed files" \
