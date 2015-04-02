@@ -140,7 +140,6 @@ end
 
 Janosh:subscribe("showUrl", open)
 
-open("showUrl","W", "http://reflex.at")
 while true do
   Janosh:sleep(100000)
 end
