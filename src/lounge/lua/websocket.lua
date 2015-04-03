@@ -12,7 +12,7 @@ end
 
 function push(key, value,op)
    print('push updates')
-   Janosh:wsBroadcast(janosh_get({"/."}))
+   Janosh:wsBroadcast(JSON:encode({key, value, op}))
 end
 
 Janosh:wsOpen(8080)
@@ -22,4 +22,3 @@ Janosh:subscribe("/", push)
 while true do
    Janosh:sleep(1000000) -- milliseconds
 end
-
