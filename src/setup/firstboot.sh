@@ -34,6 +34,8 @@ chown -R lounge:users /lounge/
 
 update-rc.d janosh defaults
 /etc/init.d/janosh start
+update-rc.d screeninvader-root defaults
+/etc/init.d/screeninvader-root start
 
 sleep 3
 
