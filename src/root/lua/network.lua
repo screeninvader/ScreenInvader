@@ -73,7 +73,7 @@ function reload()
 --    Janosh:system("/etc/init.d/networking start")
   end)
 end
-make()
+
 Janosh:subscribe("networkMake", make)
 Janosh:subscribe("networkReload", reload)
 while true do
