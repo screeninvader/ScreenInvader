@@ -51,11 +51,10 @@ wmctrl
 libxv1
 libasound2
 libvpx1
-libx264-142
+libx264-123
 libxvidcore4
 libdv4
 libopus0
-libfaac0
 libmpeg2-4
 libmpg123-0
 libtheora0

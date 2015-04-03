@@ -42,12 +42,12 @@ end
 
 function MplayerClass.previous(self) 
   util:notify("previous")
-  self:jump(tonumber(Janosh:get("/playlist/index").playlist.index) - 1)
+  self:jump(tonumber(Janosh:get("/playlist/index").index) - 1)
 end
 
 function MplayerClass.next(self)
   util:notify("next")
-  self:jump(tonumber(Janosh:get("/playlist/index").playlist.index) + 1)
+  self:jump(tonumber(Janosh:get("/playlist/index").index) + 1)
 end
 
 
@@ -67,7 +67,7 @@ end
 function MplayerClass.add(self, videoUrl, title, srcUrl)
   self:enqueue(videoUrl, title, srcUrl)
 
-  if Janosh:get("/player/active").player.active == "false" then
+  if Janosh:get("/player/active").active == "false" then
     self:jump(10000000) -- jump to the ned of the playlist
   end
 end
@@ -133,7 +133,13 @@ function MplayerClass.stop(self)
   util:notify("Stop")
   self:cmd("pause")
   self:cmd("stop")
-  Janosh:trigger("/player/active","false")
+
+  Janosh:transaction(function()
+    if Janosh:get("/player/active").active == "true" then
+      Janosh:trigger("/player/active","false")
+      Janosh:publish("backgroundRefresh", "W", "")
+    end
+  end)
 end
 
 function MplayerClass.osd(self)

@@ -105,7 +105,7 @@ function doDebootstrap() {
 
   if [ $ARCH == "armhf" -a "$(uname -m)" != "armv7l" ]; then
     check "Copy qemu-static" \
-      "[ ! -f \"$CHROOT_DIR/usr/bin/qemu-arm-static\" ] && cp /usr/bin/qemu-arm-static \"$CHROOT_DIR/usr/bin\""
+      "cp /usr/bin/qemu-arm-static \"$CHROOT_DIR/usr/bin\""
   fi
 
   check "Boostrap second stage" \
