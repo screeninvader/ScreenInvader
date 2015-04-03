@@ -291,8 +291,12 @@ function doCopy() {
 }
 
 function doCleanupPackages() {
+  check "Update Repositories" \
+    "$CHRT $APTNI update"
+
   check "Autoremove packages" \
     "$CHRT $APTNI autoremove"
+
   if  [ $ARCH == "armhf" ]; then
     check "remove build dependencies" \
       "$CHRT $APTNI remove $PKG_BUILD"

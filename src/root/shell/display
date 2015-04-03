@@ -1,13 +1,14 @@
+#!/bin/bash
+
 FUNCTION="$1"
 
-declare -A DATA="$(janosh get /display/.)"
 
 function setResolution() {
-  xrandr --output "${DATA[/display/adapter/value]}" --mode "${DATA[/display/resolution/value]}" --primary
+  xrandr --output "$1" --mode "$2" --primary
 }
 
 function setBlanking() {
-  timeout="${DATA[/display/blank/value]}"
+  timeout="$1"
   if [ "$timeout" -gt 0 ]; then
     xset s blank
     xset s $[ $timeout * 60 ]
@@ -25,6 +26,7 @@ function setBlanking() {
   fi
 }
 
+
 function readAvailableAdapters() {
   xrandr -q | grep -Po '^\K(.*)(?= connected)'
 }
@@ -41,33 +43,9 @@ function readCurrentResolution() {
   xrandr -q | grep -m1 -Po 'current \K([0-9]* x [0-9]*)(?=)' | sed 's/ //g'
 } 
 
-function reload() {
-  janosh set /display/resolution/value $(readCurrentResolution)
-  adapter="$(janosh -r get /display/adapter/value)"
-  i=0
-
-  readAvailableAdapters | while read a; do
-    janosh set "/display/adapter/choices/#$i" "$a"
-    i=$[$i+1]
-  done
-
-  [ -z $adapter ] && adapter="$(janosh -r get /display/adapter/choices/#0)"
-
-  readAvailableResolutions "$adapter" | while read r; do
-    janosh set "/display/resolution/choices/#$i" "$r"
-    i=$[$i+1]
-  done
-}
-
-function apply() {
-  setResolution
-  setBlanking
-  #make sure the mouse cursor isn't visible even if -nocursur fails
-  xdotool mousemove 1900 1200
-}
-
 if [ "$(type -t "$FUNCTION")" == "function" ]; then
-  $FUNCTION
+  shift
+  $FUNCTION $@
 else
   echo "Unknown command: $FUNCTION" 1>&2
   exit 1

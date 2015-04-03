@@ -65,25 +65,23 @@ else
 fi
 
 function makeHostname() {
-  $janosh -t set /network/hostname "$1"
+  $janosh set /network/hostname "$1"
 }
 
 function makeDNS() {
-  $janosh -t set /network/nameserver "$1"
+  $janosh set /network/nameserver "$1"
 }
 
 function makeDHCPNet() {
   $janosh set /network/connection/interface "$1"
-  $janosh -e makeNetworkDhcp 
 }
 
 function makeManualNet() {
   $janosh set /network/mode/value Manual /network/connection/interface "$1" /network/address "$2" /network/netmask "$3" /network/gateway "$4"
-  $janosh -e makeNetworkMan
 }
 
 function makeWifi() {
-  $janosh -t set /network/connection/interface "$1" /network/wifi/ssid "$2" /network/wifi/encryption/value "$3" /network/wifi/passphrase "$4"
+  $janosh set /network/connection/interface "$1" /network/wifi/ssid "$2" /network/wifi/encryption/value "$3" /network/wifi/passphrase "$4"
 }
 
 function doConf() {
@@ -162,22 +160,17 @@ function rebootConf(){
 }
 
 function finish() {
+ $janosh publish networkMake
  update-rc.d xserver defaults
  update-rc.d screeninvader defaults
  update-rc.d avahi-daemon defaults
  mkdir -p /share
  mkdir -p /var/cache/debconf/
  chown -R lounge:users /lounge/
-
  usermod -s /bin/bash root
  usermod -G audio lounge
-
- sudo -u lounge "/lounge/triggers/sound reload"
- 
- # FIXME: dirty hack to avoid error: set /foo foo
-# $janosh -e makeDefaultInittab set /foo foo
- /etc/init.d/janosh stop
-
+ cat /var/log/network.log 
+ cat /var/log/janosh-root.log
  /sbin/shutdown -r now
 }
 

@@ -19,7 +19,7 @@ noconsolecontrols=yes
 nomouseinput=yes
 nolirc=yes
 nojoystick=yes
-fixed-vo=yes
+#fixed-vo=yes
 msgmodule=yes
 msglevel=global=9:demuxer=9:statusline=0:cplayer=0:decvideo=0:decaudio=0:network=9:cache=9
 #msglevel=all=9:statusline=0
