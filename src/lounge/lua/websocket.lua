@@ -10,9 +10,9 @@ function receive(handle, message)
    end
 end
 
-function push(key, value,op)
+function push(key, op, value)
    print('push updates')
-   Janosh:wsBroadcast(JSON:encode({key, value, op}))
+   Janosh:wsBroadcast(JSON:encode({key, op, value}))
 end
 
 Janosh:wsOpen(8080)
