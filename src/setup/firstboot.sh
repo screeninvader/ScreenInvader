@@ -160,22 +160,17 @@ function rebootConf(){
 }
 
 function finish() {
- janosh publish networkMake
+ $janosh publish networkMake
  update-rc.d xserver defaults
  update-rc.d screeninvader defaults
  update-rc.d avahi-daemon defaults
  mkdir -p /share
  mkdir -p /var/cache/debconf/
  chown -R lounge:users /lounge/
-
  usermod -s /bin/bash root
  usermod -G audio lounge
-
- sudo -u lounge "/lounge/triggers/sound reload"
- 
- # FIXME: dirty hack to avoid error: set /foo foo
- /etc/init.d/janosh stop
-
+ cat /var/log/network.log 
+ cat /var/log/janosh-root.log
  /sbin/shutdown -r now
 }
 
