@@ -60,15 +60,15 @@ function MidoriClass.scrollDown(self)
   self:cmd("ScrollDown")
 end
 
-function MidoriClass.scollUp(self)
+function MidoriClass.scrollUp(self)
   self:cmd("ScrollUp")
 end
 
-function MidoriClass.scollLeft(self)
+function MidoriClass.scrollLeft(self)
   self:cmd("ScrollLeft")
 end
 
-function MidoriClass.scollRight(self)
+function MidoriClass.scrollRight(self)
   self:cmd("ScrollRight")
 end
 
