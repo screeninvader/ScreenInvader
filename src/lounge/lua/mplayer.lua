@@ -171,5 +171,10 @@ print("len: ", len)
   end
 end
 
+function MplayerClass.loadFile(self,path)
+  Janosh:trigger("/player/active", "true")
+  self:cmd("loadfile " .. path)
+end
+
 
 return MplayerClass:new()

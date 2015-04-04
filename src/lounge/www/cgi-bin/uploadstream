@@ -11,7 +11,7 @@ set -x
   if echo "$contentType" | grep -E "(video|matroska|audio|octet-stream)"; then
     tmp="$(mktemp -u)"
     mkfifo "$tmp"
-    janosh trigger /player/url "$tmp"
+    janosh publish playerLoadFile "$tmp"
     sleep 1
     dd if=/dev/stdin of="$tmp"
   elif echo "$contentType" | fgrep "image"; then
