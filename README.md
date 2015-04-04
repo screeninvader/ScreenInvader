@@ -8,20 +8,15 @@ This is what ScreenInvader helps you do: browse the web, watch videos or flip th
 
 #### Get it! #####
 
-Please checkout the documentation in the [wiki](https://github.com/Metalab/ScreenInvader/wiki/)    and especially the [getting started](https://github.com/Metalab/ScreenInvader/wiki/Getting-Started) guide.
+Please checkout the documentation in the [wiki](https://github.com/screeninvader/ScreenInvader/wiki/)    and especially the [getting started](https://github.com/screeninvader/ScreenInvader/wiki/Getting-Started) guide.
 
 #### Contribute! #####
 
-You can find a guide on how to build images and hack custom features [Here](https://github.com/Metalab/ScreenInvader/wiki/Hacking)
+You can find a guide on how to build images and hack custom features [Here](https://github.com/screeninvader/ScreenInvader/wiki/Hacking)
 
 -------
 
-License: AGPL V3
+License: AGPL V3 or later
 
-
-Contributors
------------
-
-* Amir Hassan: <amir@viel-zu.org>
-* Jascha Ehrenreich <jascha@jaeh.at>
-* Bernd Forstner <red667@gmail.com>
+#### Contributors List #####
+[Here](TODO)
