@@ -1,5 +1,0 @@
-#!/bin/bash
-/root/triggers/network reload
-/root/triggers/sound reload
-/root/triggers/display reload
-/root/triggers/storage reload

@@ -1,8 +1,0 @@
-#!/bin/bash
-/root/triggers/network apply
-/root/triggers/storage apply
-/root/triggers/display apply
-
-/etc/init.d/xserver restart &
-disown
-
