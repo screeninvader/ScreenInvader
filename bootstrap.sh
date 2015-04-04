@@ -209,7 +209,10 @@ function doBuild() {
 
   check "Clone lanes" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_lanes.sh" 
-  
+
+  check "Clone luaposix" \
+    "cd $BOOTSTRAP_DIR/third/; ./clone_luaposix.sh"
+ 
 
   check "Copy third party" \
     "cp -r $BOOTSTRAP_DIR/third/ \"$CHROOT_DIR\""
@@ -232,12 +235,6 @@ function doBuild() {
 
     check "build libvdpau-sunxi" \
       "$CHRT /third/build_libvdpau-sunxi.sh"
-
-    check "build janosh" \
-      "$CHRT /third/build_janosh.sh"
-
-    check "build lanes" \
-      "$CHRT /third/build_lanes.sh"
   fi
 
   check "build janosh" \
@@ -245,6 +242,9 @@ function doBuild() {
 
   check "build lanes" \
     "$CHRT /third/build_lanes.sh"
+
+  check "build luaposix" \
+    "$CHRT /third/build_luaposix.sh"
 
   check "build SimpleOSD" \
     "$CHRT /third/build_simpleosd.sh"
