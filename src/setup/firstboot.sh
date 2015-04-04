@@ -58,6 +58,8 @@ $janosh dump
 
 cp /var/log/janosh-*.log /setup
 
+$janosh publish networkReload
+
 if [ -f ./answer.sh ]; then
   source ./answer.sh
 else
@@ -107,7 +109,7 @@ function connectionConf() {
     if [ "$howconf" == "Wifi" ]; then
       doConf "wireless"
     elif  [ "$howconf" == "Ethernet" ]; then
-      export INTERFACE="`/root/triggers/network readWiredNics`"
+      export INTERFACE="eth0"
       doConf "network"
     fi
   else
@@ -122,7 +124,7 @@ function wirelessConf() {
     if [ "$encrypt" == "WPA-PSK" -o "$encrypt" == "WEP" ]; then
       passphrase=$(askWifiPassphrase)
     fi
-    export INTERFACE="`/root/triggers/network readWirelessNics`"
+    export INTERFACE="wlan0"
     makeWifi "$INTERFACE" "$ssid" "$encrypt" "$passphrase"
     doConf "network"
   else
@@ -175,4 +177,5 @@ function finish() {
 }
 
 doConf "hostname"
+$janosh publish networkReload
 ) &> /setup.log
