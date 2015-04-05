@@ -109,6 +109,8 @@ function getCategory(url)
     else
       mimeType=Janosh:capture("curl --head \"" .. lastloc .. "\" | grep -iPo 'Content-Type: \\K(.*)?(?=)'")
     end  
+  elseif string.match(url, "[a-zA-Z]+://") then
+    mimeType = "video/fixed"
   else
     file=url
     mimeType=Janosh:capture("file -i \"" .. file .. "\" | sed 's/.*: \\([a-zA-Z]*\\/[a-zA-Z]*\\).*/\\1/p' | sed '1d'")
