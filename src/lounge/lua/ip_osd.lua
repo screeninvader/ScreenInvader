@@ -13,11 +13,15 @@ local function hide()
 end
 
 function toggle(key,op,value) 
-  if value == "true" then
+Janosh:transaction(function()
+  obj = Janosh:get({"/player/active", "/browser/active", "/pdf/active", "/image/active", "/animation/active"})
+  Janosh:tprint(obj)
+  if obj.player.active == "true" or obj.browser.active == "true" or obj.pdf.active == "true" or obj.image.active == "true" or obj.animation.active == "true"  then
     hide()
   else
     show()
   end
+end)
 end
 
 show()
