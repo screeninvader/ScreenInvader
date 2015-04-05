@@ -133,7 +133,8 @@ end
   handler=CATEGORY_MAP[cat]
   print("triggering:", handler, "/", cat)
   if handler ~= nil then
-    Janosh:set_all_t({"/" .. handler .. "/category",cat, "/" .. handler .. "/url", url})
+    Janosh:set("/" .. handler .. "/category",cat)
+    Janosh:trigger("/" .. handler .. "/url", url) 
   else
     util:exception("Unable to handle url: " .. url)
   end
