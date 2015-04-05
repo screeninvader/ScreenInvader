@@ -60,4 +60,5 @@ libmpg123-0
 libtheora0
 libvorbis0a
 libtwolame0
+lua-posix
 

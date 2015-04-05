@@ -42,4 +42,5 @@ libmpg123-dev
 libtheora-dev
 libvorbis-dev
 libtwolame-dev
+lua-posix-dev
 
