@@ -1,7 +1,9 @@
 #!/lounge/bin/janosh -f
 
+local util = require("util")
 function receive(handle, message)
    if message == 'setup' then
+      util:notify("New client connected: " .. handle)      
       print("new client")
       Janosh:wsSend(handle, janosh_get({"/."}))
    else
