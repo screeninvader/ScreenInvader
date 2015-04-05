@@ -34,10 +34,10 @@ function MplayerClass.jump(self, idx)
   file = obj[tonumber(idx)].url
   title = obj[tonumber(idx)].title
   self:cmd("pause")
-  Janosh:trigger("/player/active", "true")
+  Janosh:set_t("/player/active", "true")
   util:notify("Loading: " .. title)
   self:cmd("loadfile " .. file)
-  Janosh:trigger("/playlist/index", tostring(idx))
+  Janosh:set_t("/playlist/index", tostring(idx))
 end
 
 function MplayerClass.previous(self) 
@@ -56,11 +56,13 @@ function MplayerClass.enqueue(self, videoUrl, title, srcUrl)
   if title == "" then
     title = "(no title)"
   end
+  print("msize")
   size = Janosh:size("/playlist/items/.")
   Janosh:mkobj("/playlist/items/#" .. size .. "/.")
   Janosh:set("/playlist/items/#" .. size .. "/url", videoUrl)
   Janosh:set("/playlist/items/#" .. size .. "/title", title)
   Janosh:set("/playlist/items/#" .. size .. "/source", srcUrl)
+  print("msizend")
   print("enqueuend")
 end
 
@@ -136,7 +138,7 @@ function MplayerClass.stop(self)
 
   Janosh:transaction(function()
     if Janosh:get("/player/active").active == "true" then
-      Janosh:trigger("/player/active","false")
+      Janosh:set_t("/player/active","false")
       Janosh:publish("backgroundRefresh", "W", "")
     end
   end)
@@ -154,7 +156,7 @@ function MplayerClass.sotrack(self)
 end
 
 function MplayerClass.cache_empty(self)
-  Janosh:trigger("/notify/message", "Network Problem!")
+  Janosh:publish("notifySend", "Network Problem!")
 end
 
 function MplayerClass.eotrack(self) 
@@ -164,7 +166,7 @@ function MplayerClass.eotrack(self)
   len = #obj.items
 print("idx: ", idx)
 print("len: ", len)
-  if idx < len - 1 then
+  if idx < len then
     self:jump(tostring(idx + 1))
   else
     self:stop()
@@ -172,7 +174,7 @@ print("len: ", len)
 end
 
 function MplayerClass.loadFile(self,path)
-  Janosh:trigger("/player/active", "true")
+  Janosh:set_t("/player/active", "true")
   self:cmd("loadfile " .. path)
 end
 
