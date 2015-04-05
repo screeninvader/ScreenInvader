@@ -164,7 +164,7 @@ function MplayerClass.eotrack(self)
   len = #obj.items
 print("idx: ", idx)
 print("len: ", len)
-  if idx < len - 1 then
+  if idx < len then
     self:jump(tostring(idx + 1))
   else
     self:stop()
