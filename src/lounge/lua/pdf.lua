@@ -21,7 +21,7 @@ function open(key, op, value)
   Janosh:system("rm " .. tmpfile)
 
 --FIXME notify Loading category: url 
-  Janosh:trigger("/pdf/active", "true")
+  Janosh:set_t("/pdf/active", "true")
 end
 
 Janosh:subscribe("/pdf/url", open)
@@ -29,7 +29,7 @@ Janosh:subscribe("pdfClose", function(key,op,value)
   mupdf:close()
   Janosh:transaction(function()
     if Janosh:get("/pdf/active").active == "true" then
-      Janosh:trigger("/pdf/active", "false")
+      Janosh:set_t("/pdf/active", "false")
     end
   end)
 end)
