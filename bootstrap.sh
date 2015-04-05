@@ -178,9 +178,6 @@ function doBuild() {
     "$CHRT $APTNI -t sid install $PKG_BUILD"
 
   if [ $ARCH == "armhf" ]; then
-    check "Clone mplayer" \
-      "cd $BOOTSTRAP_DIR/third/; ./clone_mplayer.sh"
-
     check "Clone dri2" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_dri2.sh"
 
@@ -199,6 +196,8 @@ function doBuild() {
     check "Clone fbturbo" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_xf86-video-fbturbo.sh"
 
+  check "Clone mplayer" \
+    "cd $BOOTSTRAP_DIR/third/; ./clone_mplayer.sh"
   fi  
 
   check "Clone janosh" \
@@ -218,9 +217,6 @@ function doBuild() {
     "cp -r $BOOTSTRAP_DIR/third/ \"$CHROOT_DIR\""
 
   if [ $ARCH == "armhf" ]; then
-    check "build mplayer" \
-      "$CHRT /third/build_mplayer.sh"
-
     check "build dri2" \
       "$CHRT /third/build_dri2.sh"
 
@@ -235,6 +231,9 @@ function doBuild() {
 
     check "build libvdpau-sunxi" \
       "$CHRT /third/build_libvdpau-sunxi.sh"
+
+    check "build mplayer" \
+      "$CHRT /third/build_mplayer.sh"
   fi
 
   check "build luajit-rocks" \
