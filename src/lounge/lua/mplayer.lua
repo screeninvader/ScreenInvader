@@ -33,6 +33,13 @@ function MplayerClass.jump(self, idx)
   end
   file = obj[tonumber(idx)].url
   title = obj[tonumber(idx)].title
+  if string.match(file, "-http[s]*://") then
+    if code ~= 200 then
+      Janosh:publish("cacheFix", "W", idx)
+      return
+    end
+  end
+
   self:cmd("pause")
   Janosh:set_t("/player/active", "true")
   util:notify("Loading: " .. title)
@@ -56,13 +63,11 @@ function MplayerClass.enqueue(self, videoUrl, title, srcUrl)
   if title == "" then
     title = "(no title)"
   end
-  print("msize")
   size = Janosh:size("/playlist/items/.")
   Janosh:mkobj("/playlist/items/#" .. size .. "/.")
   Janosh:set("/playlist/items/#" .. size .. "/url", videoUrl)
   Janosh:set("/playlist/items/#" .. size .. "/title", title)
   Janosh:set("/playlist/items/#" .. size .. "/source", srcUrl)
-  print("msizend")
   print("enqueuend")
 end
 

@@ -16,7 +16,8 @@ function open(key, op, value)
   end
   midori:openUrl(url)
   --FIXME notify Loading category: url 
-  Janosh:set_all_t({ "/image/active", "false",  "/browser/active", "false", "/animation/active", "false", "/" .. active .. "/active", "true"})
+  Janosh:set_all({ "/image/active", "false",  "/browser/active", "false", "/animation/active", "false"})
+  Janosh:set_t("/" .. active .. "/active", "true");
 end
 
 Janosh:subscribe("/browser/url", open)
@@ -25,7 +26,8 @@ Janosh:subscribe("browserClose", function(key,op,value)
   Janosh:transaction(function()
     obj = Janosh:get({ "/image/active", "/browser/active", "/animation/active"})
     if obj.browser.active == "true" or obj.image.active == "true" or obj.animation.active == true then
-      Janosh:set_all_t({ "/image/active", "false",  "/browser/active", "false", "/animation/active", "false", "/browser/active", "false"})
+      Janosh:set_all({ "/image/active", "false",  "/browser/active", "false", "/animation/active", "false"})
+      Janosh:set_t("/browser/active", "false");
     end
   end)
 end)

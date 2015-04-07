@@ -1,14 +1,8 @@
 #!/lounge/bin/janosh -f
-local mplayer = require("mplayer")
 
-local function split(str, delim)
-    local res = {}
-    local pattern = string.format("([^%s]+)%s", delim, delim)
-    for line in str:gmatch(pattern) do
-        table.insert(res, line)
-    end
-    return res
-end
+
+local util = require("util")
+local mplayer = require("mplayer")
 
 local function basename(str)
   local name = string.gsub(str, "(.*/)(.*)", "%2")
@@ -26,7 +20,7 @@ function openPlayer(key, op, value)
   if category ~= "video" then
     output = Janosh:capture("/usr/bin/youtube-dl --encoding utf-8 -g -e \"" .. url .. "\"")
     print("split")
-    lines = split(output, "\n")
+    lines = util:split(output, "\n")
     print(#lines)
     assert(#lines == 2)
     print("assign")
