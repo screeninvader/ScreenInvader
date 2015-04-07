@@ -3,6 +3,7 @@
 local util = require("util")
 
 Janosh:set("/player/active", "false")
+Janosh:setenv("VDPAU_OSD","1")
 Janosh:setenv("http_proxy","http://localhost:1234/")
 Janosh:system("killall mplayer")
 local PID, STDIN, STDOUT, STDERR = Janosh:popen("bash", "-c", "exec mplayer -idle -input file=/dev/stdin 2>&1")
@@ -68,7 +69,6 @@ function MplayerClass.jump(self, idx)
 
   self:cmd("pause")
   Janosh:set_t("/player/active", "true")
-  util:notify("Loading: " .. title)
   self:cmd("loadfile " .. file)
   Janosh:set_t("/playlist/index", tostring(idx))
 end
@@ -200,6 +200,11 @@ function MplayerClass.subtitle(self)
 end
 
 function MplayerClass.sotrack(self)
+  Janosh:transaction(function()
+    idx = Janosh:get("/playlist/index").index
+    title = Janosh:get("/playlist/items/#" .. tonumber(idx - 1) .. "/title").items[1].title
+    self:cmd("osd_show_property_text \"" .. title .. " ${length}\"  3000 0")
+  end)
 end
 
 function MplayerClass.cache_empty(self)
