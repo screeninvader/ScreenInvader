@@ -107,10 +107,21 @@ end
 
 function MplayerClass.run(self) 
 print("run")
+  Janosh:thread(function()
+    while true do
+     print("TIMEPOS")
+     Janosh:sleep(1000)
+     Janosh:lock("MplayerClass.cmd")
+     Janosh:pwrite(STDIN, "get_percent_pos\n")
+     Janosh:unlock("MplayerClass.cmd")
+    end
+  end)()
+
   SOTRACK="DEMUXER: ==> Found"
   EOTRACK="GLOBAL: EOF code: 1"
   PATH_CHANGED="GLOBAL: ANS_path="
   CACHEEMPTY="Cache empty"
+  TIMEPOS="GLOBAL: ANS_PERCENT_POSITION"
 
   while true do
     line=""
@@ -124,6 +135,11 @@ print("run")
         self:sotrack()
       elseif string.find(line, CACHEEMPTY) then
         self:cache_empty()
+      elseif string.find(line, TIMEPOS) then
+        print("######", line)
+        time =line:gsub(".*=","")
+        print("######", time)
+        Janosh:publish("playerTimePos", "W", time)
       end
     end
     Janosh:sleep(1000)
