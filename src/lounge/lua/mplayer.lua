@@ -33,9 +33,35 @@ function MplayerClass.jump(self, idx)
   end
   file = obj[tonumber(idx)].url
   title = obj[tonumber(idx)].title
-  if string.match(file, "-http[s]*://") then
-    if code ~= 200 then
+  if string.match(file, "http[s]*://") then
+    if string.match(file, "googlevideo.com") then
+      target=file:gsub("http", "https")
+    end
+
+    Janosh:setenv("http_proxy","http://localhost:1234/")
+    print("TARGET:", target)
+    p, i, o, e = Janosh:popen("curl", "--head", target)
+    Janosh:setenv("http_proxy","")
+    line=""
+    head=""
+    while true do
+      line=Janosh:preadLine(o)
+      if line == nil then break end
+      head= head .. string.gsub(line, "\r", "\n")
+    end
+    print("HEAD:", head)
+    Janosh:pclose(i)
+    Janosh:pclose(e)
+    Janosh:pclose(o)
+
+    line=util:split(head,"\n")[1]
+    token=util:split(line," ")[2]
+    code=tonumber(token)
+   
+    print("CODE:", code)
+    if code ~= 200 and code ~= 302 then
       Janosh:publish("cacheFix", "W", idx)
+      print("INDEX:", idx)
       return
     end
   end
