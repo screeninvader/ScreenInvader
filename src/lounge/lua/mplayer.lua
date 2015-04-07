@@ -83,6 +83,9 @@ function MplayerClass.next(self)
   self:jump(tonumber(Janosh:get("/playlist/index").index) + 1)
 end
 
+function MplayerClass.seek(self, seconds)
+  self:cmd("set_property time_pos " .. seconds)
+end
 
 function MplayerClass.enqueue(self, videoUrl, title, srcUrl) 
   util:notify("Queued: " .. title)
@@ -112,7 +115,7 @@ print("run")
      print("TIMEPOS")
      Janosh:sleep(1000)
      Janosh:lock("MplayerClass.cmd")
-     Janosh:pwrite(STDIN, "get_percent_pos\n")
+     Janosh:pwrite(STDIN, "run \"echo TIMEPOS: ${time_pos} ${length}\" > /dev/stdout\n")
      Janosh:unlock("MplayerClass.cmd")
     end
   end)()
@@ -121,7 +124,7 @@ print("run")
   EOTRACK="GLOBAL: EOF code: 1"
   PATH_CHANGED="GLOBAL: ANS_path="
   CACHEEMPTY="Cache empty"
-  TIMEPOS="GLOBAL: ANS_PERCENT_POSITION"
+  TIMEPOS="TIMEPOS:"
 
   while true do
     line=""
@@ -137,7 +140,7 @@ print("run")
         self:cache_empty()
       elseif string.find(line, TIMEPOS) then
         print("######", line)
-        time =line:gsub(".*=","")
+        time =line:gsub(TIMEPOS,"")
         print("######", time)
         Janosh:publish("playerTimePos", "W", time)
       end
