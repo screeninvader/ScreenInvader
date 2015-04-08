@@ -3,6 +3,7 @@
 
 local util = require("util")
 local mplayer = require("mplayer")
+local helpers = require("helpers")
 
 local function basename(str)
   local name = string.gsub(str, "(.*/)(.*)", "%2")
@@ -17,21 +18,18 @@ function openPlayer(key, op, value)
   videoUrl=""
   title=""
 
-  if category ~= "video" then
-    output = Janosh:capture("/usr/bin/youtube-dl --encoding utf-8 -g -e \"" .. url .. "\"")
-    print("split")
-    lines = util:split(output, "\n")
-    print(#lines)
-    assert(#lines == 2)
-    print("assign")
-    title = lines[1]
-    videoUrl = lines[2]
-    videoUrl = string.gsub(videoUrl, "https://", "http://")
+  if category ~= "video" and category ~= "audio" then
+    items = helpers:resolve(url,category)
+
+    for title, videoUrl in pairs(items) do
+      print("ADD:", title)
+      mplayer:add(videoUrl, title, url)
+    end
   else
     videoUrl = url
     title = basename(url)
+    mplayer:add(videoUrl, title, url)
   end
-  mplayer:add(videoUrl, title, url)
 end
 
 Janosh:subscribe("/player/url", openPlayer)

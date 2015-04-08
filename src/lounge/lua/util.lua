@@ -7,6 +7,18 @@ function UtilClass.new()
   return setmetatable({}, UtilClass)
 end
 
+function UtilClass.hex_to_char(self, x)
+  return string.char(tonumber(x, 16))
+end
+
+function UtilClass.urldecode(self, url)
+  return url:gsub("%%(%x%x)", self.hex_to_char)
+end
+
+function UtilClass.http_get(self,url)
+   return Janosh:capture("/usr/bin/curl -s -L '" .. url .. "'")
+end
+
 function UtilClass.getIPAddress(self) 
   return self:trim(Janosh:capture("/sbin/ifconfig eth0 | grep -Po 'inet addr:\\K.*?(?= )' | tail -n1"
 ))
@@ -50,15 +62,17 @@ print(pid, sin, sout, serr)
   return id;
 end
 
-function UtilClass.split(self, str, delim)
-    local res = {}
-    local pattern = string.format("([^%s]+)%s", delim, delim)
-    for line in str:gmatch(pattern) do
-        table.insert(res, line)
-    end
-    return res
+function UtilClass.split(self,inputstr, sep)
+        if sep == nil then
+                sep = "%s"
+        end
+        local t={} ; i=1
+        for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+                t[i] = str
+                i = i + 1
+        end
+        return t
 end
-
 return UtilClass:new()
 
 

@@ -3,7 +3,9 @@
 local util = require("util")
 
 Janosh:set("/player/active", "false")
-Janosh:setenv("VDPAU_OSD","1")
+Janosh:set("/player/paused", "false")
+
+--Janosh:setenv("VDPAU_OSD","1")
 Janosh:setenv("http_proxy","http://localhost:1234/")
 Janosh:system("killall mplayer")
 local PID, STDIN, STDOUT, STDERR = Janosh:popen("bash", "-c", "exec mplayer -idle -input file=/dev/stdin 2>&1")
@@ -40,7 +42,6 @@ function MplayerClass.jump(self, idx)
     end
 
     Janosh:setenv("http_proxy","http://localhost:1234/")
-    print("TARGET:", target)
     p, i, o, e = Janosh:popen("curl", "--head", target)
     Janosh:setenv("http_proxy","")
     line=""
@@ -50,7 +51,6 @@ function MplayerClass.jump(self, idx)
       if line == nil then break end
       head= head .. string.gsub(line, "\r", "\n")
     end
-    print("HEAD:", head)
     Janosh:pclose(i)
     Janosh:pclose(e)
     Janosh:pclose(o)
@@ -59,7 +59,6 @@ function MplayerClass.jump(self, idx)
     token=util:split(line," ")[2]
     code=tonumber(token)
    
-    print("CODE:", code)
     if code ~= 200 and code ~= 302 then
       Janosh:publish("cacheFix", "W", idx)
       print("INDEX:", idx)
@@ -69,6 +68,7 @@ function MplayerClass.jump(self, idx)
 
   self:cmd("pause")
   Janosh:set_t("/player/active", "true")
+  util:notify("Loading: " .. title)
   self:cmd("loadfile " .. file)
   Janosh:set_t("/playlist/index", tostring(idx))
 end
@@ -112,10 +112,9 @@ function MplayerClass.run(self)
 print("run")
   Janosh:thread(function()
     while true do
-     print("TIMEPOS")
      Janosh:sleep(1000)
      Janosh:lock("MplayerClass.cmd")
-     Janosh:pwrite(STDIN, "run \"echo TIMEPOS: ${time_pos} ${length}\" > /dev/stdout\n")
+     Janosh:pwrite(STDIN, "pausing_keep run \"echo TIMEPOS: ${time_pos}/${length}\" > /dev/stdout\n")
      Janosh:unlock("MplayerClass.cmd")
     end
   end)()
@@ -124,7 +123,7 @@ print("run")
   EOTRACK="GLOBAL: EOF code: 1"
   PATH_CHANGED="GLOBAL: ANS_path="
   CACHEEMPTY="Cache empty"
-  TIMEPOS="TIMEPOS:"
+  TIMEPOS="TIMEPOS: "
 
   while true do
     line=""
@@ -139,10 +138,8 @@ print("run")
       elseif string.find(line, CACHEEMPTY) then
         self:cache_empty()
       elseif string.find(line, TIMEPOS) then
-        print("######", line)
-        time =line:gsub(TIMEPOS,"")
-        print("######", time)
-        Janosh:publish("playerTimePos", "W", time)
+        times=util:split(line:gsub(TIMEPOS,""), "/")
+        Janosh:publish("playerTimePos", "W", JSON:encode(times))
       end
     end
     Janosh:sleep(1000)
@@ -177,8 +174,16 @@ function MplayerClass.rewindMore(self)
 end
 
 function MplayerClass.pause(self)
-  util:notify("Pause")
-  self:cmd("pause")
+  Janosh:transaction(function()
+    util:notify("Pause")
+    paused = Janosh:get("/player/paused").paused
+    self:cmd("pause")
+    if paused == "false" then
+      Janosh:set_t("/player/paused", "true")
+    else
+      Janosh:set_t("/player/paused", "false")
+    end
+  end)
 end
 
 function MplayerClass.stop(self)
