@@ -5,7 +5,6 @@ export DISPLAY=:0
 export HOME=/lounge
 export PATH="/lounge/bin/:$PATH"
 sudo -u lounge xhost +
-sudo -u lounge /usr/bin/python /lounge/bin/proxy.py &>/tmp/proxy &
 #resolution="$(sudo -u lounge /lounge/bin/janosh -r get /display/resolution)"
 #sudo -u lounge /lounge/bin/janosh -t set /display/resolution $resolution
 
