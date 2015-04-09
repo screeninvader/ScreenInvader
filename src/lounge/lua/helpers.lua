@@ -27,7 +27,7 @@ function HelpersClass.resolve(self, url, category)
 end
 
 function HelpersClass.youtube_dl(self, url)
-    p,i,o,e = Janosh:psystem("/usr/bin/youtube-dl --encoding utf-8 --prefer-insecure -g -e '" .. url .. "'")
+    p,i,o,e = Janosh:psystem("/usr/bin/youtube-dl --encoding utf-8 -g -e '" .. url .. "'")
     items={}
     title=""
     url=""
@@ -35,7 +35,6 @@ function HelpersClass.youtube_dl(self, url)
       title = Janosh:preadLine(o)
       url = Janosh:preadLine(o)
       if title == nil or url == nil then break end
-      url = string.gsub(url, "https://", "http://")
       items[title]=url
     end
     Janosh:pclose(i)

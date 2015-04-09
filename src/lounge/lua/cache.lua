@@ -13,7 +13,6 @@ function fix(key, op, value)
     assert(#lines == 2)
     title = lines[1]
     videoUrl = lines[2]
-    videoUrl = string.gsub(videoUrl, "https://", "http://")
     Janosh:set("/playlist/items/#" .. idx .. "/url", videoUrl)
   end)
   Janosh:publish("playerJump","W", idx + 1)

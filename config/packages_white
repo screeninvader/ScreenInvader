@@ -18,7 +18,6 @@ mupdf
 wpasupplicant
 debconf
 apache2-utils
-mplayer
 feh
 xbindkeys
 bash
@@ -61,4 +60,6 @@ libtheora0
 libvorbis0a
 libtwolame0
 lua-posix
+mpv
+socat
 
