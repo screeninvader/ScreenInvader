@@ -30,17 +30,5 @@ libluajit-5.1-dev
 unzip
 binutils-dev
 libasound2-dev
-libxv-dev
-libvpx-dev
-libx264-dev
-libxvidcore-dev
-libdv4-dev
-libopus-dev
-libfaac-dev
-libmpeg2-4-dev
-libmpg123-dev
-libtheora-dev
-libvorbis-dev
-libtwolame-dev
 lua-posix-dev
 
