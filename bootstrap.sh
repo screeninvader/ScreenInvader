@@ -48,6 +48,7 @@ APTCACHER_PORT=
 NOINSTALL=
 NODEBOOT=
 NOCLEANUP=
+KEEP_DEPS=
 CHROOT_DIR=
 CHRT=
 DEBUG=
@@ -67,6 +68,7 @@ Options:
   -u        Combined -d, -i and -b
   -c <file> Specify the config file for non-interactive configuration at first boot
   -x        Install extra packages for debugging
+  -k        Keep build dependencies and sources
 EOUSAGE
   exit 1
 }
@@ -292,21 +294,19 @@ function doCleanupPackages() {
   check "Autoremove packages" \
     "$CHRT $APTNI autoremove"
 
-  if  [ $ARCH == "armhf" ]; then
-    check "remove build dependencies" \
-      "$CHRT $APTNI remove $PKG_BUILD"
-  fi
-
   check "Clean apt cache" \
     "$CHRT $APTNI clean"
 }
 
-function doCleanupFiles() {
-  if  [ $ARCH == "armhf" ]; then
-    check "remove third " \
-      "rm -rf  \"$CHROOT_DIR/third\""
-  fi
+function doCleanupBuildDeps() {
+  check "remove build dependencies" \
+    "$CHRT $APTNI remove $PKG_BUILD"
 
+  check "remove third " \
+      "rm -rf  \"$CHROOT_DIR/third\""
+}
+
+function doCleanupFiles() {
   check "Remove black listed files" \
     "$CHRT bash -c \"rm -fr $FILES_BLACK\""
 }
@@ -399,7 +399,7 @@ EOHTML
 
 ###### main
 
-while getopts 'a:l:p:g:c:iduxbz' c
+while getopts 'a:l:p:g:c:iduxbzk' c
 do
   case $c in
     a) ARCH="$OPTARG";;
@@ -412,6 +412,7 @@ do
     u) NOINSTALL="YES"; NODEBOOT="YES"; NOCLEANUP="YES"; DONT_REBUILD="YES";;
     x) INSTALL_EXTRA="YES";;
     b) DONT_REBUILD="YES";;
+    k) KEEP_DEPS="YES";;
     \?) printUsage;;
   esac
 done
@@ -452,6 +453,12 @@ else
     doBuild
   else
     skip "build"
+  fi
+
+  if [ -z "$KEEP_DEPS" ]; then
+    doCleanupBuildDeps
+  else
+    skip "cleanup build dependencies"
   fi
 
   if [ -z "$NOCLEANUP" ]; then
