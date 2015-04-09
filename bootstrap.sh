@@ -196,8 +196,6 @@ function doBuild() {
     check "Clone fbturbo" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_xf86-video-fbturbo.sh"
 
-  check "Clone mplayer" \
-    "cd $BOOTSTRAP_DIR/third/; ./clone_mplayer.sh"
   fi  
 
   check "Clone janosh" \
@@ -232,8 +230,6 @@ function doBuild() {
     check "build libvdpau-sunxi" \
       "$CHRT /third/build_libvdpau-sunxi.sh"
 
-    check "build mplayer" \
-      "$CHRT /third/build_mplayer.sh"
   fi
 
   check "build luajit-rocks" \
