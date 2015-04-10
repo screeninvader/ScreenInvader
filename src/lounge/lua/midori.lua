@@ -2,6 +2,7 @@
 
 local util = require("util")
 
+Janosh:setenv("DISPLAY",":0")
 local MidoriClass = {} -- the table representing the class, which will double as the metatable for the instances
 MidoriClass.__index = MidoriClass -- failed table lookups on the instances should fallback to the class table, to get methods
 
@@ -49,11 +50,11 @@ function MidoriClass.close(self)
 end
 
 function MidoriClass.pageDown(self) 
-  Janosh:sytem("xdotool key Page_Down")
+  Janosh:system("xdotool key Page_Down")
 end
 
 function MidoriClass.pageUp(self)
-  Janosh:sytem("xdotool key Page_Up")
+  Janosh:system("xdotool key Page_Up")
 end
 
 function MidoriClass.scrollDown(self)

@@ -7,8 +7,8 @@ end
 
 function clear(key, op, value)
   Janosh:transaction(function()
-    Janosh:remove("/playlist/items/.")
-    Janosh:mkarr("/playlist/items/.")
+    Janosh:remove_t("/playlist/items/.")
+    Janosh:mkarr_t("/playlist/items/.")
   end)
 end
 

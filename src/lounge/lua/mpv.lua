@@ -11,7 +11,7 @@ Janosh:system("killall -9 mpv")
 local MPID, MSTDIN, MSTDOUT, MSTDERR = Janosh:popen("mpv", "-idle", "--input-unix-socket", "/tmp/mpv.socket")
 Janosh:pclose(MSTDIN)
 
-Janosh:sleep(1000)
+Janosh:sleep(3000)
 local S1PID, S1STDIN, S1STDOUT, S1STDERR = Janosh:popen("/usr/bin/socat", "-", "/tmp/mpv.socket")
 Janosh:pclose(S1STDERR)
 
@@ -42,7 +42,7 @@ function MpvClass.jump(self, idx)
     Janosh:pclose(i)
     Janosh:pclose(e)
     Janosh:pclose(o)
---   Janosh:pwait(p)
+--    Janosh:pwait(p)
 
     token=util:split(line," ")[2]
     code=tonumber(token)
@@ -52,10 +52,12 @@ function MpvClass.jump(self, idx)
     end
   end
 
-  Janosh:set_t("/player/active", "true")
-  util:notify("Loading: " .. title)
-  self:cmd("loadfile", file)
-  Janosh:set_t("/playlist/index", tostring(idx))
+  Janosh:transaction(function() 
+    Janosh:set_t("/player/active", "true")
+    util:notify("Loading: " .. title)
+    self:cmd("loadfile", file)
+    Janosh:set_t("/playlist/index", tostring(idx))
+  end)
 end
 
 function MpvClass.previous(self) 
@@ -78,10 +80,10 @@ function MpvClass.enqueue(self, videoUrl, title, srcUrl)
     title = "(no title)"
   end
   size = Janosh:size("/playlist/items/.")
-  Janosh:mkobj("/playlist/items/#" .. size .. "/.")
-  Janosh:set("/playlist/items/#" .. size .. "/url", videoUrl)
-  Janosh:set("/playlist/items/#" .. size .. "/title", title)
-  Janosh:set("/playlist/items/#" .. size .. "/source", srcUrl)
+  Janosh:mkobj_t("/playlist/items/#" .. size .. "/.")
+  Janosh:set_t("/playlist/items/#" .. size .. "/url", videoUrl)
+  Janosh:set_t("/playlist/items/#" .. size .. "/title", title)
+  Janosh:set_t("/playlist/items/#" .. size .. "/source", srcUrl)
   print("enqueuend")
 end
 
@@ -102,6 +104,7 @@ print("run")
     len=""
     while true do
       line = Janosh:preadLine(MSTDERR)
+      print("STDERR:", line)
       if line == nil then break end
       tokens = util:split(line, " ")
       if #tokens >= 4 and (tokens[2] ~= pos or tokens[4] ~= len) then
@@ -125,8 +128,8 @@ print("run")
         print("RECEIVED:", line)
         if line == nil then break end
         obj = JSON:decode(line)
-        if obj.event == "end-file" then
-          self:eotrack()
+        if obj.event == "idle" then
+          self:onIdle()
         elseif obj.event == "playback-restart" then
 --        self:sotrack()
 --      elseif string.find(line, CACHEEMPTY) then
@@ -139,7 +142,7 @@ print("run")
       end
       Janosh:sleep(1000)
     end
-  end)
+  end)()
 
   while true do
     line=""
@@ -202,24 +205,32 @@ end
 
 function MpvClass.stop(self)
   util:notify("Stop")
-  self:cmd("set_property","pause",true)
-  Janosh:set("/player/paused", "true")
-  Janosh:set_t("/player/active", "false")
+
+  Janosh:transaction(function()
+    self:cmd("set_property","pause",true)
+    Janosh:set("/player/paused", "true")
+    if Janosh:get("/player/active").active == "true" then
+      Janosh:set_t("/player/active","false")
+      Janosh:publish("backgroundRefresh", "W", "")
+    end
+  end)
 end
 
 function MpvClass.cache_empty(self)
   Janosh:publish("notifySend", "Network Problem!")
 end
 
-function MpvClass.eotrack(self) 
-  print("eotrack")
+function MpvClass.onIdle(self) 
+  print("onIdle")
   obj = Janosh:get("/playlist/.")
   idx = tonumber(obj.index)
   len = #obj.items
   if idx < len then
+    Janosh:publish("backgroundRefresh", "W", "")
     self:jump(tostring(idx + 1))
   else
-    self:pause()
+    Janosh:publish("backgroundRefresh", "W", "")
+    Janosh:set_t("/player/active","false")
   end
 end
 
