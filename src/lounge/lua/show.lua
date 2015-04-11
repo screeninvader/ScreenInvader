@@ -91,6 +91,7 @@ function getCategory(url)
       Janosh:pclose(i)
       Janosh:pclose(e)
       Janosh:pclose(o)
+      Janosh:pwait(p)
       p, i, o, e = Janosh:popen("grep", "-iPo", "Location: \\K(.*)?(?=)")
       Janosh:pwrite(i, head)
       Janosh:pclose(i)
@@ -98,6 +99,7 @@ function getCategory(url)
       Janosh:pclose(i)
       Janosh:pclose(e)
       Janosh:pclose(o)
+      Janosh:pwait(p)
     end
 
     line=util:split(head,"\n")[1]

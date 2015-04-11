@@ -42,7 +42,7 @@ function MpvClass.jump(self, idx)
     Janosh:pclose(i)
     Janosh:pclose(e)
     Janosh:pclose(o)
---    Janosh:pwait(p)
+    Janosh:pwait(p)
 
     token=util:split(line," ")[2]
     code=tonumber(token)
