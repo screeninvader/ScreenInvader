@@ -1,11 +1,20 @@
 #!/lounge/bin/janosh -f
 
-function press(key, op, value)
-  k = JSON:decode(value)
-  print(k.pressed)
-  Janosh:system("xdotool key " .. k.pressed)
+function down(key,op,value) 
+  Janosh:keyDown(value)
 end
 
+function up(key,op,value)
+  Janosh:keyUp(value)
+end
+
+function press(key,op,value)
+  Janosh:keyDown(value)
+  Janosh:keyUp(value)
+end
+
+Janosh:subscribe("keyUp",  up)
+Janosh:subscribe("keyDown",  down)
 Janosh:subscribe("keyPress",  press)
 
 while true do
