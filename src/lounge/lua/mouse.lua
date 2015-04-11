@@ -2,15 +2,16 @@
 
 function move(key, op, value)
   pos = JSON:decode(value)
-  Janosh:system("xdotool mousemove " .. pos.x .. " " .. pos.y)
+  print(pos[1])
+  Janosh:mouseMove(tonumber(pos[1]), tonumber(pos[2]))
 end
 
 function down(key,op,value) 
-  Janosh:system("xdotool mousedown 1")
+  Janosh:mouseDown(tonumber(value))
 end
 
 function up(key,op,value)
-  Janosh:system("xdotool mouseup 1")
+  Janosh:mouseUp(tonumber(value))
 end
 
 Janosh:subscribe("mouseMove",  move)

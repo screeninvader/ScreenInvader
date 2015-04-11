@@ -239,5 +239,4 @@ function MpvClass.loadFile(self,path)
   self:cmd("loadfile ", path)
 end
 
-
 return MpvClass:new()

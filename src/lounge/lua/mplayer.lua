@@ -238,5 +238,4 @@ function MplayerClass.loadFile(self,path)
   self:cmd("loadfile " .. path)
 end
 
-
 return MplayerClass:new()

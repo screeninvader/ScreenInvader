@@ -45,5 +45,4 @@ Janosh:subscribe("playerJump",  function(key,op,value) mpv:jump(value) end)
 Janosh:subscribe("playerLoadFile", function(key,op,value) mpv:loadFile(value) end)
 Janosh:subscribe("playerCommand", function(key,op,value) mpv:cmd(value) end)
 Janosh:subscribe("playerSeek", function(key,op,value) mpv:seek(value) end)
-
 mpv:run()
