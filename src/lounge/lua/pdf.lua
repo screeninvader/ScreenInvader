@@ -13,14 +13,15 @@ function open(key, op, value)
  
   mupdf:openFile(tmpfile)
   cnt=0
-  while util:getWindowID("mupdf.MuPDF") == -1 and cnt < 10 do
+  id=-1
+  while id == -1 and cnt < 100 do
     Janosh:sleep(500)
+    id = util:getWindowID("mupdf.MuPDF")
     cnt = cnt + 1
+    print("WindowID:", id)
   end
 
   Janosh:system("rm " .. tmpfile)
-
---FIXME notify Loading category: url 
   Janosh:set_t("/pdf/active", "true")
 end
 

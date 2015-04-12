@@ -24,35 +24,35 @@ function MupdfClass.close(self)
 end
 
 function MupdfClass.pageDown(self) 
-  Janosh:system("xdotool key Page_Down")
+  Janosh:keyType("Page_Down")
 end
 
 function MupdfClass.pageUp(self)
-  Janosh:system("xdotool key Page_Up")
+  Janosh:keyType("Page_Up")
 end
 
 function MupdfClass.scrollDown(self)
-  Janosh:system("xdotool key j")
+  Janosh:keyType("j")
 end
 
 function MupdfClass.scrollUp(self)
-  Janosh:system("xdotool key k")
+  Janosh:keyType("k")
 end
 
 function MupdfClass.scrollLeft(self)
-  Janosh:system("xdotool key h")
+  Janosh:keyType("h")
 end
 
 function MupdfClass.scrollRight(self)
-  Janosh:system("xdotool key l")
+  Janosh:keyType("l")
 end
 
 function MupdfClass.zoomIn(self)
-  Janosh:system("xdotool key plus")
+  Janosh:keyType("plus")
 end
 
 function MupdfClass.zoomOut(self)
-  Janosh:system("xdotool key minus")
+  Janosh:keyType("minus")
 end
 
 function MupdfClass.run(self) 

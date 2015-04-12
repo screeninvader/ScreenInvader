@@ -50,11 +50,11 @@ function MidoriClass.close(self)
 end
 
 function MidoriClass.pageDown(self) 
-  Janosh:system("xdotool key Page_Down")
+  Janosh:keyType("Page_Down")
 end
 
 function MidoriClass.pageUp(self)
-  Janosh:system("xdotool key Page_Up")
+  Janosh:keyType("Page_Up")
 end
 
 function MidoriClass.scrollDown(self)
