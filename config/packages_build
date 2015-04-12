@@ -31,4 +31,5 @@ unzip
 binutils-dev
 libasound2-dev
 lua-posix-dev
+libxdo-dev=1:3.20140805.1-2
 
