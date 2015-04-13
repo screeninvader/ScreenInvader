@@ -2,7 +2,14 @@
 
 
 function remove(key, op, value)
-  Janosh:remove_t("/playlist/items/#" .. value .. "/.")
+  Janosh:transaction(function()
+    value = tonumber(value)
+    idx = tonumber(Janosh:get("/playlist/index").index)
+    Janosh:remove_t("/playlist/items/#" .. value .. "/.")
+    if value < idx then
+      Janosh:set_t("/playlist/index", idx - 1);
+    end
+  end)
 end
 
 function clear(key, op, value)

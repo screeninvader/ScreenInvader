@@ -31,6 +31,7 @@ function MpvClass.jump(self, idx)
   if idx > #obj then
     idx = #obj
   end
+  print("### IDX", idx)
   file = obj[idx].url
   title = obj[idx].title
   if string.match(file, "http[s]*://") then
@@ -105,7 +106,7 @@ print("run")
     len=""
     while true do
       line = Janosh:preadLine(MSTDERR)
-      print("STDERR:", line)
+--      print("STDERR:", line)
       if line == nil then break end
       tokens = util:split(line, " ")
       if #tokens >= 4 and (tokens[2] ~= pos or tokens[4] ~= len) then
