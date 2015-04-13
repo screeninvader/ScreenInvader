@@ -27,16 +27,17 @@ end
 function MpvClass.jump(self, idx) 
   print("jump:", idx)
   obj = Janosh:get("/playlist/items/.")
-  if tonumber(idx) > #obj then
+  idx = tonumber(idx) + 1;
+  if idx > #obj then
     idx = #obj
   end
-  file = obj[tonumber(idx)].url
-  title = obj[tonumber(idx)].title
+  file = obj[idx].url
+  title = obj[idx].title
   if string.match(file, "http[s]*://") then
     p, i, o, e = Janosh:popen("curl", "--head", file)
     line=Janosh:preadLine(o)
     if line == nil then
-      util:exception("Can't fix item:" .. idx)
+      util:exception("Can't fix item:" .. idx - 1)
       return
     end
     Janosh:pclose(i)
@@ -47,14 +48,14 @@ function MpvClass.jump(self, idx)
     token=util:split(line," ")[2]
     code=tonumber(token)
     if code ~= 200 and code ~= 302 then
-      Janosh:publish("cacheFix", "W", idx)
+      Janosh:publish("cacheFix", "W", idx - 1)
       return
     end
   end
 
   Janosh:transaction(function() 
     Janosh:set_t("/player/active", "true")
-    util:notify("Loading: " .. title)
+    util:notifyLong(title)
     self:cmd("loadfile", file)
     Janosh:set_t("/playlist/index", tostring(idx))
   end)
@@ -227,7 +228,7 @@ function MpvClass.onIdle(self)
   len = #obj.items
   if idx < len then
     Janosh:publish("backgroundRefresh", "W", "")
-    self:jump(tostring(idx + 1))
+    self:jump(tostring(idx))
   else
     Janosh:publish("backgroundRefresh", "W", "")
     Janosh:set_t("/player/active","false")

@@ -2,7 +2,7 @@
 
 
 function remove(key, op, value)
-  Janosh:remove("/playlist/items/#" .. value)
+  Janosh:remove_t("/playlist/items/#" .. value .. "/.")
 end
 
 function clear(key, op, value)

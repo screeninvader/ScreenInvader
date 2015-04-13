@@ -22,7 +22,6 @@ function openPlayer(key, op, value)
     items = helpers:resolve(url,category)
 
     for title, videoUrl in pairs(items) do
-      print("ADD:", title)
       mpv:add(videoUrl, title, url)
     end
   else

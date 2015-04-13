@@ -32,6 +32,10 @@ function UtilClass.notify(self,msg)
   Janosh:publish("notifySend","W",msg)
 end
 
+function UtilClass.notifyLong(self,msg)
+  Janosh:publish("notifyLong","W",msg)
+end
+
 function UtilClass.exception(self,msg)
   Janosh:publish("notifyException", "W", msg)
 end

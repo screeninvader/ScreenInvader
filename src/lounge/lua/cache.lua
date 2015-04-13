@@ -3,7 +3,7 @@
 local util=require("util")
 function fix(key, op, value)
   Janosh:transaction(function() 
-    idx = tonumber(value) - 1
+    idx = tonumber(value)
     src = Janosh:get("/playlist/items/#" .. idx .. "/source").items[1].source
     title = Janosh:get("/playlist/items/#" .. idx .. "/title").items[1].title
     util:notify("Fixing cached item:" .. title)
@@ -15,7 +15,7 @@ function fix(key, op, value)
     videoUrl = lines[2]
     Janosh:set("/playlist/items/#" .. idx .. "/url", videoUrl)
   end)
-  Janosh:publish("playerJump","W", idx + 1)
+  Janosh:publish("playerJump","W", idx)
 end
 
 Janosh:subscribe("cacheFix",  fix)
