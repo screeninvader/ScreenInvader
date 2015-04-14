@@ -58,7 +58,7 @@ function MpvClass.jump(self, idx)
     Janosh:set_t("/player/active", "true")
     util:notifyLong(title)
     self:cmd("loadfile", file)
-    Janosh:set_t("/playlist/index", tostring(idx))
+    Janosh:set_t("/playlist/index", tostring(idx - 1))
   end)
 end
 
