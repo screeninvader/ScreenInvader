@@ -21,7 +21,18 @@ end
 
 function shift(key,op,value)
   param = JSON:decode(value)
-  Janosh:shift_t("/playlist/items/#" .. param.from .. "/.", "/playlist/items/#" .. param.to .. "/.")
+  Janosh:transaction(function() 
+    idx = tonumber(Janosh:get("/playlist/index").index) - 1
+    Janosh:shift_t("/playlist/items/#" .. param.from .. "/.", "/playlist/items/#" .. param.to .. "/.")
+    print(idx,param.from)
+    if idx == tonumber(param.from) then
+      Janosh:set_t("/playlist/index", tostring(tonumber(param.to) + 1))
+    elseif idx >= tonumber(param.to) and idx < tonumber(param.from) then
+      Janosh:set_t("/playlist/index", tostring(idx + 2))
+    elseif idx <= tonumber(param.to) and idx > tonumber(param.from) then
+      Janosh:set_t("/playlist/index", tostring(idx))
+    end
+  end)
 end
 
 function load(key,op,value)
