@@ -227,9 +227,9 @@ function MpvClass.onIdle(self)
   obj = Janosh:get("/playlist/.")
   idx = tonumber(obj.index)
   len = #obj.items
-  if idx < len then
+  if idx + 1 < len then
     Janosh:publish("backgroundRefresh", "W", "")
-    self:jump(tostring(idx))
+    self:jump(tostring(idx + 1))
   else
     Janosh:publish("backgroundRefresh", "W", "")
     Janosh:set_t("/player/active","false")
