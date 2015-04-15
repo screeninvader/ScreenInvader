@@ -1,8 +1,5 @@
-cd /third/
-git clone https://github.com/screeninvader/sunxi-tools.git
-cd sunxi-tools
-./configure
+cd /third/sunxi-tools
 make clean
 make
-make install
+cp fex2bin /usr/bin/
 
