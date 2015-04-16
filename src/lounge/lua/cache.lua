@@ -3,6 +3,7 @@
 local util=require("util")
 function fix(key, op, value)
   Janosh:transaction(function() 
+    idx=value
     src = Janosh:get("/playlist/items/#" .. idx .. "/source").items[1].source
     title = Janosh:get("/playlist/items/#" .. idx .. "/title").items[1].title
     util:notify("Fixing cached item:" .. title)

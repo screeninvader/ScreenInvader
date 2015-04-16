@@ -27,7 +27,8 @@ function up(key,op,value)
   Janosh:mouseUp(button)
 end
 
-Janosh:subscribe("mouseMove",  move)
+Janosh:subscribe("mouseMoveAbs",  move)
+Janosh:subscribe("mouseMoveRel", moveRel)
 Janosh:subscribe("mouseUp",  up)
 Janosh:subscribe("mouseDown",  down)
 
