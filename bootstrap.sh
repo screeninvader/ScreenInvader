@@ -38,7 +38,7 @@ export LC_ALL="C"
 
 APTNI="apt-get -q -y --no-install-recommends --force-yes -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" ";
 
-DEBIAN_MIRROR="http://ftp.at.debian.org/debian/"
+DEBIAN_MIRROR="http://debian.inode.at/debian/"
 
 dir="`dirname $0`"
 BOOTSTRAP_DIR="`cd $dir; pwd`"
@@ -180,6 +180,12 @@ function doBuild() {
     "$CHRT $APTNI -t sid install $PKG_BUILD"
 
   if [ $ARCH == "armhf" ]; then
+    check "Clone kernel" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_kernel.sh"
+
+    check "Cross compile kernel" \
+      "cd $BOOTSTRAP_DIR/third/; ./build_kernel.sh"
+
     check "Clone dri2" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_dri2.sh"
 
@@ -188,6 +194,9 @@ function doBuild() {
 
     check "Clone sunxi-mali" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_sunxi-mali.sh"
+
+    check "Clone sunxi-tools" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_sunxi-tools.sh"
 
 #  check "Clone sunxi-tools" \
 #   "cd $BOOTSTRAP_DIR/third/; ./clone_sunxi-tools.sh"
@@ -217,33 +226,40 @@ function doBuild() {
     "cp -r $BOOTSTRAP_DIR/third/ \"$CHROOT_DIR\""
 
   if [ $ARCH == "armhf" ]; then
-    check "build dri2" \
+
+    check "Install kernel" \
+      "$CHRT /third/install_kernel.sh"
+
+    check "Build dri2" \
       "$CHRT /third/build_dri2.sh"
 
-    check "build sunxi-mali" \
+    check "Build sunxi-mali" \
       "$CHRT /third//build_sunxi-mali.sh"
+
+    check "Build sunxi-tools" \
+      "$CHRT /third//build_sunxi-tools.sh"
 
 #  check "build sunxi-tools" \
 #    "$CHRT /third/build_sunxi-tools.sh"
 
-    check "build xf86-video-fbturbo" \
+    check "Build xf86-video-fbturbo" \
       "$CHRT /third/build_xf86-video-fbturbo.sh"
 
-    check "build libvdpau-sunxi" \
+    check "Build libvdpau-sunxi" \
       "$CHRT /third/build_libvdpau-sunxi.sh"
 
   fi
 
-  check "build luajit-rocks" \
+  check "Build luajit-rocks" \
     "$CHRT /third/build_luajitrocks.sh"
 
-  check "build lanes" \
+  check "Build lanes" \
     "$CHRT /third/build_lanes.sh"
 
-  check "build janosh" \
+  check "Build janosh" \
     "$CHRT /third/build_janosh.sh"
 
-  check "build SimpleOSD" \
+  check "Build SimpleOSD" \
     "$CHRT /third/build_simpleosd.sh"
 }
 
