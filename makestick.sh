@@ -128,6 +128,22 @@ if [ -n "$MAKE_SYSLINUX" ]; then
     "[ $? -eq 0 ]"
 fi
 
+if [ -n "$MAKE_UBOOT" ]; then
+  if [ -d "./u-boot-sunxi" ]; then
+    check "Update u-boot-sunxi" \
+      "cd u-boot-sunxi; git pull"    
+  else
+    check "Clone u-boot-sunxi" \
+      "git clone https://github.com/screeninvader/u-boot-sunxi.git"
+  fi
+
+  check "Make uboot config" \
+    "cd u-boot-sunxi; make CROSS_COMPILE=arm-linux-gnueabihf- Bananapi_config"
+
+  check "Build uboot" \
+    "cd u-boot-sunxi; make CROSS_COMPILE=arm-linux-gnueabihf-"
+fi
+
 check "Umount file system" \
 	"umount $DEVICE*2"
 
