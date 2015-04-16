@@ -32,6 +32,7 @@ Options:
   -s <sizeInM>     overwrite the default (= 500MB) file system size.
   -z               write zeroes to the device before creating the partition
   -x               install extlinux
+  -u               install uboot-sunxi
 EOUSAGE
   exit 1
 }
@@ -42,8 +43,8 @@ function makeSyslinuxConf() {
 }
 
 function doCheckPreCond() {
-  check "'parted' installed" \
-    "which parted"
+  check "'sfdisk' installed" \
+    "which sfdisk"
   check "'mkfs.vfat' installed" \
     "which mkfs.vfat"
   check "'mkfs.ext4' installed" \
@@ -63,12 +64,13 @@ source "$MAKEPARTITION_DIR/.functions.sh"
 WRITE_ZEROES=
 SIZE=2000
 
-while getopts 'zxs:' c
+while getopts 'zxus:' c
 do
   case $c in
     z) WRITE_ZEROES="YES";;
     s) SIZE="$OPTARG";;
     x) MAKE_SYSLINUX="YES";;
+    u) MAKE_UBOOT="YES";;
     \?) printUsage;;
   esac
 done
@@ -88,14 +90,14 @@ if [ -n "$WRITE_ZEROES" ]; then
     "dd if=/dev/zero of=$DEVICE bs=1M count=$SIZE" 
 fi
 
-check "Make disk label" \
-  "parted -s $DEVICE mklabel msdos"
+sfdisk -R $DEVICE
+cat <<EOT | sfdisk --in-order -L -uM $DEVICE
+1,16,c
+,,L
+EOT
 
-check "Make boot partition" \
-  "parted -s $DEVICE mkpart primary fat16 0 20M"
-
-check "Make partition" \
-  "parted -s $DEVICE mkpart primary ext4 20M ${SIZE}M"
+check "Make partition layout" \
+  "[ $? -eq 0 ] || false"
 
 check "Make boot filesystem" \
   "mkfs.vfat $DEVICE*1"
@@ -142,6 +144,9 @@ if [ -n "$MAKE_UBOOT" ]; then
 
   check "Build uboot" \
     "cd u-boot-sunxi; make CROSS_COMPILE=arm-linux-gnueabihf-"
+
+  check "Install uboot" \
+    "cd u-boot-sunxi; dd if=u-boot-sunxi-with-spl.bin of=$DEVICE bs=1024 seek=8"
 fi
 
 check "Umount file system" \

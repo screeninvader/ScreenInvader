@@ -20,7 +20,7 @@
 
 (
 set -x 
-
+depmod
 [ -z "$LC_ALL" ] && export LC_ALL=C
 cd `dirname $0`
 chvt 2

@@ -57,7 +57,7 @@ function printUsage() {
   cat 0>&2 <<EOUSAGE
 Bootstrap a ScreenInvader file system.
 
-$0 [-a <arch>][-g <num>][-l <logfile>][-p <apt-cacher-port>][-c <configfile>][-i -d -u -x] <bootstrapdir>
+$0 [-a <arch>][-g <num>][-l <logfile>][-p <apt-cacher-port>][-c <configfile>][-i -d -u -x -k -r] <bootstrapdir>
 Options:
   -a <arch> Bootstrap a system of the given architecture
   -l <file> Specify the log file
@@ -65,10 +65,11 @@ Options:
   -i        Don't configure and install packages
   -d        Don't debootstrap
   -b        Don't rebuild third party
-  -u        Combined -d, -i and -b
+  -u        Combined -d, -i, -b and -l
   -c <file> Specify the config file for non-interactive configuration at first boot
   -x        Install extra packages for debugging
   -k        Keep build dependencies and sources
+  -r        Don't rebuild the kernel
 EOUSAGE
   exit 1
 }
@@ -172,6 +173,29 @@ function doPackageConf() {
     "$CHRT $APTNI purge $PKG_BLACK"
 }
 
+function doBuildKernel() {
+  if [ $ARCH == "armhf" ]; then
+    check "Clone kernel" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_kernel.sh"
+
+    check "Cross compile kernel" \
+      "cd $BOOTSTRAP_DIR/third/; ./build_kernel.sh"
+  fi
+}
+
+function doInstallKernel() {
+  if [ $ARCH == "armhf" ]; then
+    check "Install modules" \
+      "cd $BOOTSTRAP_DIR/third/linux-sunxi; make ARCH=arm INSTALL_MOD_PATH=$CHROOT_DIR modules_install"
+
+    check "Copy uImage" \
+      "cp $BOOTSTRAP_DIR/third/linux-sunxi/arch/arm/boot/uImage $CHROOT_DIR/boot/"
+
+    check "Depmod" \
+      "$CHRT depmod"
+  fi
+}
+
 function doBuild() {
   check "Update Repositories" \
     "$CHRT $APTNI update"
@@ -180,11 +204,8 @@ function doBuild() {
     "$CHRT $APTNI -t sid install $PKG_BUILD"
 
   if [ $ARCH == "armhf" ]; then
-    check "Clone kernel" \
-      "cd $BOOTSTRAP_DIR/third/; ./clone_kernel.sh"
-
-    check "Cross compile kernel" \
-      "cd $BOOTSTRAP_DIR/third/; ./build_kernel.sh"
+   check "Clone uboot-cfg" \
+      "cd $BOOTSTRAP_DIR/third/; ./clone_uboot-cfg.sh"
 
     check "Clone dri2" \
       "cd $BOOTSTRAP_DIR/third/; ./clone_dri2.sh"
@@ -226,10 +247,6 @@ function doBuild() {
     "cp -r $BOOTSTRAP_DIR/third/ \"$CHROOT_DIR\""
 
   if [ $ARCH == "armhf" ]; then
-
-    check "Install kernel" \
-      "$CHRT /third/install_kernel.sh"
-
     check "Build dri2" \
       "$CHRT /third/build_dri2.sh"
 
@@ -238,6 +255,9 @@ function doBuild() {
 
     check "Build sunxi-tools" \
       "$CHRT /third//build_sunxi-tools.sh"
+
+    check "Build uboot-cfg" \
+      "$CHRT /third//build_uboot-cfg.sh"
 
 #  check "build sunxi-tools" \
 #    "$CHRT /third/build_sunxi-tools.sh"
@@ -415,7 +435,7 @@ EOHTML
 
 ###### main
 
-while getopts 'a:l:p:g:c:iduxbzk' c
+while getopts 'a:l:p:g:c:iduxbzkr' c
 do
   case $c in
     a) ARCH="$OPTARG";;
@@ -425,10 +445,11 @@ do
     i) NOINSTALL="YES";;
     d) NODEBOOT="YES";;
     z) NOCLEANUP="YES";;
-    u) NOINSTALL="YES"; NODEBOOT="YES"; NOCLEANUP="YES"; DONT_REBUILD="YES";;
+    u) NOINSTALL="YES"; NODEBOOT="YES"; NOCLEANUP="YES"; DONT_REBUILD="YES"; DONT_REBUILD_KERNEL="YES";;
     x) INSTALL_EXTRA="YES";;
     b) DONT_REBUILD="YES";;
     k) KEEP_DEPS="YES";;
+    r) DONT_REBUILD_KERNEL="YES";;
     \?) printUsage;;
   esac
 done
@@ -465,10 +486,22 @@ else
     skip "package configuration"
   fi
 
+  if [ -z "$DONT_REBUILD_KERNEL" ]; then
+    doBuildKernel
+  else
+    skip "build kernel"
+  fi
+
   if [ -z "$DONT_REBUILD" ]; then 
     doBuild
   else
     skip "build"
+  fi
+
+  if [ -z "$DONT_REBUILD_KERNEL" ]; then
+    doInstallKernel
+  else
+    skip "install kernel"
   fi
 
   if [ -z "$KEEP_DEPS" ]; then
