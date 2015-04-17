@@ -194,6 +194,20 @@ function doInstallKernel() {
   fi
 }
 
+function doInstallOuttaSpace() {
+  check "Install outta_space" \
+    "cd $BOOTSTRAP_DIR/third/outta_space; cp -r * $CHROOT_DIR/lounge/www/"
+}
+
+function doBuildOuttaSpace() {
+  check "Clone outta_space" \
+    "cd $BOOTSTRAP_DIR/third/; ./clone_outta_space.sh"
+
+  check "Build outta_space" \
+    "cd $BOOTSTRAP_DIR/third/; ./build_outta_space.sh"
+}
+
+
 function doBuild() {
   check "Update Repositories" \
     "$CHRT $APTNI update"
@@ -513,7 +527,8 @@ else
   else
     skip "cleanup packages"
   fi
-
+  doBuildOuttaSpace
+  doInstallOuttaSpace
   doCleanupFiles
   doCopy
   doCreateBuildHtml
