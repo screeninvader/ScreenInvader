@@ -74,7 +74,7 @@ shift $(($OPTIND - 1))
 [ $# -ne 1 ] && printUsage
 
 IMAGE_FILE="`absPath $1`"
-LOOPBACK_DEVICE=`losetup -f`
+LOOPBACK_DEVICE="`losetup -f`"
 MAKESTICK_OPTS="-s $IMAGE_SIZE"
 [ -n "$WRITE_ZEROES" ] && MAKESTICK_OPTS="$MAKESTICK_OPTS -z"
 [ -n "$MAKE_SYSLINUX" ] && MAKESTICK_OPTS="$MAKESTICK_OPTS -x"
@@ -90,15 +90,12 @@ check "Creating disk image file $IMAGE_FILE of size $IMAGE_SIZE MB" \
 check "Setting up disk image file on loopback device $LOOPBACK_DEVICE" \
   "losetup $LOOPBACK_DEVICE $IMAGE_FILE"
 
-check "Setting up partition devices" \
-  "kpartx -a $LOOPBACK_DEVICE"
-
 check "Symlinking $LOOPBACK_DEVICE into /dev/mapper" \
   "ln -s $LOOPBACK_DEVICE /dev/mapper/`basename $LOOPBACK_DEVICE`"
-
 ./makestick.sh $MAKESTICK_OPTS "/dev/mapper/`basename $LOOPBACK_DEVICE`"
+err=$?
 check "Run makestick.sh $MAKESTICK_OPTS /dev/mapper/`basename $LOOPBACK_DEVICE`" \
-          "[ $? -eq 0 ]"
+          "[ $err -eq 0 ] || false"
 
 check "Sync" \
   "sync"

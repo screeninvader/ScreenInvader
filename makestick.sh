@@ -96,11 +96,17 @@ cat <<EOT | sfdisk --in-order -L -uM $DEVICE
 ,,L
 EOT
 
+if [ ! -f "$DEVICE*1" ]; then
+	DEVICE="`kpartx -av "$DEVICE" | head -n1 | cut -d" " -f8`"
+fi
+
+exit
+
 check "Make partition layout" \
   "[ $? -eq 0 ] || false"
 
 check "Make boot filesystem" \
-  "mkfs.vfat $DEVICE*1"
+	"mkfs.vfat $DEVICE*1"
 
 check "Make root filesystem" \
   "mkfs.ext4 $DEVICE*2"
@@ -161,4 +167,8 @@ check "Check boot system" \
 check "Check root system" \
   "fsck.ext4 -fa $DEVICE*2"
 
+check "Remove mapping" \
+	"kpartx -dv $DEVICE"
+	
 exit 0
+
