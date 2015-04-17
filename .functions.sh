@@ -84,7 +84,7 @@ function check {
     try "$1" "$2"
   fi
 
-  [ $? -ne 0 ] && exit
+  [ $? -ne 0 ] && exit $?
 }
 
 function checkcat {
