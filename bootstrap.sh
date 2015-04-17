@@ -191,8 +191,6 @@ function doInstallKernel() {
     check "Copy uImage" \
       "cp $BOOTSTRAP_DIR/third/linux-sunxi/arch/arm/boot/uImage $CHROOT_DIR/boot/"
 
-    check "Depmod" \
-      "$CHRT depmod"
   fi
 }
 
