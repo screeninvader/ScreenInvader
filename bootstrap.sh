@@ -527,10 +527,10 @@ else
   else
     skip "cleanup packages"
   fi
-  doBuildOuttaSpace
-  doInstallOuttaSpace
   doCleanupFiles
   doCopy
+  doBuildOuttaSpace
+  doInstallOuttaSpace
   doCreateBuildHtml
 fi
 
