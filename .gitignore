@@ -6,3 +6,4 @@ repo/dists/
 repo/pool/
 *.log
 *.dd
+third/*/
