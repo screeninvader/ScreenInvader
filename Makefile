@@ -34,5 +34,7 @@ ${TARGET}: screeninvader.dd.tmp ${FS_DIR}
 clean:
 	rm -f screeninvader.dd.tmp
 	rm -f screeninvader.dd
+	rm -fr amd64-fs
+	rm -fr armhf-fs
 
 
