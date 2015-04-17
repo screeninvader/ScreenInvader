@@ -92,6 +92,7 @@ check "Setting up disk image file on loopback device $LOOPBACK_DEVICE" \
 
 check "Symlinking $LOOPBACK_DEVICE into /dev/mapper" \
   "ln -s $LOOPBACK_DEVICE /dev/mapper/`basename $LOOPBACK_DEVICE`"
+
 ./makestick.sh $MAKESTICK_OPTS "/dev/mapper/`basename $LOOPBACK_DEVICE`"
 err=$?
 check "Run makestick.sh $MAKESTICK_OPTS /dev/mapper/`basename $LOOPBACK_DEVICE`" \

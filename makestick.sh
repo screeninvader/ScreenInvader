@@ -98,9 +98,9 @@ EOT
 
 if [ ! -f "$DEVICE*1" ]; then
 	DEVICE="`kpartx -av "$DEVICE" | head -n1 | cut -d" " -f8`"
+	sleep 3
 fi
 
-exit
 
 check "Make partition layout" \
   "[ $? -eq 0 ] || false"
