@@ -13,11 +13,14 @@ all: release
 screeninvader.dd.tmp:
 	./makeimage.sh -s ${IMAGE_SIZE} ${MKIMG_OPTS} screeninvader.dd.tmp
 
+makedefaultconf:
+	cp src/setup/template-firstboot.cnf src/setup/answer.sh
+
 debug: ARCH := amd64
 debug: OPTS += -k
 debug: FS_DIR := amd64-fs
 debug: MKIMG_OPTS := -x -z
-debug: ${TARGET}
+debug: makedefaultconf ${TARGET}
 
 release: ${TARGET}
 
@@ -38,6 +41,7 @@ clean:
 	rm -f ${TARGET}-${ARCH}.tar.bz2
 	rm -fr amd64-fs
 	rm -fr armhf-fs
+	rm -f src/setup/answer.sh
 
 deploy:
 	mv ${TARGET}-*.tar.bz2 /srv/
