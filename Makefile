@@ -40,6 +40,6 @@ clean:
 	rm -fr armhf-fs
 
 deploy:
-	mv ${TARGET}-${ARCH}.dd.tar.bz2 /srv/
+	mv ${TARGET}-${ARCH}.tar.bz2 /srv/
 
 
