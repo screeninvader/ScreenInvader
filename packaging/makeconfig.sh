@@ -5,6 +5,7 @@ if [ $# -ne 2 ]; then
 fi
 
 mkdir -p screeninvader-config/DEBIAN
+chmod -R 0755 screeninvader-config
 ./makecontrol.sh config $1 > screeninvader-config/DEBIAN/control
 rm -rf screeninvader-config/etc
 cp -a ../src/etc screeninvader-config/

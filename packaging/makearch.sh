@@ -5,6 +5,7 @@ if [ $# -ne 2 ]; then
 fi
 set -x
 mkdir -p screeninvader-arch/DEBIAN
+chmod -R 0755 screeninvader-arch
 ./makecontrol.sh arch $1 > screeninvader-arch/DEBIAN/control
 rm -rf screeninvader-arch/lounge screeninvader-arch/etc
 cp -a ../src/$2/lounge screeninvader-arch/

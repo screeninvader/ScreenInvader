@@ -5,6 +5,7 @@ if [ $# -ne 2 ]; then
 fi
 
 mkdir -p screeninvader-core/DEBIAN
+chmod -R 0755 screeninvader-core
 ./makecontrol.sh core $1 > screeninvader-core/DEBIAN/control
 rm -fr screeninvader-core/root screeninvader-core/lounge screeninvader-core/setup
 cp -a ../src/setup ../src/lounge ../src/root screeninvader-core/
