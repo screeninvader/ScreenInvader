@@ -41,5 +41,5 @@ clean:
 
 deploy:
 	mv ${TARGET}-*.tar.bz2 /srv/
-	chmod a+r /src/*
+	chmod a+r /srv/*
 
