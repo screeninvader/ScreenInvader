@@ -1,4 +1,4 @@
-TARGET := screeninvader.dd
+TARGET := $(shell git log -1 --pretty=%H).dd
 ARCH := armhf
 CACHER_PORT := 3142
 OPTS := -x
