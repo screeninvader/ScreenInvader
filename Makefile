@@ -30,7 +30,7 @@ ${TARGET}: screeninvader.dd.tmp ${FS_DIR}
 	cp -a ${FS_DIR}/* tmp/p2/
 	./umountimage.sh screeninvader.dd.tmp tmp
 	mv screeninvader.dd.tmp ${TARGET}
-  tar -cjf ${TARGET}-${ARCH}.dd.tar.bz2 ${TARGET}
+	tar -cjf ${TARGET}-${ARCH}.tar.bz2 ${TARGET}
 
 clean:
 	rm -f screeninvader.dd.tmp
