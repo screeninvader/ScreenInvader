@@ -109,3 +109,4 @@ function absPath() {
   echo $absdir/$base
 }
 
+export -f check try error ok failed red green yellow verbose
