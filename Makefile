@@ -39,4 +39,7 @@ clean:
 	rm -fr amd64-fs
 	rm -fr armhf-fs
 
+deploy:
+	mv ${TARGET}-${ARCH}.dd.tar.bz2 /srv/
+
 
