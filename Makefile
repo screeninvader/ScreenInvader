@@ -6,7 +6,7 @@ FS_DIR := armhf-fs
 IMAGE_SIZE := 4000
 MKIMG_OPTS := -u -z
 
-.PHONY: all image release debug
+.PHONY: all image release debug deploy
 
 all: release
 
