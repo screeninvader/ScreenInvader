@@ -90,20 +90,25 @@ if [ -n "$WRITE_ZEROES" ]; then
     "dd if=/dev/zero of=$DEVICE bs=1M count=$SIZE" 
 fi
 
-sfdisk -R $DEVICE
-cat <<EOT | sfdisk --in-order -L -uM $DEVICE
+check "Re-read partition table" \
+  "sfdisk -R $DEVICE"
+
+cat <<EOT | sfdisk --in-order -L -uM $DEVICE &>> $BOOTSTRAP_LOG
 1,16,c
 ,,L
 EOT
-
-if [ ! -f "$DEVICE*1" ]; then
-	DEVICE="`kpartx -av "$DEVICE" | head -n1 | cut -d" " -f8`"
-	sleep 3
-fi
-
+err=$?
 
 check "Make partition layout" \
-  "[ $? -eq 0 ] || false"
+  "[ $err -eq 0 ] || false"
+
+if [ ! -f "$DEVICE*1" ]; then
+ 	DEVICE="`kpartx -av "$DEVICE" | head -n1 | cut -d" " -f8 2>> $BOOTSTRAP_LOG`"
+  err=$?
+  sleep 1
+  check "Map partion devices" \
+    "[ $err -eq 0 ] || false"
+fi
 
 check "Make boot filesystem" \
 	"mkfs.vfat $DEVICE*1"
