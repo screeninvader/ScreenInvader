@@ -36,6 +36,6 @@ if [ -d /etc/profile.d ]; then
   unset i
 fi
 
-export LUA_PATH=/usr/share/lua/5.1/?.lua
-export LUA_CPATH=/usr/lib/x86_64-linux-gnu/lua/5.1/?.so
+export LUA_PATH="/usr/share/lua/5.1/?.lua;/usr/local/share/lua/5.1/?.lua;./?.lua"
+export LUA_CPATH="/usr/lib/arm-linux-gnueabihf/lua/5.1/?.so;/usr/lib/x86_64-linux-gnu/lua/5.1/?.so;/usr/local/lib/lua/5.1/?.so"
 
