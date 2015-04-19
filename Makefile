@@ -6,7 +6,7 @@ FS_DIR := armhf-fs
 IMAGE_SIZE := 4000
 MKIMG_OPTS := -u -z
 
-.PHONY: all image release debug deploy clean
+.PHONY: all image release debug deploy clean test
 
 all: release
 
@@ -20,12 +20,15 @@ debug: ARCH := amd64
 debug: OPTS += -k
 debug: FS_DIR := amd64-fs
 debug: MKIMG_OPTS := -x -z
+debug: TARGET := ${TARGET}-${ARCH}
 debug: makedefaultconf ${TARGET}
 
+release: TARGET := ${TARGET}-${ARCH}
 release: ${TARGET}
 
 ${FS_DIR}:
-	./bootstrap.sh -a ${ARCH} -p ${CACHER_PORT} ${OPTS} ${FS_DIR}
+	echo ./bootstrap.sh -a ${ARCH} -p ${CACHER_PORT} ${OPTS} ${FS_DIR}
+	true
 	
 ${TARGET}: screeninvader.dd.tmp ${FS_DIR}
 	./mountimage.sh screeninvader.dd.tmp tmp
@@ -33,15 +36,17 @@ ${TARGET}: screeninvader.dd.tmp ${FS_DIR}
 	cp -a ${FS_DIR}/* tmp/p2/
 	./umountimage.sh screeninvader.dd.tmp tmp
 	mv screeninvader.dd.tmp ${TARGET}
-	tar -cjf ${TARGET}-${ARCH}.tar.bz2 ${TARGET}
+	tar -cjf ${TARGET}.tar.bz2 ${TARGET}
 
 clean:
 	rm -f screeninvader.dd.tmp
-	rm -f ${TARGET}
-	rm -f *-*.tar.bz2
+	rm -f *.dd-amd64
+	rm -f *.dd-armhf
+	rm -f *.dd-*.tar.bz2
 	rm -fr amd64-fs
 	rm -fr armhf-fs
 	rm -f src/setup/answer.sh
 
 test: 
-	./test.sh ${TARGET}
+	./test.sh ${TARGET}-amd64
+
