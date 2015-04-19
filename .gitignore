@@ -6,6 +6,8 @@ repo/db/
 repo/dists/
 repo/pool/
 *.log
-*.dd
 third/*/
 *.dd-amd64.tar.bz2
+*.dd-armhf.tar.bz2
+*.dd-amd64
+*.dd-armhf
