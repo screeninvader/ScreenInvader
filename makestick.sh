@@ -18,6 +18,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+trap 'kpartx -av $DEVICE' EXIT
+
 dir="`dirname $0`"
 MAKEPARTITION_DIR="`cd $dir; pwd`"
 
@@ -172,8 +174,6 @@ check "Check boot system" \
 check "Check root system" \
   "fsck.ext4 -fa $DEVICE*2"
 
-check "Remove mapping" \
-	"kpartx -dv $DEVICE"
 	
 exit 0
 

@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
+trap 'rm /dev/mapper/`basename $LOOPBACK_DEVICE`; kpartx -d $LOOPBACK_DEVICE; losetup -d $LOOPBACK_DEVICE' EXIT
+
 dir="`dirname $0`"
 MAKEIMAGE_DIR="`cd $dir; pwd`"
 
