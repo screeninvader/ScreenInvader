@@ -35,3 +35,5 @@ check "Test Janosh availability" \
 
 check "Test JanoshAPI availability" \
 	"sshc 'bash -lc /third/Janosh/src/JanoshAPI.lua'"
+
+exit 0
