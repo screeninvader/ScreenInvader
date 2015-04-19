@@ -1,7 +1,6 @@
 #!/bin/bash
-
-export BOOSTRAP_LOG="test.log"
-
+export BOOTSTRAP_LOG="test.log"
+echo "" > $BOOTSTRAP_LOG
 source .functions.sh
 
 trap 'kill $(jobs -p); kpartx -dv "$image"' EXIT
@@ -15,7 +14,7 @@ function sshc() {
 
 function waitForConnection() {
 	seq 0 12 | while read i; do
-		sshc id
+		sshc id && break || sleep 10
 	done
 }
 
@@ -29,10 +28,10 @@ qemu-system-x86_64 -nographic -enable-kvm -hda $DEVICE*2  -net user,hostfwd=tcp:
 
 
 check "Wait for ssh connectivity" \
-	"[ \"`waitForConnection`\" == 'uid=0(root) gid=0(root) groups=0(root)' ] || false"
+	'[ "$(waitForConnection)" == "uid=0(root) gid=0(root) groups=0(root)" ] || false'
 
 check "Test Janosh availability" \
-	"[ `sshc '/lounge/bin/janosh hash'` == '10577639537861785865' ] || false"
+	'[ $(sshc "/lounge/bin/janosh hash") == "10577639537861785865" ] || false'
 
 check "Test JanoshAPI availability" \
 	"sshc '/third/Janosh/src/JanoshAPI.lua'"
