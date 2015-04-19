@@ -8,3 +8,4 @@ repo/pool/
 *.log
 *.dd
 third/*/
+*.dd-amd64.tar.bz2
