@@ -43,9 +43,5 @@ clean:
 	rm -fr armhf-fs
 	rm -f src/setup/answer.sh
 
-deploy:
-	mv ${TARGET}-*.tar.bz2 /srv/
-	chmod a+r /srv/*
-
 test: 
 	./test.sh ${TARGET}
