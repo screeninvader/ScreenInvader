@@ -34,4 +34,4 @@ check "Test Janosh availability" \
 	'[ $(sshc "/lounge/bin/janosh hash") == "10577639537861785865" ] || false'
 
 check "Test JanoshAPI availability" \
-	"sshc '/third/Janosh/src/JanoshAPI.lua'"
+	"sshc 'bash -lc /third/Janosh/src/JanoshAPI.lua'"
