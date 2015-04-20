@@ -1,5 +1,5 @@
 #!/bin/bash
-trap 'kill $(jobs -p);"' EXIT
+trap 'kill $(jobs -p);' EXIT
 image="$1"
 
 wget -q -c https://mirrors.romanrm.net/sunxi/qemu/initrd.img-3.2.0-4-vexpress
