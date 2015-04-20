@@ -42,6 +42,8 @@ fi
 check "Wait for ssh connectivity" \
 	'[ "$(waitForConnection)" == "uid=0(root) gid=0(root) groups=0(root)" ] || false'
 
+sleep 10
+
 check "Test Janosh availability" \
 	"sshc '/lounge/bin/janosh hash'"
 
