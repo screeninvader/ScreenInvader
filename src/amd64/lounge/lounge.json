@@ -1,0 +1,48 @@
+{
+"animation": { 
+"active":"false",
+"category":" ",
+"url":" " } 
+,
+"browser": { 
+"active":"false",
+"category":"",
+"url":"" } 
+,
+"display": { 
+"blank":"false",
+"resolution":"1024x768" } 
+,
+"image": { 
+"active":"false",
+"category":"",
+"url":"" } 
+,
+"pdf": { 
+"active":"false",
+"category":"",
+"url":"" } 
+,
+"player": { 
+"active":"false",
+"category":"",
+"url":"" } 
+,
+"playlist": { 
+  "index":"0",
+  "items": [ ],
+   "queue":"true"
+},
+"radio": { 
+"active":"false",
+"category":"",
+"url":"" } 
+,
+"sound": { 
+"device":"hw:0",
+"mute":"false",
+"volume":"95" } 
+,
+"show": {
+"url":""}
+}
