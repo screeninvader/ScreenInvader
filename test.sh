@@ -6,6 +6,12 @@ source .functions.sh
 trap 'kill $(jobs -p)' EXIT
 ssh-keygen -f ~/.ssh/known_hosts -R [localhost]:2222
 
+check "sshpass command" \
+  "which sshpass"
+
+check "ssh command" \
+  "which ssh"
+
 
 function sshc() {
 	sshpass -p 'lounge' ssh -p 2222 -oStrictHostKeyChecking=no -oConnectTimeout=10 root@localhost "$1" 2>> test.log
@@ -26,9 +32,9 @@ arch="$1"
 image="$2"
 
 if [ "$arch" == "amd64" ]; then
-  ./runimage_amd64_headless.sh "$image" &
+  ./runimage_amd64_headless.sh "$image" &>> $BOOTSTRAP_LOG &
 elif [ "$arch" == "armhf" ]; then
- ./runimage_armhf_headless.sh "$image" &
+ ./runimage_armhf_headless.sh "$image" &>> $BOOTSTRAP_LOG &
 else
   error "Unknown architecture: $arch" 
 fi
@@ -37,9 +43,9 @@ check "Wait for ssh connectivity" \
 	'[ "$(waitForConnection)" == "uid=0(root) gid=0(root) groups=0(root)" ] || false'
 
 check "Test Janosh availability" \
-	'[ $(sshc "/lounge/bin/janosh hash") == "10577639537861785865" ] || false'
+	"sshc '/lounge/bin/janosh hash'"
 
 check "Test JanoshAPI availability" \
-	"sshc 'bash -lc /third/Janosh/src/JanoshAPI.lua'"
+	'[ "$(echo "Janosh:tprint({\"hi\"})" | sshc "bash -lc \"/lounge/bin/janosh -f /dev/stdin\"")" == "1: hi" ]'
 
 exit 0
