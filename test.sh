@@ -3,7 +3,7 @@ export BOOTSTRAP_LOG="test.log"
 echo "" > $BOOTSTRAP_LOG
 source .functions.sh
 
-trap 'kill $(jobs -p); kpartx -dv "$image"' EXIT
+trap 'kill $(jobs -p)' EXIT
 ssh-keygen -f ~/.ssh/known_hosts -R [localhost]:2222
 
 
@@ -21,11 +21,17 @@ function waitForConnection() {
 export -f waitForConnection sshc
 #### main ####
 
-image="$1"
+[ $# -ne 3 ] || error "Usage: test.sh [amd64|armhf] <image>"
+arch="$1"
+image="$2"
 
-DEVICE="`kpartx -av "$image" | head -n1 | cut -d" " -f8`"
-qemu-system-x86_64 -nographic -enable-kvm -hda $DEVICE*2  -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::9080-:8080 -net nic -m 2048 &
-
+if [ "$arch" == "amd64" ]; then
+  ./runimage_amd64_headless.sh "$image" &
+elif [ "$arch" == "armhf" ]; then
+ ./runimage_armhf_headless.sh "$image" &
+else
+  error "Unknown architecture: $arch" 
+fi
 
 check "Wait for ssh connectivity" \
 	'[ "$(waitForConnection)" == "uid=0(root) gid=0(root) groups=0(root)" ] || false'

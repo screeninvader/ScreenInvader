@@ -6,7 +6,7 @@ FS_DIR := armhf-fs
 IMAGE_SIZE := 4000
 MKIMG_OPTS := -u -z
 
-.PHONY: all image release debug deploy clean test
+.PHONY: all image release debug deploy clean test-release test-debug
 
 all: release
 
@@ -46,6 +46,9 @@ clean:
 	rm -fr armhf-fs
 	rm -f src/setup/answer.sh
 
-test: 
-	./test.sh ${TARGET}-amd64
+test-debug:
+	./test.sh amd64 ${TARGET}-amd64
+
+test-release: 
+	./test.sh armhf ${TARGET}-armhf
 
