@@ -3,7 +3,8 @@
 function setVolume(key, op, value)
   print("setVolume", value)
   device = Janosh:get("/sound/device").device
-  Janosh:system("amixer -D".. device .." sset PCM " .. value .. "%")
+  print("amixer -D".. device .." sset PCM " .. value .. "%")
+  Janosh:system("amixer -D".. device .." set PCM " .. value .. "%")
 end
 
 function setMute(key,op,value)
