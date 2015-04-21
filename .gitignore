@@ -1,8 +1,8 @@
 u-boot-sunxi/
 extra/
 tmp/
-amd64/
-armhf/
+amd64-fs/
+armhf-fs/
 packaging/screeninvader-*
 repo/db/
 repo/dists/
