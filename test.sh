@@ -31,13 +31,7 @@ export -f waitForConnection sshc
 arch="$1"
 image="$2"
 
-if [ "$arch" == "amd64" ]; then
-  ./runimage_amd64_headless.sh "$image" &>> $BOOTSTRAP_LOG &
-elif [ "$arch" == "armhf" ]; then
- ./runimage_armhf_headless.sh "$image" &>> $BOOTSTRAP_LOG &
-else
-  error "Unknown architecture: $arch" 
-fi
+./runimage.sh -a "$arch" -n "$image" &>> $BOOTSTRAP_LOG &
 
 check "Wait for ssh connectivity" \
 	'[ "$(waitForConnection)" == "uid=0(root) gid=0(root) groups=0(root)" ] || false'
