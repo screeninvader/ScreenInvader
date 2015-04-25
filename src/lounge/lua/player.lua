@@ -13,11 +13,11 @@ end
 function openPlayer(key, op, value)
   print("open")
   obj=Janosh:get("/player/.")
+  Janosh:tprint(obj)
   url=obj.url
   category=obj.category
   videoUrl=""
   title=""
-
   if category ~= "video" and category ~= "audio" then
     items = helpers:resolve(url,category)
 

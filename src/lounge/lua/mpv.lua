@@ -1,6 +1,7 @@
 #!/lounge/bin/janosh -f
 
 local util = require("util")
+local helper = require("helpers")
 
 Janosh:set("/player/active", "false")
 Janosh:set("/player/paused", "false")
@@ -27,18 +28,18 @@ end
 function MpvClass.jump(self, idx) 
   print("jump:", idx)
   obj = Janosh:get("/playlist/items/.")
-  idx = tonumber(idx) + 1;
-  if idx > #obj then
-    idx = #obj
+  idx = tonumber(idx);
+  lua_idx = idx + 1;
+  if lua_idx > #obj then
+    lua_idx = #obj
   end
-  print("### IDX", idx)
-  file = obj[idx].url
-  title = obj[idx].title
-  if string.match(file, "http[s]*://") then
-    p, i, o, e = Janosh:popen("curl", "--head", file)
+  videoUrl = obj[lua_idx].url
+  title = obj[lua_idx].title
+  if string.match(videoUrl, "http[s]*://") then
+    p, i, o, e = Janosh:popen("curl", "--head", videoUrl)
     line=Janosh:preadLine(o)
     if line == nil then
-      util:exception("Can't fix item:" .. idx - 1)
+      util:exception("Can't fix item:" .. idx)
       return
     end
     Janosh:pclose(i)
@@ -49,16 +50,30 @@ function MpvClass.jump(self, idx)
     token=util:split(line," ")[2]
     code=tonumber(token)
     if code ~= 200 and code ~= 302 then
-      Janosh:publish("cacheFix", "W", idx - 1)
-      return
+      Janosh:transaction(function()
+          src = Janosh:get("/playlist/items/#" .. idx .. "/source").items[1].source
+          title = Janosh:get("/playlist/items/#" .. idx .. "/title").items[1].title
+          util:notify("Fixing cached item:" .. title)
+          items = helper:resolve(src,"youtube");
+          for  t, v in pairs(items) do
+            title=t
+            videoUrl=v 
+            break;
+          end
+          
+          print("TITLE", t)
+          Janosh:set("/playlist/items/#" .. idx .. "/url", videoUrl)
+        end)
     end
   end
+ print("VIDEOURL2", videoUrl)
 
   Janosh:transaction(function() 
     Janosh:set_t("/player/active", "true")
     util:notifyLong(title)
-    self:cmd("loadfile", file)
-    Janosh:set_t("/playlist/index", tostring(idx - 1))
+    print("LOAD", idx)
+    self:cmd("loadfile", videoUrl)
+    Janosh:set_t("/playlist/index", idx)
   end)
 end
 
