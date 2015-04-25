@@ -36,7 +36,7 @@ image="$2"
 check "Wait for ssh connectivity" \
 	'[ "$(waitForConnection)" == "uid=0(root) gid=0(root) groups=0(root)" ] || false'
 
-sleep 10
+sleep 20
 
 check "Test Janosh availability" \
 	"sshc '/lounge/bin/janosh hash'"
