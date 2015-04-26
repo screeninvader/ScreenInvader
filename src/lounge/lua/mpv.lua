@@ -27,6 +27,9 @@ end
 
 function MpvClass.jump(self, idx) 
   print("jump:", idx)
+  Janosh:publish("shairportStop","W", "")
+  self:cmd("set_property","pause",false)
+
   obj = Janosh:get("/playlist/items/.")
   idx = tonumber(idx);
   lua_idx = idx + 1;

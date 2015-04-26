@@ -19,7 +19,6 @@ xbindkeys &
 sudo -u lounge /usr/bin/unclutter -root -grab -idle 1 -reset &
 # somehow the first message doesnt make it
 janosh publish something
-shairport -a `cat /etc/hostname`
 awesome 
 ) &> /tmp/xsession
 
