@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd shairport
+cd /third/shairport
 ./configure
 make
 make install
