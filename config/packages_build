@@ -33,4 +33,6 @@ libasound2-dev
 lua-posix-dev
 libxdo-dev=1:3.20140805.1-2
 u-boot-tools
-
+libssl-dev
+libavahi-client-dev
+libasound2-dev

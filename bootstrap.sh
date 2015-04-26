@@ -255,6 +255,9 @@ function doBuild() {
   check "Clone luajit-rocks" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_luajitrocks.sh"
 
+  check "Clone shairport" \
+    "cd $BOOTSTRAP_DIR/third/; ./clone_shairport.sh"
+
   check "Copy third party" \
     "cp -r $BOOTSTRAP_DIR/third/ \"$CHROOT_DIR\""
 
@@ -293,6 +296,10 @@ function doBuild() {
 
   check "Build SimpleOSD" \
     "$CHRT /third/build_simpleosd.sh"
+
+  check "Build shairport" \
+    "$CHRT /third/build_shairport.sh"
+
 }
 
 function doCopy() {

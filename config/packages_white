@@ -62,4 +62,6 @@ libtwolame0
 lua-posix
 socat
 unclutter
+libssl1.0.0
+libavahi-client3
 
