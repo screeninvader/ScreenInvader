@@ -28,7 +28,6 @@ end
 function MpvClass.jump(self, idx) 
   print("jump:", idx)
   Janosh:publish("shairportStop","W", "")
-  self:cmd("set_property","pause",false)
 
   obj = Janosh:get("/playlist/items/.")
   idx = tonumber(idx);
@@ -77,6 +76,7 @@ function MpvClass.jump(self, idx)
     print("LOAD", idx)
     self:cmd("loadfile", videoUrl)
     Janosh:set_t("/playlist/index", idx)
+    self:play();
   end)
 end
 
@@ -209,31 +209,15 @@ function MpvClass.rewindMore(self)
 end
 
 function MpvClass.pause(self)
-  Janosh:transaction(function()
     util:notify("Pause")
-    paused = Janosh:get("/player/paused").paused
- 
-    if paused == "false" then
-      self:cmd("set_property","pause",true)
-      Janosh:set_t("/player/paused", "true")
-    else
-      self:cmd("set_property","pause",false)
-      Janosh:set_t("/player/paused", "false")
-    end
-  end)
+    self:cmd("set_property","pause",true)
+    Janosh:set_t("/player/paused", "true")
 end
 
-function MpvClass.stop(self)
-  util:notify("Stop")
-
-  Janosh:transaction(function()
-    self:cmd("set_property","pause",true)
-    Janosh:set("/player/paused", "true")
-    if Janosh:get("/player/active").active == "true" then
-      Janosh:set_t("/player/active","false")
-      Janosh:publish("backgroundRefresh", "W", "")
-    end
-  end)
+function MpvClass.play(self)
+    util:notify("Play")
+    self:cmd("set_property","pause",false)
+    Janosh:set_t("/player/paused", "false")
 end
 
 function MpvClass.cache_empty(self)

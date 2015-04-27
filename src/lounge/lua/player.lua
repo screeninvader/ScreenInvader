@@ -33,7 +33,7 @@ end
 
 Janosh:subscribe("/player/url", openPlayer)
 Janosh:subscribe("playerPause", function(key,op,value) mpv:pause() end)
-Janosh:subscribe("playerStop", function(key,op,value) mpv:stop() end)
+Janosh:subscribe("playerPlay", function(key,op,value) mpv:play() end)
 Janosh:subscribe("playerNext", function(key,op,value) mpv:next() end)
 Janosh:subscribe("playerPrevious", function(key,op,value) mpv:previous() end)
 Janosh:subscribe("playerForward", function(key,op,value) mpv:forward() end)
