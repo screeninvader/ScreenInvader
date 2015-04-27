@@ -18,6 +18,7 @@ function stop(key,op,value)
     if Janosh:get("/shairport/active").active == "true" then
       util:notifyLong("Deactivating shairport");
       Janosh:set_t("/shairport/active", "false")
+      Janosh:publish("playerPlay","W","");
     end
   end)
 end
