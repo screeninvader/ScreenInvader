@@ -43,6 +43,10 @@
 "mute":"false",
 "volume":"95" } 
 ,
+"shairport": {
+"active":"false"}
+,
 "show": {
 "url":""}
+
 }
