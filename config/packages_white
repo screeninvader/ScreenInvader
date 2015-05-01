@@ -64,4 +64,5 @@ socat
 unclutter
 libssl1.0.0
 libavahi-client3
+fuse
 

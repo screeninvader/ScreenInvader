@@ -24,6 +24,8 @@ depmod
 [ -z "$LC_ALL" ] && export LC_ALL=C
 cd `dirname $0`
 chvt 2
+sudo -u lounge /lounge/go/bin/ipfs init
+
 ln -s /usr/lib/x86_64-linux-gnu/libzmq.so.3 /usr/lib/x86_64-linux-gnu/libzmq.so
 ln -s /usr/lib/arm-linux-gnueabihf/libzmq.so.3 /usr/lib/arm-linux-gnueabihf/libzmq.so
 chown root:root /etc/sudoers
@@ -171,6 +173,7 @@ function finish() {
  chown -R lounge:users /lounge/
  usermod -s /bin/bash root
  usermod -G audio lounge
+ usermod -G fuse lounge
  cat /var/log/network.log 
  cat /var/log/janosh-root.log
  /sbin/shutdown -r now
