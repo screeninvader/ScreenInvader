@@ -258,6 +258,9 @@ function doBuild() {
   check "Clone shairport" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_shairport.sh"
 
+  check "Clone ipfs" \
+    "cd $BOOTSTRAP_DIR/third/; ./clone_ipfs.sh"
+
   check "Copy third party" \
     "cp -r $BOOTSTRAP_DIR/third/ \"$CHROOT_DIR\""
 
@@ -299,6 +302,9 @@ function doBuild() {
 
   check "Build shairport" \
     "$CHRT /third/build_shairport.sh"
+
+  check "Build ipfs" \
+    "$CHRT /third/build_ipfs.sh"
 
 }
 
