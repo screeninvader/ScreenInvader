@@ -19,7 +19,7 @@ function sshc() {
 }
 
 function waitForConnection() {
-	seq 0 12 | while read i; do
+	seq 0 24 | while read i; do
 		sshc id && break || sleep 10
 	done
 }
