@@ -172,8 +172,7 @@ function finish() {
  mkdir -p /var/cache/debconf/
  chown -R lounge:users /lounge/
  usermod -s /bin/bash root
- usermod -G audio lounge
- usermod -G fuse lounge
+ usermod -G audio,fuse lounge
  cat /var/log/network.log 
  cat /var/log/janosh-root.log
  /sbin/shutdown -r now
