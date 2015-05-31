@@ -4,7 +4,7 @@ cd /third/go/src
 export PATH=$PATH:/third/go/bin/
 mkdir -p /lounge/go
 export GOROOT=/lounge/go/
-export GOPATH=/lounge/go/
+export GOPATH=/lounge/go/bin
 ./all.bash
 go get -u github.com/ipfs/go-ipfs/cmd/ipfs
 
