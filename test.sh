@@ -18,13 +18,7 @@ function sshc() {
 	return $?
 }
 
-function waitForConnection() {
-	seq 0 24 | while read i; do
-		sshc id && break || sleep 10
-	done
-}
-
-export -f waitForConnection sshc
+export -f sshc
 #### main ####
 
 [ $# -ne 3 ] || error "Usage: test.sh [amd64|armhf] <image>"
@@ -33,8 +27,11 @@ image="$2"
 
 ./runimage.sh -a "$arch" -n "$image" &>> $BOOTSTRAP_LOG &
 
-check "Wait for ssh connectivity" \
-	'[ "$(waitForConnection)" == "uid=0(root) gid=0(root) groups=0(root)" ] || false'
+check "Wait 60 seconds" \
+  "sleep 60"
+
+check "Testr ssh connectivity" \
+	'sshc id'
 
 sleep 20
 
