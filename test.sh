@@ -30,7 +30,7 @@ image="$2"
 check "Wait 60 seconds" \
   "sleep 60"
 
-check "Testr ssh connectivity" \
+check "Test ssh connectivity" \
 	'sshc id'
 
 sleep 20
