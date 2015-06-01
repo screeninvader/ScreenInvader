@@ -65,4 +65,15 @@ unclutter
 libssl1.0.0
 libavahi-client3
 fuse
+xserver-xorg
+xserver-xorg-input-kbd
+xserver-xorg-input-mouse
+x11-xserver-utils
+libkyotocabinet16
+youtube-dl
+libzmq3
+libluajit-5.1-2
+xdotool
+libfaac0
+mpv
 

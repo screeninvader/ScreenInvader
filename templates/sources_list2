@@ -1,6 +1,6 @@
 #!/bin/bash
 
 cat <<EOSOURCES
-deb $1 wheezy main non-free
+deb $1 jessie main non-free
 EOSOURCES
 

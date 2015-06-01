@@ -104,7 +104,7 @@ function doDebootstrap() {
   )
 
   check "Bootstrap debian" \
-    "debootstrap  --foreign --variant=minbase --exclude="`echo $PKG_BLACK | sed 's/ /,/g'`" --arch $ARCH wheezy "$CHROOT_DIR" $BOOTSTRAP_MIRROR"
+    "debootstrap  --foreign --variant=minbase --exclude="`echo $PKG_BLACK | sed 's/ /,/g'`" --arch $ARCH jessie "$CHROOT_DIR" $BOOTSTRAP_MIRROR"
 
   if [ $ARCH == "armhf" -a "$(uname -m)" != "armv7l" ]; then
     check "Copy qemu-static" \
@@ -156,14 +156,14 @@ function doPackageConf() {
     "$CHRT bash -c 'touch /var/lib/apt/lists/*; apt-cache policy'"
 
   check "Install white packages" \
-    "$CHRT $APTNI -t wheezy install $PKG_WHITE"
+    "$CHRT $APTNI -t jessie install $PKG_WHITE"
 
   check "Install sid packages" \
    "$CHRT $APTNI -t sid install $PKG_SID"
 
   if [ $ARCH == "amd64" ]; then
     check "Install amd64 kernel" \
-      "$CHRT $APTNI -t wheezy install linux-image-amd64"
+      "$CHRT $APTNI -t jessie install linux-image-amd64"
   fi
 
 #  check "Upgrade packages" \
