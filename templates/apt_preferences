@@ -5,4 +5,8 @@ Package: *
 Pin: release n=jessie
 Pin-Priority: 989
 
+Package: *
+Pin: release n=sid
+Pin-Priority: 988
+
 EOFPIN
