@@ -18,7 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-trap 'kpartx -av $DEVICE' EXIT
+trap 'kpartx -dv $DEVICE' EXIT
 
 dir="`dirname $0`"
 MAKEPARTITION_DIR="`cd $dir; pwd`"
@@ -107,7 +107,7 @@ check "Make partition layout" \
 if [ ! -f "$DEVICE*1" ]; then
  	DEVICE="`kpartx -av "$DEVICE" | head -n1 | cut -d" " -f8 2>> $BOOTSTRAP_LOG`"
   err=$?
-  sleep 1
+  sleep 3 # give the system time to actually show the mapping
   check "Map partion devices" \
     "[ $err -eq 0 ] || false"
 fi
