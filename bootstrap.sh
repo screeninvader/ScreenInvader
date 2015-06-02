@@ -158,7 +158,7 @@ function doPackageConf() {
   check "Install white packages" \
     "$CHRT $APTNI -t jessie install $PKG_WHITE"
 
-  check "Install sid packages" \
+  check "Install id packages" \
    "$CHRT $APTNI -t sid install $PKG_SID"
 
   if [ $ARCH == "amd64" ]; then
