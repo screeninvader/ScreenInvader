@@ -34,9 +34,15 @@ chmod a+rw /var/log/nginx
 chmod 0440 /etc/sudoers
 chown -R lounge:users /lounge/
 
-update-rc.d janosh defaults
-/etc/init.d/janosh start
+update-rc.d janosh-lounge defaults
+update-rc.d janosh-root defaults
+
+/etc/init.d/janosh-lounge start
+/etc/init.d/janosh-root start
+
+update-rc.d screeninvader-lounge defaults
 update-rc.d screeninvader-root defaults
+
 /etc/init.d/screeninvader-root start
 
 sleep 3
@@ -166,7 +172,6 @@ function rebootConf(){
 function finish() {
  $janosh publish networkMake
  update-rc.d xserver defaults
- update-rc.d screeninvader defaults
  update-rc.d avahi-daemon defaults
  mkdir -p /share
  mkdir -p /var/cache/debconf/
