@@ -1,8 +1,8 @@
 #!/bin/bash
 
 cat <<EOSYSLINUX
-DEFAULT loungemc
-LABEL loungemc
+DEFAULT screeninvader
+LABEL screeninvader
   SAY Booting ScreenInvader
 	KERNEL /boot/vmlinuz-3.16.0-4-amd64
 	APPEND quiet splash ro init=/bin/systemd root=UUID=$1 initrd=/boot/initrd.img-3.16.0-4-amd64

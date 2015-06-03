@@ -30,7 +30,7 @@ libxv1
 libvdpau1
 vdpauinfo
 libxxf86dga1
-libboost-program-options1.49.0
+libboost-program-options1.55.0
 dpkg
 libc6
 libstdc++6
@@ -50,7 +50,7 @@ wmctrl
 libxv1
 libasound2
 libvpx1
-libx264-123
+libx264-142
 libxvidcore4
 libdv4
 libopus0

@@ -96,7 +96,7 @@ check "Re-read partition table" \
   "sfdisk -R $DEVICE"
 
 cat <<EOT | sfdisk --in-order -L -uM $DEVICE &>> $BOOTSTRAP_LOG
-1,16,c
+1,32,c
 ,,L
 EOT
 err=$?
