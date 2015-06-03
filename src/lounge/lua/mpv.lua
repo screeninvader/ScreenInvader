@@ -32,8 +32,11 @@ function MpvClass.jump(self, idx)
   obj = Janosh:get("/playlist/items/.")
   idx = tonumber(idx);
   lua_idx = idx + 1;
+  print("IDX:", lua_idx, #obj)
+
   if lua_idx > #obj then
     lua_idx = #obj
+    idx = #obj - 1
   end
   videoUrl = obj[lua_idx].url
   title = obj[lua_idx].title
@@ -111,7 +114,7 @@ function MpvClass.add(self, videoUrl, title, srcUrl)
   self:enqueue(videoUrl, title, srcUrl)
 
   if Janosh:get("/player/active").active == "false" then
-    self:jump(10000000) -- jump to the ned of the playlist
+    self:jump(10000000) -- jump to the end of the playlist
   end
 end
 
