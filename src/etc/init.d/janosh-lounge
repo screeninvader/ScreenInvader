@@ -33,7 +33,7 @@ case "$1" in
 
   stop)
     log_daemon_msg "Stopping $DESC lounge"
-    start-stop-daemon --stop --pidfile /var/run/janosh-root.pid --retry 10
+    start-stop-daemon --stop --pidfile /var/run/janosh-lounge.pid --retry 10
     log_end_msg $?
     ;;
 
