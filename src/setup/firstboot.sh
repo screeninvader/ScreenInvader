@@ -34,6 +34,8 @@ chmod a+rw /var/log/nginx
 chmod 0440 /etc/sudoers
 chown -R lounge:users /lounge/
 
+update-rc.d xserver defaults
+
 update-rc.d janosh-lounge defaults
 update-rc.d janosh-root defaults
 
@@ -171,7 +173,6 @@ function rebootConf(){
 
 function finish() {
  $janosh publish networkMake
- update-rc.d xserver defaults
  update-rc.d avahi-daemon defaults
  mkdir -p /share
  mkdir -p /var/cache/debconf/
