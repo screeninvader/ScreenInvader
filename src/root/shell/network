@@ -9,18 +9,16 @@ function makeHostname() {
 function makeNetworkDhcp() {
 
   cat > /etc/network/interfaces <<EODHCPCONF
-auto lo $1
+auto $1
 iface lo inet loopback
-allow-hotplug $1
 iface $1 inet dhcp
 EODHCPCONF
 }
 
 function makeNetworkMan() {
   cat > /etc/network/interfaces <<EONETCONF
-auto lo $1
+auto $1
 iface lo inet loopback
-allow-hotplug $1
 iface $1 inet static
 address $2
 netmask $3
