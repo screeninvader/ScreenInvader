@@ -1,3 +1,4 @@
-
+mkdir -p /var/log/nginx
+chmod a+rw /var/log/nginx
 exit 0
 
