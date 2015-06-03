@@ -35,7 +35,7 @@ chmod 0440 /etc/sudoers
 chown -R lounge:users /lounge/
 
 update-rc.d xserver defaults
-
+update-rc.d nginx defaults
 update-rc.d janosh-lounge defaults
 update-rc.d janosh-root defaults
 
