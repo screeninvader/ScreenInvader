@@ -181,6 +181,7 @@ function finish() {
  usermod -G audio,fuse lounge
  cat /var/log/network.log 
  cat /var/log/janosh-root.log
+  rm /lib/systemd/system/nginx.service
  /sbin/shutdown -r now
 }
 
