@@ -38,7 +38,7 @@ export LC_ALL="C"
 
 APTNI="apt-get -q -y --no-install-recommends --force-yes -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" ";
 
-DEBIAN_MIRROR="http://debian.inode.at/debian/"
+DEBIAN_MIRROR="http://ftp2.de.debian.org/debian/"
 
 dir="`dirname $0`"
 BOOTSTRAP_DIR="`cd $dir; pwd`"
