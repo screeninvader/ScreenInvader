@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /third/go/src
-export GOROOT=/usr/local/go
+export GOROOT=/third/go
 export GOPATH=/lounge/go
 export PATH=$PATH:$GOROOT/bin
 mkdir -p /lounge/go
