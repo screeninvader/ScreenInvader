@@ -27,8 +27,8 @@ image="$2"
 
 ./runimage.sh -a "$arch" -n "$image" &>> $BOOTSTRAP_LOG &
 
-check "Wait 60 seconds" \
-  "sleep 60"
+check "Wait 120 seconds" \
+  "sleep 120"
 
 check "Test ssh connectivity" \
 	'sshc id'
