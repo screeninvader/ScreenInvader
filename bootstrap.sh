@@ -213,7 +213,7 @@ function doBuild() {
     "$CHRT $APTNI update"
 
   check "Install build dependencies" \
-    "$CHRT $APTNI -t sid install $PKG_BUILD"
+    "$CHRT $APTNI install $PKG_BUILD"
 
   if [ $ARCH == "armhf" ]; then
    check "Clone uboot-cfg" \
