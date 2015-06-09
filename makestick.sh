@@ -105,9 +105,8 @@ check "Make partition layout" \
   "[ $err -eq 0 ] || false"
 
 if [ ! -f "$DEVICE*1" ]; then
- 	DEVICE="`kpartx -av "$DEVICE" | head -n1 | cut -d" " -f8 2>> $BOOTSTRAP_LOG`"
+ 	DEVICE="`kpartx -asv "$DEVICE" | head -n1 | cut -d" " -f8 2>> $BOOTSTRAP_LOG`"
   err=$?
-  sleep 3 # give the system time to actually show the mapping
   check "Map partion devices" \
     "[ $err -eq 0 ] || false"
 fi
