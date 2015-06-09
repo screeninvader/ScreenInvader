@@ -24,6 +24,7 @@ debug: TARGET := ${TARGET}-${ARCH}
 debug: makedefaultconf ${TARGET}
 
 release: TARGET := ${TARGET}-${ARCH}
+release: OPTS += -k
 release: ${TARGET}
 
 ${FS_DIR}:
