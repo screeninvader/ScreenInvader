@@ -8,7 +8,9 @@ Janosh:set("/player/paused", "false")
 
 --Janosh:setenv("VDPAU_OSD","1")
 Janosh:setenv("DISPLAY",":0")
+Janosh:setenv("HOME","/lounge")
 Janosh:system("killall -9 mpv")
+
 local MPID, MSTDIN, MSTDOUT, MSTDERR = Janosh:popen("mpv", "-idle", "--input-unix-socket", "/tmp/mpv.socket")
 Janosh:pclose(MSTDIN)
 
