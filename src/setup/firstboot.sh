@@ -178,7 +178,7 @@ function finish() {
  mkdir -p /var/cache/debconf/
  chown -R lounge:users /lounge/
  usermod -s /bin/bash root
- usermod -G audio,fuse lounge
+ usermod -G audio lounge
  cat /var/log/network.log 
  cat /var/log/janosh-root.log
   rm /lib/systemd/system/nginx.service
