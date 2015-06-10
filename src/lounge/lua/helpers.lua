@@ -40,6 +40,7 @@ function HelpersClass.youtube_dl(self, url)
     Janosh:pclose(i)
     Janosh:pclose(o)
     Janosh:pclose(e)
+    Janosh:pwait(p)
     return items
 end
 
