@@ -106,11 +106,5 @@ check "Sync" \
 check "Remove symlink" \
   "rm /dev/mapper/`basename $LOOPBACK_DEVICE`"
 
-check "Detaching partitions" \
-  "kpartx -d $LOOPBACK_DEVICE"
-
-check "Detaching disk image file" \
-  "losetup -d $LOOPBACK_DEVICE"
-
 exit 0
 
