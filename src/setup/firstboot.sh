@@ -25,6 +25,7 @@ depmod
 cd `dirname $0`
 chvt 2
 sudo -u lounge /lounge/go/bin/ipfs init
+sudo -u lounge /lounge/go/bin/ipfs config Addresses.Gateway /ip4/127.0.0.1/tcp/8082
 
 ln -s /usr/lib/x86_64-linux-gnu/libzmq.so.3 /usr/lib/x86_64-linux-gnu/libzmq.so
 ln -s /usr/lib/arm-linux-gnueabihf/libzmq.so.3 /usr/lib/arm-linux-gnueabihf/libzmq.so
