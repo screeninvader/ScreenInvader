@@ -1,9 +1,10 @@
 #!/lounge/bin/janosh -f
 
 function add(key, operation, value)
-  sum = Janosh:capture("echo \"" .. value .. "\" | md5sum");  
-  name = tostring(Janosh:epoch()) .. "-" .. sum;
-  Janosh:system("echo \"" .. value .. "\" > /ipns/local/" .. name)
+  print("add")
+  obj = JSON:decode(value)
+  name = tostring(Janosh:epoch()) .. "-" .. obj.title;
+  Janosh:system("echo \"" .. obj.url .. "\" > \"/ipns/local/" .. name .. "\"")
   print("Added " .. value)
 end
 
