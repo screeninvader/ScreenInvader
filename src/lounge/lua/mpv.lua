@@ -247,7 +247,7 @@ end
 
 function MpvClass.loadFile(self,path)
   Janosh:set_t("/player/active", "true")
-  self:cmd("loadfile ", path)
+  self:cmd("loadfile", path)
 end
 
 return MpvClass:new()
