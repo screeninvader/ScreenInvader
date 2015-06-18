@@ -175,7 +175,6 @@ function rebootConf(){
 function finish() {
  $janosh publish networkMake
  update-rc.d avahi-daemon defaults
- update-rc.d uwsgi defaults
  mkdir -p /share
  mkdir -p /var/cache/debconf/
  chown -R lounge:users /lounge/
