@@ -261,6 +261,9 @@ function doBuild() {
   check "Clone ipfs" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_ipfs.sh"
 
+  check "Clone searx" \
+    "cd $BOOTSTRAP_DIR/third/; ./clone_searx.sh"
+
   check "Copy third party" \
     "cp -r $BOOTSTRAP_DIR/third/ \"$CHROOT_DIR\""
 
@@ -306,6 +309,8 @@ function doBuild() {
   check "Build ipfs" \
     "$CHRT /third/build_ipfs.sh"
 
+  check "Build searx" \
+    "$CHRT /third/build_searx.sh"
 }
 
 function doCopy() {

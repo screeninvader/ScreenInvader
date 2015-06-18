@@ -75,4 +75,5 @@ libzmq3
 libluajit-5.1-2
 xdotool
 libfaac0
-
+python-virtualenv
+python-pybabel
