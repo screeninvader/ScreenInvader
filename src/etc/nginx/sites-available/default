@@ -41,6 +41,19 @@ server {
  
 	}
 
+  location = /searx { rewrite ^ /searx/; }
+
+  location /searx {
+    try_files $uri @searx;
+  }
+
+  location @searx {
+    uwsgi_param SCRIPT_NAME /searx;
+    include uwsgi_params;
+    uwsgi_modifier1 30;
+    uwsgi_pass unix:/run/uwsgi/app/searx/socket;
+  }
+
 	# Only for nginx-naxsi used with nginx-naxsi-ui : process denied requests
 	#location /RequestDenied {
 	#	proxy_pass http://127.0.0.1:8080;    
@@ -76,7 +89,7 @@ server {
 	#	deny all;
 	#}
 
-        include /etc/nginx/fcgiwrap.conf;
+  include /etc/nginx/fcgiwrap.conf;
 
 }
 
