@@ -12,7 +12,7 @@
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-COMPONENTS="network display system"
+COMPONENTS="network display system searx"
 
 set -e
 
