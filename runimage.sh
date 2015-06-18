@@ -44,7 +44,7 @@ image="$1"
 if [ "$ARCH" == "amd64" ]; then
   
   sudo id
-  DEVICE="`sudo kpartx -av "$image" | head -n1 | cut -d" " -f8`"
+  DEVICE="`sudo kpartx -asv "$image" | head -n1 | cut -d" " -f8`"
   sleep 3
   sudo chmod a+rw "/dev/mapper/`basename $DEVICE`p2"
 

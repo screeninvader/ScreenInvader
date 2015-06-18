@@ -8,7 +8,11 @@ Janosh:set("/player/paused", "false")
 
 --Janosh:setenv("VDPAU_OSD","1")
 Janosh:setenv("DISPLAY",":0")
+Janosh:setenv("USER","lounge")
+Janosh:setenv("HOME","/lounge/")
+Janosh:setenv("VDPAU_DRIVER", "sunxi")
 Janosh:system("killall -9 mpv")
+
 local MPID, MSTDIN, MSTDOUT, MSTDERR = Janosh:popen("mpv", "-idle", "--input-unix-socket", "/tmp/mpv.socket")
 Janosh:pclose(MSTDIN)
 
@@ -243,7 +247,7 @@ end
 
 function MpvClass.loadFile(self,path)
   Janosh:set_t("/player/active", "true")
-  self:cmd("loadfile ", path)
+  self:cmd("loadfile", path)
 end
 
 return MpvClass:new()

@@ -111,7 +111,7 @@ function doDebootstrap() {
       "cp /usr/bin/qemu-arm-static \"$CHROOT_DIR/usr/bin\""
   fi
 
-  check "Boostrap second stage" \
+  check "Bootstrap second stage" \
     "DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true LC_ALL=C LANGUAGE=C LANG=C chroot \"$CHROOT_DIR\" /debootstrap/debootstrap --second-stage"
 
   check "Trigger post install" \
@@ -158,7 +158,7 @@ function doPackageConf() {
   check "Install white packages" \
     "$CHRT $APTNI -t jessie install $PKG_WHITE"
 
-  check "Install id packages" \
+  check "Install sid packages" \
    "$CHRT $APTNI -t sid install $PKG_SID"
 
   if [ $ARCH == "amd64" ]; then
@@ -213,7 +213,7 @@ function doBuild() {
     "$CHRT $APTNI update"
 
   check "Install build dependencies" \
-    "$CHRT $APTNI -t sid install $PKG_BUILD"
+    "$CHRT $APTNI install $PKG_BUILD"
 
   if [ $ARCH == "armhf" ]; then
    check "Clone uboot-cfg" \

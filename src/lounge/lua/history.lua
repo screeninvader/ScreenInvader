@@ -1,14 +1,14 @@
 #!/lounge/bin/janosh -f
 
-function write_history(key, operation, value)
-   if key:find("source$") and operation == 'W' then
-      fp = io.open('/lounge/history.log', 'a')
-      fp:write(os.time(), '|', value, '\n')
-      fp:close()
-   end
+function add(key, operation, value)
+  print("add")
+  obj = JSON:decode(value)
+  name = tostring(Janosh:epoch()) .. "-" .. obj.title;
+  Janosh:system("echo \"" .. obj.url .. "\" > \"/ipns/local/" .. name .. "\"")
+  print("Added " .. value)
 end
 
-Janosh:subscribe("/playlist/items", write_history)
+Janosh:subscribe("historyAdd", add)
 while true do
   Janosh:sleep(1000000) -- milliseconds
 end
