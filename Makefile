@@ -28,7 +28,7 @@ release: OPTS += -k
 release: ${TARGET}
 
 ${FS_DIR}:
-	./bootstrap.sh -a ${ARCH} ${OPTS} ${FS_DIR}
+	./bootstrap.sh -c config/answer.sh -a ${ARCH} ${OPTS} ${FS_DIR}
 	
 ${TARGET}: screeninvader.dd.tmp ${FS_DIR}
 	./mountimage.sh screeninvader.dd.tmp tmp
