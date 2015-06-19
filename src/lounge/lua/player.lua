@@ -22,13 +22,13 @@ function openPlayer(key, op, value)
     items = helpers:resolve(url,category)
 
     for title, videoUrl in pairs(items) do
-      mpv:add(videoUrl, title, url)
+      mpv:add(videoUrl, title, url, category)
       Janosh:publish("historyAdd", "W", JSON:encode({url=url, title=title}))
     end
   else
     videoUrl = url
     title = basename(url)
-    mpv:add(videoUrl, title, url)
+    mpv:add(videoUrl, title, url, category)
     Janosh:publish("historyAdd", "W", JSON:encode({url=url, title=title}))
   end
 end

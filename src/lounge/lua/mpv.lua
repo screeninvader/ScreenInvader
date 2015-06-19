@@ -32,7 +32,6 @@ end
 function MpvClass.jump(self, idx) 
   print("jump:", idx)
   Janosh:publish("shairportStop","W", "")
-
   obj = Janosh:get("/playlist/items/.")
   idx = tonumber(idx);
   lua_idx = idx + 1;
@@ -47,23 +46,27 @@ function MpvClass.jump(self, idx)
   if string.match(videoUrl, "http[s]*://") then
     p, i, o, e = Janosh:popen("curl", "--head", videoUrl)
     line=Janosh:preadLine(o)
-    if line == nil then
-      util:exception("Can't fix item:" .. idx)
-      return
-    end
     Janosh:pclose(i)
     Janosh:pclose(e)
     Janosh:pclose(o)
     Janosh:pwait(p)
 
-    token=util:split(line," ")[2]
+    token="-1"
+
+    if line ~= nil then
+      token=util:split(line," ")[2]
+    end
+
     code=tonumber(token)
+    print("CODE: " .. code)
     if code ~= 200 and code ~= 302 then
       Janosh:transaction(function()
           src = Janosh:get("/playlist/items/#" .. idx .. "/source").items[1].source
           title = Janosh:get("/playlist/items/#" .. idx .. "/title").items[1].title
+          cat = Janosh:get("/playlist/items/#" .. idx .. "/category").items[1].category
+
           util:notify("Fixing cached item:" .. title)
-          items = helper:resolve(src,"youtube");
+          items = helper:resolve(src,cat);
           for  t, v in pairs(items) do
             title=t
             videoUrl=v 
@@ -101,7 +104,7 @@ function MpvClass.seek(self, seconds)
   self:cmd("seek", seconds, "absolute")
 end
 
-function MpvClass.enqueue(self, videoUrl, title, srcUrl) 
+function MpvClass.enqueue(self, videoUrl, title, srcUrl, category) 
   util:notify("Queued: " .. title)
   if title == "" then
     title = "(no title)"
@@ -111,11 +114,13 @@ function MpvClass.enqueue(self, videoUrl, title, srcUrl)
   Janosh:set_t("/playlist/items/#" .. size .. "/url", videoUrl)
   Janosh:set_t("/playlist/items/#" .. size .. "/title", title)
   Janosh:set_t("/playlist/items/#" .. size .. "/source", srcUrl)
+  Janosh:set_t("/playlist/items/#" .. size .. "/source", srcUrl)
+  Janosh:set_t("/playlist/items/#" .. size .. "/category", category)
   print("enqueuend")
 end
 
-function MpvClass.add(self, videoUrl, title, srcUrl)
-  self:enqueue(videoUrl, title, srcUrl)
+function MpvClass.add(self, videoUrl, title, srcUrl, category)
+  self:enqueue(videoUrl, title, srcUrl, category)
 
   if Janosh:get("/player/active").active == "false" then
     self:jump(10000000) -- jump to the end of the playlist

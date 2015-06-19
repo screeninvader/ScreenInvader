@@ -21,6 +21,11 @@ function HelpersClass.resolve(self, url, category)
     end
     print("#### URL:", url)
     return self:youtube_dl(url)
+  elseif category == "magnet" then
+    Janosh:publish("peerflixStart", "W", url);
+    items={}
+    items[title]="http://localhost:9999/"
+    return items
   else
     return self:youtube_dl(url)
   end

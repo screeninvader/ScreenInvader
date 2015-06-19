@@ -36,7 +36,8 @@ local CATEGORY_MAP={
 ["bandcamp"]='player',
 ["tindeck"]='player',
 ["joker"]='player',
-["putio"]='player'
+["putio"]='player',
+["magnet"]='player'
 }
 
 local CATEGORY_FIX={
@@ -62,6 +63,10 @@ end
 
 function getCategory(url)
   print("getCategory:", url)
+  if string.match(url, "magnet:?") then
+    return "magnet"
+  end
+
   hUrl=string.match(url, "http[s]*://([0-9a-zA-z.-_]*/)")
   if hUrl ~= nil then
     for host,category in pairs(VIDEO_HOSTS) do
