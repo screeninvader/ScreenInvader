@@ -311,6 +311,9 @@ function doBuild() {
 
   check "Build searx" \
     "$CHRT /third/build_searx.sh"
+
+  check "Build peerflix" \
+    "$CHRT /third/build_peerflix.sh"
 }
 
 function doCopy() {
