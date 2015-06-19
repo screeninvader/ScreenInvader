@@ -77,3 +77,7 @@ xdotool
 libfaac0
 python-virtualenv
 python-pybabel
+python-pip
+uwsgi
+uwsgi-plugin-python
+
