@@ -13,22 +13,19 @@ all: release
 screeninvader.dd.tmp:
 	./makeimage.sh -s ${IMAGE_SIZE} ${MKIMG_OPTS} screeninvader.dd.tmp
 
-makedefaultconf:
-	cp src/setup/template-firstboot.cnf src/setup/answer.sh
-
 debug: ARCH := amd64
 debug: OPTS += -k
 debug: FS_DIR := amd64-fs
 debug: MKIMG_OPTS := -x -z
 debug: TARGET := ${TARGET}-${ARCH}
-debug: makedefaultconf ${TARGET}
+debug: ${TARGET}
 
 release: TARGET := ${TARGET}-${ARCH}
 release: OPTS += -k
 release: ${TARGET}
 
 ${FS_DIR}:
-	./bootstrap.sh -c config/answer.sh -a ${ARCH} ${OPTS} ${FS_DIR}
+	./bootstrap.sh -c src/setup/template-firstboot.cnf -a ${ARCH} ${OPTS} ${FS_DIR}
 	
 ${TARGET}: screeninvader.dd.tmp ${FS_DIR}
 	./mountimage.sh screeninvader.dd.tmp tmp
