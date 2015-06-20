@@ -12,7 +12,7 @@
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-COMPONENTS="notify ipfs ip_osd background cache playlist player shairport browser pdf sound show history mouse keyboard websocket"
+COMPONENTS="notify ipfs ip_osd background cache playlist peerflix player shairport browser pdf sound show history mouse keyboard websocket"
 
 set -e
 
