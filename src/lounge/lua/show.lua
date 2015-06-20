@@ -6,6 +6,7 @@ local VIDEO_HOSTS={
 ["youtube.com/"]='youtube',
 ["youtu.be/"]='youtube',
 ["vine.com/"]='youtube',
+["dailymotion.com/"]='youtube',
 ["tvthek.orf.at/"]='orf',
 ["videos.arte.tv/"]='arte7',
 ["vimeo.com/"]='vimeo',
@@ -67,7 +68,7 @@ function getCategory(url)
     return "magnet"
   end
 
-  hUrl=string.match(url, "http[s]*://([0-9a-zA-z.-_]*/)")
+  hUrl=string.match(url, "http[s]*://[w.]*([0-9a-zA-z._-]*/)")
   if hUrl ~= nil then
     for host,category in pairs(VIDEO_HOSTS) do
       print(hUrl,host);
