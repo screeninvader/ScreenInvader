@@ -10,7 +10,7 @@ local function basename(str)
   return name
 end
 
-function openPlayer(key, op, value)
+function open(key, op, value)
   print("open")
   obj=Janosh:get("/player/.")
   Janosh:tprint(obj)
@@ -33,7 +33,7 @@ function openPlayer(key, op, value)
   end
 end
 
-Janosh:subscribe("/player/url", openPlayer)
+Janosh:subscribe("/player/url", open)
 Janosh:subscribe("playerPause", function(key,op,value) mpv:pause() end)
 Janosh:subscribe("playerPlay", function(key,op,value) mpv:play() end)
 Janosh:subscribe("playerNext", function(key,op,value) mpv:next() end)
