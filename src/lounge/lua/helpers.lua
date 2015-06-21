@@ -22,8 +22,8 @@ function HelpersClass.resolve(self, url, category)
     print("#### URL:", url)
     return self:youtube_dl(url)
   elseif category == "magnet" then
-    Janosh:publish("peerflixStart", "W", url);
     items={}
+    title=string.match(url, "&dn=([0-9a-zA-z._+-]*)&")
     items[title]="http://localhost:9999/"
     return items
   else
@@ -42,6 +42,7 @@ function HelpersClass.youtube_dl(self, url)
       if title == nil or url == nil then break end
       items[title]=url
     end
+    print("YOUTUBE_DL", title, url) 
     Janosh:pclose(i)
     Janosh:pclose(o)
     Janosh:pclose(e)
