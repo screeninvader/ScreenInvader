@@ -68,7 +68,7 @@ function MpvClass.jump(self, idx)
           title = Janosh:get("/playlist/items/#" .. idx .. "/title").items[1].title
           cat = Janosh:get("/playlist/items/#" .. idx .. "/category").items[1].category
           if cat == "magnet" then
-            obj = { idx: idx, src: src};
+            obj = { idx=idx, src=src}
             Janosh:publish("peerflixStart", "W", JSON:encode(obj));
             Janosh:sleep(1000)
             util:notify("Buffering torrent: " .. title)
