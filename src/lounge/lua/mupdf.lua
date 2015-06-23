@@ -15,12 +15,12 @@ function MupdfClass.openFile(self, file)
   util:notify("Open PDF: " .. file)
 
   print("openFile:", file)
-  Janosh:system("killall mupdf; mupdf \"" .. file .. "\" &")
+  Janosh:system("killall mupdf-x11; mupdf-x11 \"" .. file .. "\" &")
 end
 
 function MupdfClass.close(self)
   print("close")
-  Janosh:system("killall mupdf")
+  Janosh:system("killall mupdf-x11")
 end
 
 function MupdfClass.pageDown(self) 

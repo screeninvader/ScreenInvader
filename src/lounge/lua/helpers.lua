@@ -21,11 +21,6 @@ function HelpersClass.resolve(self, url, category)
     end
     print("#### URL:", url)
     return self:youtube_dl(url)
-  elseif category == "magnet" then
-    items={}
-    title=string.match(url, "&dn=([0-9a-zA-z._+-]*)&")
-    items[title]="http://localhost:9999/"
-    return items
   else
     return self:youtube_dl(url)
   end

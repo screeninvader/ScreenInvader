@@ -32,6 +32,7 @@ end
 function MpvClass.jump(self, idx) 
   print("jump:", idx)
   Janosh:publish("shairportStop", "W", "")
+
   obj = Janosh:get("/playlist/items/.")
   idx = tonumber(idx);
   lua_idx = idx + 1;
@@ -62,25 +63,18 @@ function MpvClass.jump(self, idx)
 
     code=tonumber(token)
     print("CODE: " .. code)
+
     if code ~= 200 and code ~= 302 then
       Janosh:transaction(function()
           src = Janosh:get("/playlist/items/#" .. idx .. "/source").items[1].source
           title = Janosh:get("/playlist/items/#" .. idx .. "/title").items[1].title
           cat = Janosh:get("/playlist/items/#" .. idx .. "/category").items[1].category
-          if cat == "magnet" then
-            obj = { idx=idx, src=src}
-            Janosh:publish("peerflixStart", "W", JSON:encode(obj));
-            Janosh:sleep(1000)
-            util:notify("Buffering torrent: " .. title)
-            Janosh:sleep(10000)
-          else
-            util:notify("Fixing cached item:" .. title)
-            items = helper:resolve(src,cat);
-            for  t, v in pairs(items) do
-              title=t
-              videoUrl=v 
-              break;
-            end
+          util:notify("Fixing cached item:" .. title)
+          items = helper:resolve(src,cat);
+          for  t, v in pairs(items) do
+            title=t
+            videoUrl=v 
+            break;
           end
           print("TITLE", t)
           Janosh:set("/playlist/items/#" .. idx .. "/url", videoUrl)
@@ -236,7 +230,6 @@ function MpvClass.pause(self)
 end
 
 function MpvClass.play(self)
-    util:notify("Play")
     self:cmd("set_property","pause",false)
     Janosh:set_t("/player/paused", "false")
 end

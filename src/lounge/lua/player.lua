@@ -18,6 +18,7 @@ function open(key, op, value)
   category=obj.category
   videoUrl=""
   title=""
+   
   if category ~= "video" and category ~= "audio" then
     items = helpers:resolve(url,category)
 

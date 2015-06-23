@@ -140,6 +140,8 @@ end
   cat=getCategory(url)
   handler=CATEGORY_MAP[cat]
   print("triggering:", handler, "/", cat)
+  if cat == "magnet" then
+    Janosh:publish("peerflixStart", "W", "")
   if handler ~= nil then
     Janosh:set_all_t({"/" .. handler .. "/category",cat, "/" .. handler .. "/url", url}) 
   else
