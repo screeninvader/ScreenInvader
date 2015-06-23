@@ -54,6 +54,27 @@ server {
     uwsgi_pass unix:/run/uwsgi/app/searx/socket;
   }
 
+  location /peerflix/ {
+    proxy_pass http://127.0.0.1:9000/;
+  }
+
+  location /views/ {
+    proxy_pass http://127.0.0.1:9000;
+  }
+
+  location /images/ {
+    proxy_pass http://127.0.0.1:9000;
+  }
+
+  location /socket.io/ {
+    proxy_pass http://127.0.0.1:9000;
+  }
+
+  location /torrents {
+    proxy_pass http://127.0.0.1:9000;
+  }
+
+
 	# Only for nginx-naxsi used with nginx-naxsi-ui : process denied requests
 	#location /RequestDenied {
 	#	proxy_pass http://127.0.0.1:8080;    
