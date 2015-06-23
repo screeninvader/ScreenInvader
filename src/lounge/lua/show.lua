@@ -142,7 +142,7 @@ end
   print("triggering:", handler, "/", cat)
   if cat == "magnet" then
     Janosh:publish("peerflixStart", "W", "")
-  if handler ~= nil then
+  elseif handler ~= nil then
     Janosh:set_all_t({"/" .. handler .. "/category",cat, "/" .. handler .. "/url", url}) 
   else
     util:exception("Unable to handle url: " .. url)

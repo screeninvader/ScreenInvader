@@ -1,18 +1,22 @@
 #!/lounge/bin/janosh -f
 
+local util = require("util")
+
 local function getPeerflixServerPid() 
-  return Janosh:capture("netstat -anp | sed 's/.*0[.]0[.]0[.]0:9000 .* \([0-9]*\)\/node/\1/p'")
+  return tonumber(Janosh:capture("netstat -anp | sed -n 's/.*0[.]0[.]0[.]0:9000 .* \\([0-9]*\\)\\/node/\\1/p'"))
 end
 
 Janosh:subscribe("peerflixStart", function()
-  if string.match(getPeerflixServerPid(), "[0-9]*") == nil then
-    Janosh:system("peeflix-server")    
+  pid=getPeerflixServerPid()
+  
+  if pid  == nil then
+    Janosh:system("peerflix-server")    
   end
 end)
 
 Janosh:subscribe("peerflixStop", function() 
   pid=getPeerflixServerPid()
-  if string.match(pid, "[0-9]*") ~= nil then
+  if pid ~= nil then
     Janosh:system("kill " .. pid)
   end
 end)
