@@ -2,24 +2,28 @@
 
 local util = require("util")
 
-local function getPeerflixServerPid() 
+local function getPeerflixServerPid()
   return tonumber(Janosh:capture("netstat -anp | sed -n 's/.*0[.]0[.]0[.]0:9000 .* \\([0-9]*\\)\\/node/\\1/p'"))
 end
 
-Janosh:subscribe("peerflixStart", function()
-  pid=getPeerflixServerPid()
-  
-  if pid  == nil then
-    Janosh:system("peerflix-server")    
-  end
-end)
+Janosh:system("peerflix-server &")
 
-Janosh:subscribe("peerflixStop", function() 
+-- wait for peerflix-server to bring the http server up
+pid=nil
+while pid == nil do
   pid=getPeerflixServerPid()
-  if pid ~= nil then
-    Janosh:system("kill " .. pid)
-  end
-end)
+  Janosh:sleep(1000)
+end
+
+--get all torrents
+json = Janosh:capture("wget -qO - http://localhost:9000/torrents")
+array = JSON:decode(json)
+
+-- pause all torrents
+for i, obj in ipairs(array) do
+  path = "/torrents/" .. obj["infoHash"] .. "/pause"
+  Janosh:system("curl -X POST http://localhost:9000" .. path)
+end
 
 while true do
   Janosh:sleep(1000000)
