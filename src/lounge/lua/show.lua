@@ -7,6 +7,7 @@ local VIDEO_HOSTS={
 ["youtu.be/"]='youtube',
 ["vine.com/"]='youtube',
 ["dailymotion.com/"]='youtube',
+["twitch.tv/"]='youtube',
 ["tvthek.orf.at/"]='orf',
 ["videos.arte.tv/"]='arte7',
 ["vimeo.com/"]='vimeo',
