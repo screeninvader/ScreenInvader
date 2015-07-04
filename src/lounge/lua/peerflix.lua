@@ -6,24 +6,31 @@ local function getPeerflixServerPid()
   return tonumber(Janosh:capture("netstat -anp | sed -n 's/.*0[.]0[.]0[.]0:9000 .* \\([0-9]*\\)\\/node/\\1/p'"))
 end
 
-Janosh:system("peerflix-server &")
-
--- wait for peerflix-server to bring the http server up
-pid=nil
-while pid == nil do
+Janosh:subscribe("peerflixStop",function(key, op, value) 
   pid=getPeerflixServerPid()
-  Janosh:sleep(1000)
-end
 
---get all torrents
-json = Janosh:capture("wget -qO - http://localhost:9000/torrents")
-array = JSON:decode(json)
+  if pid ~= nil then
+    Janosh:system("kill " .. pid)
+  end
+  
+  Janosh:set_t("/peerflix/active","false")
+end)
 
--- pause all torrents
-for i, obj in ipairs(array) do
-  path = "/torrents/" .. obj["infoHash"] .. "/pause"
-  Janosh:system("curl -X POST http://localhost:9000" .. path)
-end
+Janosh:subscribe("peerflixStart",function(key,op,value)
+  pid=getPeerflixServerPid()
+
+  if pid == nil then
+    Janosh:system("peerflix-server &")
+  end
+
+  Janosh:set_t("/peerflix/active","true")
+end)
+
+Janosh:subscribe("peerflixAdd", function(key, op, value) 
+  Janosh:system("curl -H 'Content-Type: application/json' --data '{\"link\":\"" .. value .. "\"}' http://localhost:9000/torrents")
+end)
+
+Janosh:publish("peerflixStart", "W", "")
 
 while true do
   Janosh:sleep(1000000)

@@ -38,7 +38,7 @@ function MidoriClass.openUrl(self, url)
   util:notify("Open Browser: " .. url)
 
   print("openUrl:", url)
-  Janosh:system("midori " .. url .. "&")
+  Janosh:system("midori \"" .. url .. "\" &")
   self:raise()
 end
 
