@@ -254,9 +254,6 @@ function doBuild() {
   check "Clone shairport" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_shairport.sh"
 
-  check "Clone ipfs" \
-    "cd $BOOTSTRAP_DIR/third/; ./clone_ipfs.sh"
-
   check "Clone searx" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_searx.sh"
 
@@ -302,14 +299,9 @@ function doBuild() {
   check "Build shairport" \
     "$CHRT /third/build_shairport.sh"
 
-  check "Build ipfs" \
-    "$CHRT /third/build_ipfs.sh"
-
   check "Build searx" \
     "$CHRT /third/build_searx.sh"
 
-  check "Build peerflix" \
-    "$CHRT /third/build_peerflix.sh"
 }
 
 function doCopy() {
