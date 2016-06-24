@@ -152,10 +152,10 @@ if [ -n "$MAKE_UBOOT" ]; then
   fi
 
   check "Make uboot config" \
-    "cd u-boot-sunxi; make CROSS_COMPILE=arm-linux-gnueabihf- Bananapi_config"
+    "cd u-boot-sunxi; make CROSS_COMPILE=arm-none-eabi- Bananapi_config"
 
   check "Build uboot" \
-    "cd u-boot-sunxi; make CROSS_COMPILE=arm-linux-gnueabihf-"
+    "cd u-boot-sunxi; make CROSS_COMPILE=arm-none-eabi-"
 
   check "Install uboot" \
     "cd u-boot-sunxi; dd if=u-boot-sunxi-with-spl.bin of=$DEVICE bs=1024 seek=8"
