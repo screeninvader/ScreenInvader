@@ -2,6 +2,6 @@
 
 cat <<EOSOURCES
 deb $1 jessie main non-free
-deb $1 sid main non-free
+deb $1 jessie-backports main non-free
 EOSOURCES
 

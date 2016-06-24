@@ -31,7 +31,6 @@ PKG_WHITE="`getConf config/packages_white`"
 PKG_EXTRA="`getConf config/packages_extra`"
 PKG_BLACK="`getConf config/packages_black`" 
 PKG_BUILD="`getConf config/packages_build`"
-PKG_SID="`getConf config/packages_sid`"
 FILES_BLACK="`getConf config/files_black`"
 
 export LC_ALL="C"
@@ -156,14 +155,11 @@ function doPackageConf() {
     "$CHRT bash -c 'touch /var/lib/apt/lists/*; apt-cache policy'"
 
   check "Install white packages" \
-    "$CHRT $APTNI -t jessie install $PKG_WHITE"
-
-  check "Install sid packages" \
-   "$CHRT $APTNI -t sid install $PKG_SID"
+    "$CHRT $APTNI install $PKG_WHITE"
 
   if [ $ARCH == "amd64" ]; then
     check "Install amd64 kernel" \
-      "$CHRT $APTNI -t jessie install linux-image-amd64"
+      "$CHRT $APTNI  install linux-image-amd64"
   fi
 
 #  check "Upgrade packages" \
@@ -395,9 +391,6 @@ function doPrepareChroot() {
 
   check "Prune apt directories" \
       "mkdir -p \"$CHROOT_DIR/etc/apt/\" \"$CHROOT_DIR/etc/apt/preferences.d/\" \"$CHROOT_DIR/etc/apt/apt.conf.d/\""
-
-  check "Make apt preferences" \
-    "\"$BOOTSTRAP_DIR/templates/apt_preferences\" > \"$CHROOT_DIR/etc/apt/preferences.d/prefere_em_squeeze\""
 
   check "Make apt sources list" \
     "\"$BOOTSTRAP_DIR/templates/sources_list\" \"$DEBIAN_MIRROR\" > \"$CHROOT_DIR/etc/apt/sources.list\""

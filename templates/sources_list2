@@ -1,7 +1,0 @@
-#!/bin/bash
-
-cat <<EOSOURCES
-deb $1 jessie main non-free
-deb $1 sid main non-free
-EOSOURCES
-
