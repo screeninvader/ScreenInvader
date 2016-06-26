@@ -257,6 +257,9 @@ function doBuild() {
   check "Clone searx" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_searx.sh"
 
+  check "Clone mpv" \
+    "cd $BOOTSTRAP_DIR/third/; ./clone_mpv.sh"
+
   check "Copy third party" \
     "cp -r $BOOTSTRAP_DIR/third/ \"$CHROOT_DIR\""
 
@@ -302,6 +305,8 @@ function doBuild() {
   check "Build searx" \
     "$CHRT /third/build_searx.sh"
 
+  check "Build mpv" \
+    "$CHRT /third/build_mpv.sh"
 }
 
 function doCopy() {
