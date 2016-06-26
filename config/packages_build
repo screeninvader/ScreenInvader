@@ -1,3 +1,9 @@
+libgl1-mesa-dev
+yasm
+libfontconfig1-dev
+libfribidi-dev
+pkg-config
+dh-autoreconf
 build-essential
 libx11-dev
 libxext-dev
