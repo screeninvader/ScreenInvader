@@ -19,4 +19,4 @@ You can find a guide on how to build images and hack custom features [Here](http
 License: AGPL V3 or later
 
 #### Contributors List #####
-[Here](TODO)
+[Here](https://github.com/screeninvader/ScreenInvader/graphs/contributors)
