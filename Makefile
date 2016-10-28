@@ -3,7 +3,7 @@ ARCH := armhf
 CACHER_PORT := 3142
 OPTS := -x
 FS_DIR := armhf-fs
-IMAGE_SIZE := 4000
+IMAGE_SIZE := 6000
 MKIMG_OPTS := -u -z
 
 .PHONY: all image release debug deploy clean test-release test-debug
