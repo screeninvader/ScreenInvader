@@ -80,4 +80,5 @@ python-pybabel
 python-pip
 uwsgi
 uwsgi-plugin-python
+cron
 
