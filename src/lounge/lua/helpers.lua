@@ -27,7 +27,7 @@ function HelpersClass.resolve(self, url, category)
 end
 
 function HelpersClass.youtube_dl(self, url)
-    p,i,o,e = Janosh:psystem("/usr/bin/youtube-dl --encoding utf-8 -g -e '" .. url .. "'")
+    p,i,o,e = Janosh:psystem("/usr/bin/youtube-dl -f 22+bestaudio/18+bestaudio/137+bestaudio/136+bestaudio/135+bestaudio/134+bestaudio/133+bestaudio/160+bestaudio --encoding utf-8 -g -e '" .. url .. "'")
     items={}
     title=""
     url=""
