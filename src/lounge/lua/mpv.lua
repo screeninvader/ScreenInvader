@@ -13,7 +13,7 @@ Janosh:setenv("HOME","/lounge/")
 Janosh:setenv("VDPAU_DRIVER", "sunxi")
 Janosh:system("killall -9 mpv")
 
-local MPID, MSTDIN, MSTDOUT, MSTDERR = Janosh:popen("mpv", "-idle", "--input-unix-socket", "/tmp/mpv.socket")
+local MPID, MSTDIN, MSTDOUT, MSTDERR = Janosh:popen("mpv", "-idle", "--input-ipc-server", "/tmp/mpv.socket")
 Janosh:pclose(MSTDIN)
 
 Janosh:sleep(3000)
