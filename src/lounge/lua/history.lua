@@ -4,7 +4,7 @@ function add(key, operation, value)
   print("add")
   obj = JSON:decode(value)
   name = tostring(Janosh:epoch()) .. "-" .. obj.title;
-  Janosh:system("echo \"" .. obj.url .. "\" > \"/ipns/local/" .. name .. "\"")
+  Janosh:system("echo \"" .. tostring(Janosh:epoch()) .. " " .. obj.url .. " " .. obj.title ..  "\" >> /media/history")
   print("Added " .. value)
 end
 
