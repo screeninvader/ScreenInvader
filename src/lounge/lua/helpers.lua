@@ -28,7 +28,7 @@ end
 
 function HelpersClass.youtube_dl(self, url)
 --    p,i,o,e = Janosh:psystem("/usr/bin/youtube-dl -f 22+bestaudio/18+bestaudio/137+bestaudio/136+bestaudio/135+bestaudio/134+bestaudio/133+bestaudio/160+bestaudio/http-380+bestaudio/http-240+bestaudio/http-144+bestaudio/hls-380-3+bestaudio/hls-380-2+bestaudio/hls-380-1+bestaudio/hls-380-0+bestaudio/hls-240-3+bestaudio/hls-240-2+bestaudio/hls-240-1+bestaudio/hls-240-0+bestaudio/hls-144-3+bestaudio/hls-144-2+bestaudio/hls-144-1+bestaudio/hls-144-0+bestaudio --encoding utf-8 -g -e '" .. url .. "'")
-    p,i,o,e = Janosh:psystem("/usr/bin/youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' --encoding utf-8 -g -e '" .. url .. "'")
+    p,i,o,e = Janosh:psystem("/usr/bin/youtube-dl -f 'best[ext=mp4]/best' --encoding utf-8 -g -e '" .. url .. "'")
     items={}
     title=""
     url=""
