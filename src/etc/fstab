@@ -1,4 +1,5 @@
 rootfs / rootfs defaults,noatime,nodiratime 0 1
 none /var/log/ tmpfs rw,noatime       0 0
 none /tmp/     tmpfs rw,noatime       0 0
+/dev/sda1 /media  ext4 rw,user,noatime,nodiratime 0 1
 
