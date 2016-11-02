@@ -45,7 +45,7 @@ end
 function MidoriClass.close(self)
   print("close")
   self:cmd("Homepage")
-  self:cmd("TabCloseOther")
+  self:cmd("WindowClose")
   self:minimize()
 end
 
