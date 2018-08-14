@@ -2,5 +2,5 @@ cd /third/luajit-rocks
 mkdir build
 cd build
 cmake ..
-make install
+make -j8 install
 
