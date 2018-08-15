@@ -39,7 +39,6 @@ clean:
 	rm -f screeninvader.dd.tmp
 	rm -f *.dd-amd64
 	rm -f *.dd-armhf
-	rm -f *.dd-*.tar.bz2
 	rm -fr amd64-fs
 	rm -fr armhf-fs
 	rm -f src/setup/answer.sh
