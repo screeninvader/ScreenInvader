@@ -196,6 +196,9 @@ function doInstallOuttaSpace() {
 }
 
 function doBuildOuttaSpace() {
+  check "Link nodejs to node" \
+    "ln -s $CHROOT_DIR/usr/bin/nodejs $CHROOT_DIR/usr/bin/node"
+
   check "Clone outta_space" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_outta_space.sh"
 

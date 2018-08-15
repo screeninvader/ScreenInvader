@@ -4,7 +4,7 @@ cat <<EOSYSLINUX
 DEFAULT screeninvader
 LABEL screeninvader
   SAY Booting ScreenInvader
-	KERNEL /boot/vmlinuz-3.16.0-4-amd64
-	APPEND quiet splash ro init=/bin/systemd root=UUID=$1 initrd=/boot/initrd.img-3.16.0-4-amd64
+	KERNEL /vmlinuz
+	APPEND quiet splash ro init=/bin/systemd root=UUID=$1 initrd=/initrd.img
 EOSYSLINUX
 
