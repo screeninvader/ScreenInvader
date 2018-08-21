@@ -17,6 +17,5 @@ Janosh:subscribe("keyUp",  up)
 Janosh:subscribe("keyDown",  down)
 Janosh:subscribe("keyType",  type)
 
-while true do
-  Janosh:sleep(1000000)
-end
+Janosh:forever()
+

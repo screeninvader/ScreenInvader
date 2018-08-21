@@ -66,9 +66,9 @@ function MpvClass.jump(self, idx)
 
     if code ~= 200 and code ~= 302 then
       Janosh:transaction(function()
-          src = Janosh:get("/playlist/items/#" .. idx .. "/source").items[1].source
-          title = Janosh:get("/playlist/items/#" .. idx .. "/title").items[1].title
-          cat = Janosh:get("/playlist/items/#" .. idx .. "/category").items[1].category
+          src = Janosh:get("/playlist/items/#" .. idx .. "/source")
+          title = Janosh:get("/playlist/items/#" .. idx .. "/title")
+          cat = Janosh:get("/playlist/items/#" .. idx .. "/category")
           util:notify("Fixing cached item:" .. title)
           items = helper:resolve(src,cat);
           for  t, v in pairs(items) do
@@ -95,12 +95,12 @@ end
 
 function MpvClass.previous(self) 
   util:notify("previous")
-  self:jump(tonumber(Janosh:get("/playlist/index").index) - 1)
+  self:jump(tonumber(Janosh:get("/playlist/index")) - 1)
 end
 
 function MpvClass.next(self)
   util:notify("next")
-  self:jump(tonumber(Janosh:get("/playlist/index").index) + 1)
+  self:jump(tonumber(Janosh:get("/playlist/index")) + 1)
 end
 
 function MpvClass.seek(self, seconds)
@@ -125,7 +125,7 @@ end
 function MpvClass.add(self, videoUrl, title, srcUrl, category)
   self:enqueue(videoUrl, title, srcUrl, category)
 
-  if Janosh:get("/player/active").active == "false" then
+  if Janosh:get("/player/active") == "false" then
     self:jump(10000000) -- jump to the end of the playlist
   end
 end
@@ -239,7 +239,6 @@ function MpvClass.cache_empty(self)
 end
 
 function MpvClass.onIdle(self) 
-  print("onIdle")
   obj = Janosh:get("/playlist/.")
   idx = tonumber(obj.index)
   len = #obj.items

@@ -18,7 +18,5 @@ Janosh:subscribe("notifySend",  send)
 Janosh:subscribe("notifyLong", long)
 Janosh:subscribe("notifyException", exception)
 
-while true do
-  print("sleep")
-  Janosh:sleep(1000000)
-end
+Janosh:forever()
+

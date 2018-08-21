@@ -9,7 +9,6 @@ function add(key, operation, value)
 end
 
 Janosh:subscribe("historyAdd", add)
-while true do
-  Janosh:sleep(1000000) -- milliseconds
-end
+
+Janosh:forever()
 

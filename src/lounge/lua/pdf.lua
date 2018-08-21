@@ -29,7 +29,7 @@ Janosh:subscribe("/pdf/url", open)
 Janosh:subscribe("pdfClose", function(key,op,value)
   mupdf:close()
   Janosh:transaction(function()
-    if Janosh:get("/pdf/active").active == "true" then
+    if Janosh:get("/pdf/active") == "true" then
       Janosh:set_t("/pdf/active", "false")
     end
   end)

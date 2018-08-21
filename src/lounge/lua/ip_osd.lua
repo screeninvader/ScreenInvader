@@ -31,6 +31,5 @@ Janosh:subscribe("/pdf/active", toggle)
 Janosh:subscribe("/image/active", toggle)
 Janosh:subscribe("/animation/active", toggle)
 
-while true do 
-  Janosh:sleep(100000)
-end
+Janosh:forever()
+

@@ -22,6 +22,5 @@ Janosh:wsOpen(8080)
 Janosh:wsOnReceive(receive)
 Janosh:subscribe("", push)
 
-while true do
-   Janosh:sleep(1000000) -- milliseconds
-end
+Janosh:forever()
+

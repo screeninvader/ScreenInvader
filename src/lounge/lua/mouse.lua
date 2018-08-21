@@ -32,6 +32,5 @@ Janosh:subscribe("mouseMoveRel", moveRel)
 Janosh:subscribe("mouseUp",  up)
 Janosh:subscribe("mouseDown",  down)
 
-while true do
-  Janosh:sleep(1000000)
-end
+Janosh:forever()
+

@@ -6,6 +6,5 @@ end
 
 Janosh:subscribe("backgroundRefresh",  refresh)
 
-while true do
-  Janosh:sleep(1000000)
-end
+Janosh:forever()
+

@@ -153,8 +153,6 @@ end
 
 Janosh:subscribe("showUrl", open)
 
-while true do
-  Janosh:sleep(100000)
-end
+Janosh:forever()
 
 
