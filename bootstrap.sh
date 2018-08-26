@@ -376,6 +376,11 @@ function doCleanupFiles() {
     "$CHRT bash -c \"rm -fr $FILES_BLACK\""
 }
 
+function doSetupCrontab {
+	check "Setup crontab" \
+		"$CHRT bash -c '(crontab -l 2>/dev/null; echo \"  0 *    *   *  *    pip install -U youtube-dl\") | crontab -'"
+}
+
 function doPrepareChroot() {
   cd "$CHROOT_DIR"
   check "Bind chroot dev fs" \
@@ -545,6 +550,7 @@ else
   doCopy
   doBuildOuttaSpace
   doInstallOuttaSpace
+	doSetupCrontab
   doCreateBuildHtml
 fi
 
