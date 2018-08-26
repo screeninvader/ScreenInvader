@@ -197,7 +197,7 @@ function doInstallOuttaSpace() {
 
 function doBuildOuttaSpace() {
   check "Link nodejs to node" \
-    "ln -s $CHROOT_DIR/usr/bin/nodejs $CHROOT_DIR/usr/bin/node"
+    "$CHRT ln -s /usr/bin/nodejs /usr/bin/node"
 
   check "Clone outta_space" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_outta_space.sh"
@@ -381,6 +381,11 @@ function doSetupCrontab {
 		"$CHRT bash -c '(crontab -l 2>/dev/null; echo \"  0 *    *   *  *    pip install -U youtube-dl\") | crontab -'"
 }
 
+function doInstallYoutubeDL {
+  check "Install youtube-dl" \
+    "$CHRT pip install youtube-dl"
+}
+
 function doPrepareChroot() {
   cd "$CHROOT_DIR"
   check "Bind chroot dev fs" \
@@ -546,12 +551,13 @@ else
   else
     skip "cleanup packages"
   fi
-  doCleanupFiles
-  doCopy
-  doBuildOuttaSpace
-  doInstallOuttaSpace
+	doCleanupFiles
+	doCopy
+	doBuildOuttaSpace
+	doInstallOuttaSpace
 	doSetupCrontab
-  doCreateBuildHtml
+	doInstallYoutubeDL
+	doCreateBuildHtml
 fi
 
 
