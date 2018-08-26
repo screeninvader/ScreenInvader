@@ -1,6 +1,6 @@
 #!/lounge/bin/janosh -f
 
-Janosh:system("dunst -fn \"Topaz a500a1000a2000,40\" -lto 3 -cto 1 -nto 1 &")
+Janosh:system("export $(dbus-launch); dunst -fn \"Topaz a500a1000a2000,40\" -lto 3 -cto 1 -nto 1 &")
 
 function send(key, op, value)
   Janosh:system("notify-send \"" .. value .. "\"")
