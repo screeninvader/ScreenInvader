@@ -49,13 +49,13 @@ function MidoriClass.close(self)
   self:minimize()
 end
 
-function MidoriClass.pageDown(self) 
-  Janosh:keyType("Page_Down")
-end
+--function MidoriClass.pageDown(self) 
+--  Janosh:keyType("Page_Down")
+--end
 
-function MidoriClass.pageUp(self)
-  Janosh:keyType("Page_Up")
-end
+--function MidoriClass.pageUp(self)
+--  Janosh:keyType("Page_Up")
+--end
 
 function MidoriClass.scrollDown(self)
   self:cmd("ScrollDown")
