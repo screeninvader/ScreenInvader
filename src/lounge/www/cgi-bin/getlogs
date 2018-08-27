@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. ./initcgi "application/zip"
+
+zip -r - /var/log/

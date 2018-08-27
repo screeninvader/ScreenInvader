@@ -81,4 +81,5 @@ python-pip
 uwsgi
 uwsgi-plugin-python
 cron
+zip
 
