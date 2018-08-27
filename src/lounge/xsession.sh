@@ -1,6 +1,7 @@
 #!/bin/bash
 (
 set -x
+mount /media/
 export DISPLAY=:0
 export HOME=/lounge
 export PATH="/lounge/bin/:$PATH"
