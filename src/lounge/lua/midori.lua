@@ -12,12 +12,11 @@ end
 
 function MidoriClass.cmd(self, cmdstring) 
   print("cmd:", cmdstring)
-  Janosh:system("killall -0 midori && midori -e " .. cmdstring)
+--  Janosh:system("killall -0 midori && midori --plain -e " .. cmdstring)
 end
 
 function MidoriClass.minimize(self)
-print("mini")
-  xid = util:getWindowID("midori.Midori")
+  xid = util:getWindowID("midori4.Midori")
   if xid ~= -1 then
   print("minimize:", xid)
   print("xdotool windowminimize " .. xid) 
@@ -26,8 +25,7 @@ print("mini")
 end
 
 function MidoriClass.raise(self)
-print("raise")
-  xid = util:getWindowID("midori.Midori")
+   xid = util:getWindowID("midori$.Midori")
   if xid ~= -1 then
     print("raise:", xid)
     Janosh:system("xdotool windowraise " .. xid) 
@@ -38,15 +36,15 @@ function MidoriClass.openUrl(self, url)
   util:notify("Open Browser: " .. url)
 
   print("openUrl:", url)
-  Janosh:system("midori \"" .. url .. "\" &")
-  self:raise()
+  Janosh:system("killall midori")
+  Janosh:system("midori --plain -e Location \"" .. url .. "\" &")
+  --self:raise()
 end
 
 function MidoriClass.close(self)
   print("close")
-  self:cmd("Homepage")
-  self:cmd("WindowClose")
-  self:minimize()
+  Janosh:system("killall midori")
+--  self:minimize()
 end
 
 --function MidoriClass.pageDown(self) 
