@@ -65,7 +65,6 @@ function MpvClass.jump(self, idx)
     print("CODE: " .. code)
 
     if code ~= 200 and code ~= 302 then
-      Janosh:transaction(function()
           src = Janosh:get("/playlist/items/#" .. idx .. "/source")
           title = Janosh:get("/playlist/items/#" .. idx .. "/title")
           cat = Janosh:get("/playlist/items/#" .. idx .. "/category")
@@ -78,19 +77,15 @@ function MpvClass.jump(self, idx)
           end
           print("TITLE", t)
           Janosh:set("/playlist/items/#" .. idx .. "/url", videoUrl)
-        end)
     end
   end
- print("VIDEOURL2", videoUrl)
+  print("VIDEOURL2", videoUrl)
 
-  Janosh:transaction(function() 
-    Janosh:set_t("/player/active", "true")
-    util:notifyLong(title)
-    print("LOAD", idx)
-    self:cmd("loadfile", videoUrl)
-    Janosh:set_t("/playlist/index", idx)
-    self:play();
-  end)
+  util:notifyLong(title)
+  print("LOAD", idx)
+  self:cmd("loadfile", videoUrl)
+  self:play()
+  Janosh:set_all_t({"/player/active", "true","/playlist/index", idx})
 end
 
 function MpvClass.previous(self) 
@@ -119,7 +114,6 @@ function MpvClass.enqueue(self, videoUrl, title, srcUrl, category)
   Janosh:set_t("/playlist/items/#" .. size .. "/source", srcUrl)
   Janosh:set_t("/playlist/items/#" .. size .. "/source", srcUrl)
   Janosh:set_t("/playlist/items/#" .. size .. "/category", category)
-  print("enqueuend")
 end
 
 function MpvClass.add(self, videoUrl, title, srcUrl, category)
