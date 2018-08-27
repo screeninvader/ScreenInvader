@@ -28,6 +28,13 @@ case "$1" in
   start)
       log_daemon_msg "Starting $DESC lounge"
       start-stop-daemon --start --background --pidfile /var/run/janosh-lounge.pid --make-pidfile --user lounge --startas /bin/bash -- -c "export HOME=/lounge/; export USER=lounge; exec sudo -u lounge $DAEMON $OPTS &> /var/log/janosh-lounge.log"
+      
+      export HOME=/lounge/; 
+      export USER=lounge; 
+      while ! /lounge/bin/janosh dump; do
+        echo "Waiting for connection"
+        sleep 1
+      done
       log_end_msg $?
     ;;
 
