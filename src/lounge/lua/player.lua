@@ -11,8 +11,6 @@ local function basename(str)
 end
 
 function open(key, op, value)
-  obj=Janosh:get("/player/.")
-  Janosh:tprint(obj)
   url=value
   category=Janosh:get("/player/category")
   videoUrl=""
