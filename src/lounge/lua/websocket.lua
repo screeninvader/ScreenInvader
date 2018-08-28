@@ -8,13 +8,13 @@ function receive(handle, message)
       Janosh:wsSend(handle, janosh_request({"get","/."}))
     else
       print("received", message)
-      janosh_request(JSON:decode(message))
+      local tmsg = JSON:decode(message)
+      Janosh:publish(tmsg[2], tmsg[4])
     end
   end)
 end
 
 function push(key, op, value)
-   print('push updates')
   Janosh:wsBroadcast(JSON:encode({key, op, value}))
 end
 
