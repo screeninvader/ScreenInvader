@@ -58,9 +58,9 @@ elif [ "$ARCH" == "armhf" ]; then
   wget -q -c https://mirrors.romanrm.net/sunxi/qemu/vmlinuz-3.2.0-4-vexpress
 
   if [ -n "$HEADLESS" ]; then
-    qemu-system-arm -vnc :0,websocket=8085 -M vexpress-a9 -kernel vmlinuz-3.2.0-4-vexpress -initrd initrd.img-3.2.0-4-vexpress -append root=/dev/mmcblk0p2 -drive format=raw,if=sd,cache=unsafe,file="$image" -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic || exit 1
+    qemu-system-arm -m 256 -vnc :0,websocket=8085 -M vexpress-a9 -kernel vmlinuz-3.2.0-4-vexpress -initrd initrd.img-3.2.0-4-vexpress -append root=/dev/mmcblk0p2 -drive format=raw,if=sd,cache=unsafe,file="$image" -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic || exit 1
   else
-    qemu-system-arm -M vexpress-a9 -kernel vmlinuz-3.2.0-4-vexpress -initrd initrd.img-3.2.0-4-vexpress -append root=/dev/mmcblk0p2 -drive format=raw,if=sd,cache=unsafe,file="$image" -sdl -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic || exit 1
+    qemu-system-arm -m 256 -M vexpress-a9 -kernel vmlinuz-3.2.0-4-vexpress -initrd initrd.img-3.2.0-4-vexpress -append root=/dev/mmcblk0p2 -drive format=raw,if=sd,cache=unsafe,file="$image" -sdl -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic || exit 1
   fi
 else
   error "Unknown architecture: $ARCH"
