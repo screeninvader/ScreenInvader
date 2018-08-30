@@ -1,5 +1,5 @@
 rootfs / rootfs defaults,noatime,nodiratime 0 1
 none /var/log/ tmpfs rw,noatime       0 0
 none /tmp/     tmpfs rw,noatime       0 0
-/dev/sda1 /media vfat defaults,users,gid=100,uid=1000 0 0
+/dev/sda1 /media vfat defaults,users,gid=100,uid=1000,auto,nofail 0 0
 
