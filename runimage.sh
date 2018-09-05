@@ -49,9 +49,9 @@ if [ "$ARCH" == "amd64" ]; then
   sudo chmod a+rw "/dev/mapper/`basename $DEVICE`"
 
   if [ -n "$HEADLESS" ]; then
-    qemu-system-x86_64 -smp cores=4,threads=1,sockets=1 -vnc :0,websocket=8085 -enable-kvm -drive format=raw,file="/dev/mapper/`basename $DEVICE`" -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic -m 2048 || exit 1 
+    qemu-system-x86_64 -m 4G -smp cores=4,threads=1,sockets=1 -vnc :0,websocket=8085 -enable-kvm -drive format=raw,file="/dev/mapper/`basename $DEVICE`" -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic -m 2048 || exit 1 
   else
-    qemu-system-x86_64 -smp cores=4,threads=1,sockets=1 -vga cirrus -sdl -soundhw ac97 -enable-kvm -drive format=raw,file="/dev/mapper/`basename $DEVICE`" -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic -m 2048 || exit 1
+    qemu-system-x86_64 -m 4G -smp cores=4,threads=1,sockets=1 -vga cirrus -sdl -soundhw ac97 -enable-kvm -drive format=raw,file="/dev/mapper/`basename $DEVICE`" -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic -m 2048 || exit 1
   fi
 elif [ "$ARCH" == "armhf" ]; then
   wget -q -c https://mirrors.romanrm.net/sunxi/qemu/initrd.img-3.2.0-4-vexpress
