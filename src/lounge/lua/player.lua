@@ -11,27 +11,27 @@ local function basename(str)
 end
 
 function open(key, op, value)
-  url=value
-  category=Janosh:get("/player/category")
+Janosh:transaction(function()
+  obj=Janosh:get("/player/.")
+  Janosh:tprint(obj)
+  url=obj.url
+  category=obj.category
   videoUrl=""
   title=""
    
   if category ~= "video" and category ~= "audio" then
     items = helpers:resolve(url,category)
     for title, videoUrl in pairs(items) do
-Janosh:transaction(function()
       mpv:add(videoUrl, title, url, category)
-end)
       Janosh:publish("historyAdd", "W", JSON:encode({url=url, title=title}))
     end
   else
     videoUrl = url
     title = basename(url)
-Janosh:transaction(function()
     mpv:add(videoUrl, title, url, category)
-end)
     Janosh:publish("historyAdd", "W", JSON:encode({url=url, title=title}))
   end
+end)
 end
 
 Janosh:subscribe("/player/url", open)

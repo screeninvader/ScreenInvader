@@ -15,7 +15,7 @@ end
 function toggle(key,op,value) 
 Janosh:transaction(function()
   obj = Janosh:get({"/player/active", "/browser/active", "/pdf/active", "/image/active", "/animation/active"})
-  if obj.player.active == "true" or obj.browser.active == "true" or obj.pdf.active == "true" or obj.image.active == "true" or obj.animation.active == "true"  then
+  if obj.player.active == true or obj.browser.active == true or obj.pdf.active == true or obj.image.active == true or obj.animation.active == true  then
     hide()
   else
     show()

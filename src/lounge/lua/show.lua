@@ -58,6 +58,7 @@ local CATEGORY_FIX={
 
 function open(key, op, value)
 util:notify("Resolving url: " .. value)
+print(key);
 print("open:",value)
 
 function ends(String,End)

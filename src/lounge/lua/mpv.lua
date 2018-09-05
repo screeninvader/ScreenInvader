@@ -3,8 +3,8 @@
 local util = require("util")
 local helper = require("helpers")
 
-Janosh:set("/player/active", "false")
-Janosh:set("/player/paused", "false")
+Janosh:set("/player/active", false)
+Janosh:set("/player/paused", false)
 
 --Janosh:setenv("VDPAU_OSD","1")
 Janosh:setenv("DISPLAY",":0")
@@ -85,17 +85,18 @@ function MpvClass.jump(self, idx)
   print("LOAD", idx)
   self:cmd("loadfile", videoUrl)
   self:play()
-  Janosh:set_all_t({"/player/active", "true","/playlist/index", idx})
+  Janosh:set_all_t({"/player/active", true,"/playlist/index", idx})
 end
 
 function MpvClass.previous(self) 
   util:notify("previous")
-  self:jump(tonumber(Janosh:get("/playlist/index")) - 1)
+  self:jump(Janosh:get("/playlist/index") - 1)
+
 end
 
 function MpvClass.next(self)
   util:notify("next")
-  self:jump(tonumber(Janosh:get("/playlist/index")) + 1)
+  self:jump(Janosh:get("/playlist/index") + 1)
 end
 
 function MpvClass.seek(self, seconds)
@@ -112,14 +113,13 @@ function MpvClass.enqueue(self, videoUrl, title, srcUrl, category)
   Janosh:set_t("/playlist/items/#" .. size .. "/url", videoUrl)
   Janosh:set_t("/playlist/items/#" .. size .. "/title", title)
   Janosh:set_t("/playlist/items/#" .. size .. "/source", srcUrl)
-  Janosh:set_t("/playlist/items/#" .. size .. "/source", srcUrl)
   Janosh:set_t("/playlist/items/#" .. size .. "/category", category)
 end
 
 function MpvClass.add(self, videoUrl, title, srcUrl, category)
   self:enqueue(videoUrl, title, srcUrl, category)
 
-  if Janosh:get("/player/active") == "false" then
+  if Janosh:get("/player/active") == false then
     self:jump(10000000) -- jump to the end of the playlist
   end
 end
@@ -234,19 +234,19 @@ end
 
 function MpvClass.onIdle(self) 
   obj = Janosh:get("/playlist/.")
-  idx = tonumber(obj.index)
+  idx = obj.index
   len = #obj.items
   if idx + 1 < len then
     Janosh:publish("backgroundRefresh", "W", "")
     self:jump(tostring(idx + 1))
   else
     Janosh:publish("backgroundRefresh", "W", "")
-    Janosh:set_t("/player/active","false")
+    Janosh:set_t("/player/active",false)
   end
 end
 
 function MpvClass.loadFile(self,path)
-  Janosh:set_t("/player/active", "true")
+  Janosh:set_t("/player/active", true)
   self:cmd("loadfile", path)
 end
 

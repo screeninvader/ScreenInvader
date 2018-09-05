@@ -5,9 +5,9 @@ function start(key, op, value)
   Janosh:transaction(function() 
     Janosh:publish("playerPause","W","");
     Janosh:system("killall shairport; shairport -a `cat /etc/hostname` &")
-    if Janosh:get("/shairport/active") == "false" then
+    if Janosh:get("/shairport/active") == false then
       util:notifyLong("Activating shairport");
-      Janosh:set_t("/shairport/active", "true")
+      Janosh:set_t("/shairport/active", true)
     end
   end)
 end
@@ -15,10 +15,10 @@ end
 function stop(key,op,value) 
   Janosh:transaction(function()
     Janosh:system("killall shairport")
-    if Janosh:get("/shairport/active") == "true" then
+    if Janosh:get("/shairport/active") == true then
       util:notifyLong("Deactivating shairport");
-      Janosh:set_t("/shairport/active", "false")
-      Janosh:publish("playerPlay","W","");
+      Janosh:set_t("/shairport/active", false)
+      Janosh:publish("playerPlay");
     end
   end)
 end
