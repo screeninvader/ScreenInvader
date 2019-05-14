@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cat <<EOSOURCES
-deb $1 jessie main non-free
-deb $1 jessie-backports main non-free
+deb $1 stretch main non-free
+deb $1 stretch-backports main non-free
 EOSOURCES
 

@@ -196,8 +196,14 @@ function doInstallOuttaSpace() {
 }
 
 function doBuildOuttaSpace() {
-  check "Link nodejs to node" \
-    "$CHRT ln -s /usr/bin/nodejs /usr/bin/node"
+  check "Update Repositories" \
+    "$CHRT $APTNI update"
+
+  check "Add npm repository" \
+    "$CHRT curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -"
+
+  check "Install node and npm" \
+    "$CHRT $APTNI install nodejs"
 
   check "Clone outta_space" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_outta_space.sh"
