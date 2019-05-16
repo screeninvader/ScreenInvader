@@ -203,7 +203,10 @@ function doBuildOuttaSpace() {
     "$CHRT curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -"
 
   check "Install node and npm" \
-    "$CHRT $APTNI install nodejs"
+    "$CHRT apt-get install -y nodejs"
+
+  check "Link node to nodejs" \
+    "$CHRT ln -s /usr/bin/node /usr/bin/nodejs"
 
   check "Clone outta_space" \
     "cd $BOOTSTRAP_DIR/third/; ./clone_outta_space.sh"
