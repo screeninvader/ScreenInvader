@@ -54,13 +54,13 @@ if [ "$ARCH" == "amd64" ]; then
     qemu-system-x86_64 -m 4G -smp cores=4,threads=1,sockets=1 -vga cirrus -sdl -soundhw ac97 -enable-kvm -drive format=raw,file="/dev/mapper/`basename $DEVICE`" -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic -m 2048 || exit 1
   fi
 elif [ "$ARCH" == "armhf" ]; then
-  wget -q -c https://mirrors.romanrm.net/sunxi/qemu/initrd.img-3.2.0-4-vexpress
-  wget -q -c https://mirrors.romanrm.net/sunxi/qemu/vmlinuz-3.2.0-4-vexpress
+  wget -q -c https://github.com/vfdev-5/qemu-rpi2-vexpress/raw/master/vexpress-v2p-ca15-tc1.dtb
+  wget -q -c https://github.com/vfdev-5/qemu-rpi2-vexpress/raw/master/kernel-qemu-4.4.1-vexpress
 
   if [ -n "$HEADLESS" ]; then
-    qemu-system-arm -m 1024 -vnc :0,websocket=8085 -M vexpress-a9 -kernel vmlinuz-3.2.0-4-vexpress -initrd initrd.img-3.2.0-4-vexpress -append root=/dev/mmcblk0p2 -drive format=raw,if=sd,cache=unsafe,file="$image" -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic || exit 1
+    qemu-system-arm -m 1024 -vnc :0,websocket=8085 -drive format=raw,if=sd,cache=unsafe,file="$image" -M vexpress-a15 -kernel kernel-qemu-4.4.1-vexpress -dtb vexpress-v2p-ca15-tc1.dtb -append root=/dev/mmcblk0p2 -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic || exit 1
   else
-    qemu-system-arm -m 1024 -M vexpress-a9 -kernel vmlinuz-3.2.0-4-vexpress -initrd initrd.img-3.2.0-4-vexpress -append root=/dev/mmcblk0p2 -drive format=raw,if=sd,cache=unsafe,file="$image" -sdl -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic || exit 1
+    qemu-system-arm -m 1024 -drive format=raw,if=sd,cache=unsafe,file="$image"  -M vexpress-a15 -kernel kernel-qemu-4.4.1-vexpress -dtb vexpress-v2p-ca15-tc1.dtb -append root=/dev/mmcblk0p2 -sdl -net user,hostfwd=tcp::8000-:80,hostfwd=tcp::2222-:22,hostfwd=tcp::8080-:8080 -net nic || exit 1
   fi
 else
   error "Unknown architecture: $ARCH"
